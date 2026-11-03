@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3a2d">
+<title>Home Workout Coach</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* layout: one phone-width column; deep-green hero, marigold actions, bottom tab bar; colour-flooded workout player */
+:root {
+  --bg: #eef2eb;
+  --surface: #ffffff;
+  --sunk: #e0e8dd;
+  --ink: #10211a;
+  --muted: #56685e;
+  --line: #d2dccf;
+  --accent: #f4a40e;
+  --on-accent: #1e1604;
+  --accent-ink: #9b5c00;
+  --hero: #0f3a2d;
+  --hero-2: #185240;
+  --on-hero: #eef4ee;
+  --rest: #0f6b57;
+  --on-rest: #ffffff;
+  --cardio: #3243a6;
+  --on-cardio: #ffffff;
+  --good: #1d8656;
+  --warn: #9a5f0a;
+  --floor: #e5ebe2;
+  --mat: #9fd3c3;
+  --prop: #84908a;
+  --prop-2: #c1cbc4;
+  --prop-fill: #cad3cc;
+  --skin: #c98a5e;
+  --skin-far: #a06a45;
+  --skin-d: #ae7149;
+  --hair: #221b17;
+  --shirt: #2f5fcf;
+  --shirt-far: #23489d;
+  --shorts: #23302b;
+  --shorts-far: #46554e;
+  --sock: #f4f5f2;
+  --sock-far: #c9cdc9;
+  --shoe: #fbfbf9;
+  --shoe-far: #cfd3cf;
+  --font-d: "Big Shoulders Display", "Barlow Condensed", "Roboto Condensed", "sans-serif-condensed", "Arial Narrow", sans-serif;
+  --font-b: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #08130f; --surface: #10201a; --sunk: #183026; --ink: #e8f1eb; --muted: #8fa69a; --line: #21392f;
+    --accent: #ffb732; --on-accent: #1e1604; --accent-ink: #ffc75e; --hero: #133a2d; --hero-2: #1b4c3b; --on-hero: #e8f1eb;
+    --rest: #33b08e; --on-rest: #04120d; --cardio: #8e9cff; --on-cardio: #0a0e2a; --good: #52cf8f; --warn: #f2b14b;
+    --floor: #183026; --mat: #2a6a5a; --prop: #7d8c84; --prop-2: #3d5047; --prop-fill: #334a40;
+    --skin: #c98a5e; --skin-far: #93603e; --skin-d: #ae7149; --hair: #120e0c; --shirt: #4a7cf0; --shirt-far: #3459b0; --shorts: #56665e; --shorts-far: #3a4842; --sock: #eef0ec; --sock-far: #a7aca8; --shoe: #f2f3f0; --shoe-far: #a9aea9;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #08130f; --surface: #10201a; --sunk: #183026; --ink: #e8f1eb; --muted: #8fa69a; --line: #21392f;
+  --accent: #ffb732; --on-accent: #1e1604; --accent-ink: #ffc75e; --hero: #133a2d; --hero-2: #1b4c3b; --on-hero: #e8f1eb;
+  --rest: #33b08e; --on-rest: #04120d; --cardio: #8e9cff; --on-cardio: #0a0e2a; --good: #52cf8f; --warn: #f2b14b;
+  --floor: #183026; --mat: #2a6a5a; --prop: #7d8c84; --prop-2: #3d5047; --prop-fill: #334a40;
+  --skin: #c98a5e; --skin-far: #93603e; --skin-d: #ae7149; --hair: #120e0c; --shirt: #4a7cf0; --shirt-far: #3459b0; --shorts: #56665e; --shorts-far: #3a4842; --sock: #eef0ec; --sock-far: #a7aca8; --shoe: #f2f3f0; --shoe-far: #a9aea9;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-b); font-size: 16px; line-height: 1.45; -webkit-tap-highlight-color: transparent; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+#app { max-width: 520px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; background: var(--bg); }
+main { flex: 1; overflow-y: auto; padding: 18px 16px 28px; display: flex; flex-direction: column; gap: 18px; }
+main > *, .sheet > *, .pwrap > * { flex-shrink: 0; }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+.tabs button { background: none; border: 0; padding: 8px 2px 9px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; color: var(--muted); }
+.tabs button svg { width: 24px; height: 24px; }
+.tabs button[aria-current="page"] { color: var(--accent-ink); font-weight: 700; }
+.tabs button[aria-current="page"] svg { stroke-width: 2.4; }
+
+/* type */
+.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.display { font-family: var(--font-d); font-weight: 800; font-size: 44px; line-height: .95; letter-spacing: .005em; text-transform: uppercase; }
+.h2 { font-family: var(--font-d); font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; }
+.small { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+
+/* cards and rows */
+.card { background: var(--surface); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.card.flat { background: transparent; padding: 0; }
+.row { display: flex; align-items: center; gap: 10px; }
+.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { background: var(--surface); border-radius: 12px; padding: 10px 12px; }
+.stat b { display: block; font-family: var(--font-d); font-size: 32px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); }
+
+.btn { border: 0; border-radius: 12px; padding: 12px 16px; background: var(--sunk); font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; }
+.btn.primary { background: var(--accent); color: var(--on-accent); }
+.btn.big { width: 100%; min-height: 62px; font-family: var(--font-d); font-size: 28px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; border-radius: 16px; }
+.btn.ghost { background: transparent; border: 1.5px solid var(--line); }
+.btn.sm { min-height: 36px; padding: 6px 12px; font-size: 14px; border-radius: 10px; }
+.btn svg { width: 20px; height: 20px; }
+.iconbtn { border: 0; background: var(--sunk); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.iconbtn svg { width: 20px; height: 20px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 7px 13px; font-size: 14.5px; font-weight: 700; color: var(--ink); min-height: 38px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chips.scroll { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips.scroll::-webkit-scrollbar { display: none; }
+.chips.scroll .chip { flex: none; }
+.tag { font-size: 12.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: var(--sunk); color: var(--muted); }
+.tag.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.tag.good { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
+.tag.acc { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent-ink); }
+
+.banner { border-left: 4px solid var(--accent); background: var(--surface); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+
+/* exercise list */
+.block { display: flex; flex-direction: column; gap: 6px; }
+.blockhead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 4px 2px; }
+.blockhead .small { text-align: right; }
+.blockhead .h2 { font-size: 22px; }
+.exlist { background: var(--surface); border-radius: 14px; overflow: hidden; }
+.exrow { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 8px; border-bottom: 1px solid var(--line); width: 100%; background: none; border-left: 0; border-right: 0; border-top: 0; text-align: left; }
+.exrow:last-child { border-bottom: 0; }
+.exrow .th { width: 76px; height: 54px; flex: none; border-radius: 9px; background: var(--floor); overflow: hidden; }
+.exrow .th svg { width: 100%; height: 100%; display: block; }
+.exrow .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.exrow .tx b { font-weight: 700; line-height: 1.2; }
+.exrow .tx span { font-size: 13.5px; color: var(--muted); }
+.exmain { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; text-align: left; }
+
+/* figure styling */
+svg.fig { display: block; width: 100%; height: auto; }
+.fig .flimb { stroke: var(--fig); stroke-width: 6.2; }
+.fig .far .flimb { stroke: var(--fig-far); }
+.fig .ftorso { stroke: var(--fig); stroke-width: 10; }
+.fig .fhead { fill: var(--fig); }
+.fig .feye { fill: var(--surface); }
+.fig .sk { fill: var(--skin); }
+.fig .far .sk { fill: var(--skin-far); }
+.fig .skd { fill: var(--skin-d); }
+.fig .sh { fill: var(--shirt); }
+.fig .far .sh { fill: var(--shirt-far); }
+.fig .so { fill: var(--shorts); }
+.fig .far .so { fill: var(--shorts-far); }
+.fig .wh { fill: var(--sock); }
+.fig .far .wh { fill: var(--sock-far); }
+.fig .shoe { fill: var(--shoe); stroke: var(--prop-2); stroke-width: .6; }
+.fig .far .shoe { fill: var(--shoe-far); }
+.fig .sole { stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; fill: none; }
+.fig .hair { fill: var(--hair); }
+.fig .eye { fill: #1c1612; }
+.fig .ffloor { fill: var(--floor); }
+.fig .fground { stroke: var(--prop-2); stroke-width: 1; }
+.fig .fshadow { fill: var(--ink); opacity: .07; }
+.fig .pf { fill: var(--prop-fill); }
+.fig .pf2 { fill: var(--prop-2); }
+.fig .ps { stroke: var(--prop); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.fig .ps2 { stroke: var(--prop-2); fill: none; stroke-linecap: round; }
+.fig .pring { fill: none; stroke: var(--prop); }
+.fig .pmat { fill: var(--mat); }
+.fig .pw { fill: var(--accent); }
+.fig .pw2 { fill: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
+.fig .pwc { fill: var(--surface); }
+.fig .pwl { stroke: var(--accent); fill: none; }
+.fig .pband, .fig .prope { stroke: var(--accent); fill: none; stroke-linecap: round; }
+.fig .pd { stroke: var(--prop-2); stroke-linecap: round; }
+.thumb .flimb { stroke-width: 7; }
+
+/* week strip / rings */
+.weekstrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.wd { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 700; }
+.wd i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-style: normal; font-size: 13px; color: var(--ink); }
+.wd.plan i { border-color: var(--ink); }
+.wd.done i { background: var(--good); border-color: var(--good); color: #fff; }
+.wd.today { color: var(--accent); }
+.wd.today i { border-color: var(--accent); border-width: 3px; }
+.ring { width: 64px; height: 64px; flex: none; }
+.ring circle { fill: none; stroke-width: 7; }
+.ring .bgc { stroke: var(--sunk); }
+.ring .fgc { stroke: var(--good); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
+
+/* forms */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label, .lbl { font-weight: 700; font-size: 15px; }
+.field .hint { font-size: 13.5px; color: var(--muted); }
+.inp { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 12px; min-height: 46px; width: 100%; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.err { color: var(--accent); font-size: 14px; font-weight: 700; }
+fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+legend { font-weight: 700; font-size: 15px; padding: 0; margin-bottom: 6px; }
+
+/* sheets & dialogs */
+.scrim { position: fixed; inset: 0; background: rgba(8, 10, 12, .5); z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--bg); width: 100%; max-width: 520px; max-height: 92%; overflow-y: auto; border-radius: 20px 20px 0 0; padding: 14px 16px calc(20px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 14px; }
+.sheet .stagebox { background: var(--floor); border-radius: 14px; overflow: hidden; }
+.dialog { margin: auto 16px; background: var(--surface); border-radius: 16px; padding: 18px; max-width: 420px; width: 100%; display: flex; flex-direction: column; gap: 12px; align-self: center; }
+.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+
+/* player */
+.player { --pbg: var(--accent); position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--pbg); color: var(--on-accent); transition: background-color .35s; }
+.player.rest, .player.prep, .player.tr { --pbg: var(--rest); color: var(--on-rest); }
+.player.steady { --pbg: var(--cardio); color: var(--on-cardio); }
+.player.done { --pbg: var(--bg); color: var(--ink); }
+.pwrap { max-width: 520px; width: 100%; margin: 0 auto; height: 100%; display: flex; flex-direction: column; padding: 10px 16px 0; gap: 8px; overflow-y: auto; }
+.ptop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ptop .iconbtn { background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; }
+.player.done .ptop .iconbtn { background: var(--sunk); }
+.pphase { font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; text-align: center; flex: 1; }
+.pstage { background: var(--surface); border-radius: 18px; overflow: hidden; position: relative; flex: none; }
+.pstage .fig .sk { fill: var(--skin); }
+.fig .far .sk { fill: var(--skin-far); }
+.fig .skd { fill: var(--skin-d); }
+.fig .sh { fill: var(--shirt); }
+.fig .far .sh { fill: var(--shirt-far); }
+.fig .so { fill: var(--shorts); }
+.fig .far .so { fill: var(--shorts-far); }
+.fig .wh { fill: var(--sock); }
+.fig .far .wh { fill: var(--sock-far); }
+.fig .shoe { fill: var(--shoe); stroke: var(--prop-2); stroke-width: .6; }
+.fig .far .shoe { fill: var(--shoe-far); }
+.fig .sole { stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; fill: none; }
+.fig .hair { fill: var(--hair); }
+.fig .eye { fill: #1c1612; }
+.fig .ffloor { fill: var(--floor); }
+.pstage .badge { position: absolute; top: 10px; left: 10px; background: var(--ink); color: var(--bg); font-weight: 700; font-size: 13px; border-radius: 8px; padding: 3px 8px; }
+.ptitle { font-family: var(--font-d); font-weight: 800; font-size: 40px; line-height: .95; text-transform: uppercase; text-wrap: balance; }
+.psub { font-weight: 700; font-size: 17px; opacity: .92; min-height: 1.4em; }
+.ptime { font-family: var(--font-d); font-weight: 800; font-size: 96px; line-height: .85; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.pbar { height: 8px; border-radius: 4px; background: color-mix(in srgb, currentColor 22%, transparent); overflow: hidden; }
+.pbar i { display: block; height: 100%; background: currentColor; width: 0; }
+.pnext { display: flex; align-items: center; gap: 10px; font-size: 15px; background: color-mix(in srgb, currentColor 12%, transparent); border-radius: 12px; padding: 6px 10px 6px 6px; }
+.pnext .th { width: 58px; height: 41px; border-radius: 8px; background: var(--surface); overflow: hidden; flex: none; }
+.pnext .th svg { width: 100%; height: 100%; }
+.pctl { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 10px; margin-top: auto; position: sticky; bottom: 0; padding: 8px 0 calc(14px + env(safe-area-inset-bottom)); background: inherit; }
+.player .pctl { background: var(--pbg); }
+.segs div[hidden] { display: none; }
+.pstage svg { max-height: 34vh; }
+.player details > summary::before { color: inherit; }
+.pctl button { border: 0; border-radius: 16px; min-height: 64px; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; display: grid; place-items: center; font-weight: 700; }
+.pctl button.main { background: var(--surface); color: var(--ink); }
+.pctl svg { width: 30px; height: 30px; }
+.pmini { display: flex; gap: 8px; }
+.pmini button { flex: 1; border: 0; border-radius: 12px; min-height: 42px; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; font-weight: 700; font-size: 14.5px; }
+.segs { display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.segs div { display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 9px; background: color-mix(in srgb, currentColor 12%, transparent); }
+.segs div.on { background: var(--surface); color: var(--ink); font-weight: 700; }
+.segs div.past { opacity: .55; text-decoration: line-through; }
+.pnote { font-size: 14px; opacity: .9; }
+.player .howbox { background: color-mix(in srgb, currentColor 12%, transparent); border-radius: 12px; padding: 10px 12px; font-size: 15px; }
+.player.done .pwrap { overflow-y: auto; }
+
+/* chart */
+.chart { width: 100%; height: auto; display: block; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .ln { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart .ar { fill: var(--accent); opacity: .12; }
+.chart .tg { stroke: var(--good); stroke-width: 2; stroke-dasharray: 5 5; }
+.chart text { fill: var(--muted); font-size: 11px; font-family: var(--font-b); }
+.chart .dot { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+
+.hist { display: flex; flex-direction: column; }
+.hist div { display: flex; justify-content: space-between; gap: 10px; padding: 10px 2px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.hist div:last-child { border-bottom: 0; }
+
+details > summary { cursor: pointer; font-weight: 700; list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "+ "; color: var(--accent); }
+details[open] > summary::before { content: "\2013  "; }
+
+@media (prefers-reduced-motion: reduce) { .player { transition: none; } }
+@media (max-width: 360px) { .display { font-size: 38px; } .ptime { font-size: 80px; } .ptitle { font-size: 34px; } }
+@media (max-height: 700px) { .ptime { font-size: 72px; } .ptitle { font-size: 32px; } .pctl button { min-height: 54px; } }
+
+/* hero card (today) */
+.hero { background: var(--hero); color: var(--on-hero); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%); pointer-events: none; }
+.hero .eyebrow { color: color-mix(in srgb, var(--on-hero) 70%, transparent); }
+.hero .display { color: var(--accent); }
+.hero .stat { background: color-mix(in srgb, var(--on-hero) 9%, transparent); }
+.hero .stat span { color: color-mix(in srgb, var(--on-hero) 72%, transparent); }
+.hero .tag.good { background: color-mix(in srgb, var(--good) 30%, transparent); color: var(--on-hero); }
+.hero .tag.acc { color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+/* camera angle switch */
+.seg { display: inline-flex; background: var(--sunk); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; border-radius: 8px; padding: 6px 10px; font-size: 13.5px; font-weight: 700; color: var(--muted); min-height: 32px; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.pcam { margin-top: -2px; }
+.pcam .seg { background: color-mix(in srgb, currentColor 14%, transparent); }
+.pcam .seg button { color: inherit; opacity: .85; }
+.pcam .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); opacity: 1; }
+
+/* welcome + sign-in */
+.gate { position: fixed; inset: 0; z-index: 50; background: var(--hero); color: var(--on-hero); overflow-y: auto; }
+.gwrap { max-width: 520px; margin: 0 auto; min-height: 100%; padding: 18px 20px calc(24px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 16px; }
+.gstage { background: var(--surface); border-radius: 22px; overflow: hidden; }
+.gstage svg { max-height: 36vh; }
+.gtitle { font-family: var(--font-d); font-weight: 800; font-size: 60px; line-height: .86; text-transform: uppercase; color: var(--accent); letter-spacing: .005em; margin: 0; }
+.gpoints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 16.5px; }
+.gpoints li { display: flex; gap: 10px; align-items: flex-start; }
+.gpoints li::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); margin-top: 7px; }
+.gate .btn { min-height: 52px; font-size: 17px; }
+.gate .btn.light { background: var(--on-hero); color: var(--hero); }
+.gate .btn.ghost { border-color: color-mix(in srgb, var(--on-hero) 35%, transparent); color: var(--on-hero); }
+.gate .inp { background: color-mix(in srgb, var(--on-hero) 8%, transparent); border-color: color-mix(in srgb, var(--on-hero) 25%, transparent); color: var(--on-hero); }
+.gate .inp::placeholder { color: color-mix(in srgb, var(--on-hero) 55%, transparent); }
+.gate .small, .gate .note { color: color-mix(in srgb, var(--on-hero) 75%, transparent); font-size: 14px; }
+.gate .err { color: var(--accent); }
+.gate .or { display: flex; align-items: center; gap: 10px; font-size: 13px; color: color-mix(in srgb, var(--on-hero) 60%, transparent); }
+.gate .or::before, .gate .or::after { content: ""; flex: 1; height: 1px; background: color-mix(in srgb, var(--on-hero) 25%, transparent); }
+.gate .linkbtn { background: none; border: 0; color: var(--accent); font-weight: 700; padding: 6px 0; text-align: left; }
+.acct { display: flex; align-items: center; gap: 10px; }
+.acct .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--good); flex: none; }
+.acct .dot.off { background: var(--warn); }
+.gate.auth .gstage { display: none; }
+.gate.auth .gtitle { font-size: 40px; }
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>window.HWC_HOSTED = true;</script>
+<script src="config.js"></script>
+<script>
+// ===== Figure engine: 2D skeleton, forward + inverse kinematics, SVG renderer =====
+const FIG = (() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  // segment lengths (world units, standing figure ~100 tall)
+  const L = { T1: 17, T2: 17, SH: 14, NK: 10, HR: 7, UA: 17, FA: 16, TH: 24, SN: 23, FT: 8, WS: 8, WH: 5 };
+  const RAD = Math.PI / 180;
+  const dir = a => [Math.cos(a * RAD), Math.sin(a * RAD)];
+  const mv = (p, a, l) => [p[0] + Math.cos(a * RAD) * l, p[1] + Math.sin(a * RAD) * l];
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const lerpA = (a, b, u) => a + ((((b - a) % 360) + 540) % 360 - 180) * u;
+  const lerpV = (a, b, u) => [lerp(a[0], b[0], u), lerp(a[1], b[1], u)];
+  const ease = u => u * u * (3 - 2 * u);
+  const LIMBS = ['a', 'A', 'l', 'L'];
+  const DEF = { hip: [0, 50], t: 90, t2: 90, h: 90, lift: 0, a: [-97, -90], A: [-84, -80], l: [-91, -91], L: [-89, -89] };
+
+  function ik(root, tg, l1, l2, bend) {
+    const dx = tg[0] - root[0], dy = tg[1] - root[1];
+    let d = Math.hypot(dx, dy);
+    d = Math.min(Math.max(d, Math.abs(l1 - l2) + 0.01), l1 + l2 - 0.001);
+    const base = Math.atan2(dy, dx);
+    let c = (l1 * l1 + d * d - l2 * l2) / (2 * l1 * d);
+    c = Math.max(-1, Math.min(1, c));
+    const a1 = base + (bend >= 0 ? 1 : -1) * Math.acos(c);
+    const j = [root[0] + Math.cos(a1) * l1, root[1] + Math.sin(a1) * l1];
+    const a2 = Math.atan2(tg[1] - j[1], tg[0] - j[0]);
+    return [a1 / RAD, a2 / RAD];
+  }
+
+  function nLimb(x, leg) {
+    if (Array.isArray(x)) return { fk: [x[0], x[1]], k: [1, 1], f: leg && x.length > 2 ? x[2] : null };
+    const o = { k: x.k ? [x.k[0], x.k[1]] : [1, 1], f: x.f != null ? x.f : null, b: x.b != null ? x.b : (leg ? 1 : -1) };
+    if (x.fk) o.fk = [x.fk[0], x.fk[1]];
+    else for (const t of ['p', 'r', 's', 'hd']) if (x[t]) { o.ik = t; o.v = [x[t][0], x[t][1]]; break; }
+    return o;
+  }
+  function fill(k, prev) {
+    const o = Object.assign({}, prev || DEF, k);
+    if (k.t != null && k.t2 == null) o.t2 = k.t;
+    if ((k.t != null || k.t2 != null) && k.h == null) o.h = o.t2;
+    return o;
+  }
+  function prepPose(k) {
+    const P = { hip: k.hip.slice(), t: k.t, t2: k.t2, h: k.h, lift: k.lift || 0 };
+    for (const s of LIMBS) P[s] = nLimb(k[s], s === 'l' || s === 'L');
+    return P;
+  }
+
+  function joints(P, front) {
+    const hip = [P.hip[0], P.hip[1] + (P.lift || 0)];
+    const mid = mv(hip, P.t, L.T1), neck = mv(mid, P.t2, L.T2), shc = mv(mid, P.t2, L.SH), head = mv(neck, P.h, L.NK);
+    const J = { hip, mid, neck, head, h: P.h, t2: P.t2, res: {}, seg: {}, front };
+    const pu = dir(P.t2 + 90), ph = dir(P.t + 90);
+    const ws = front ? L.WS : 0, wh = front ? L.WH : 0;
+    const roots = {
+      a: [shc[0] + pu[0] * ws, shc[1] + pu[1] * ws], A: [shc[0] - pu[0] * ws, shc[1] - pu[1] * ws],
+      l: [hip[0] + ph[0] * wh, hip[1] + ph[1] * wh], L: [hip[0] - ph[0] * wh, hip[1] - ph[1] * wh]
+    };
+    for (const key of LIMBS) {
+      const x = P[key], leg = key === 'l' || key === 'L';
+      const l1 = (leg ? L.TH : L.UA) * x.k[0], l2 = (leg ? L.SN : L.FA) * x.k[1], root = roots[key];
+      let a1, a2;
+      if (x.fk) { a1 = x.fk[0]; a2 = x.fk[1]; }
+      else {
+        let tg;
+        if (x.ik === 'p') tg = x.v;
+        else if (x.ik === 'r') tg = [hip[0] + x.v[0], hip[1] + x.v[1]];
+        else if (x.ik === 's') tg = [root[0] + x.v[0], root[1] + x.v[1]];
+        else tg = [head[0] + x.v[0], head[1] + x.v[1]];
+        [a1, a2] = ik(root, tg, l1, l2, x.b);
+      }
+      const j1 = mv(root, a1, l1), j2 = mv(j1, a2, l2);
+      J.res[key] = [a1, a2];
+      J.seg[key] = { root, a1, a2, l1: leg ? L.TH : L.UA, l2: leg ? L.SN : L.FA, k1: x.k[0], k2: x.k[1], fa: x.f != null };
+      if (leg) {
+        const f = x.f != null ? x.f : (front ? (key === 'l' ? a2 - 90 : a2 + 90) : a2 + 90);
+        J.seg[key].f = f;
+        J[key] = [root, j1, j2, mv(j2, f, front ? L.FT * 0.6 : L.FT)];
+        J.res[key + 'f'] = f;
+      } else J[key] = [root, j1, j2];
+    }
+    return J;
+  }
+
+  function blend(A, B, u) {
+    const P = { hip: lerpV(A.hip, B.hip, u), t: lerpA(A.t, B.t, u), t2: lerpA(A.t2, B.t2, u), h: lerpA(A.h, B.h, u), lift: lerp(A.lift, B.lift, u) };
+    for (const key of LIMBS) {
+      const x = A[key], y = B[key];
+      const o = { k: [lerp(x.k[0], y.k[0], u), lerp(x.k[1], y.k[1], u)], f: null };
+      if (x.fk && y.fk) o.fk = [lerp(x.fk[0], y.fk[0], u), lerp(x.fk[1], y.fk[1], u)];
+      else if (x.ik && y.ik && x.ik === y.ik) { o.ik = x.ik; o.v = lerpV(x.v, y.v, u); o.b = x.b; }
+      else { const ra = A.R_[key], rb = B.R_[key]; o.fk = [lerpA(ra[0], rb[0], u), lerpA(ra[1], rb[1], u)]; }
+      if ((key === 'l' || key === 'L') && (x.f != null || y.f != null)) o.f = lerpA(A.R_[key + 'f'], B.R_[key + 'f'], u);
+      P[key] = o;
+    }
+    return P;
+  }
+
+  function prep(an) {
+    if (an._k) return an;
+    if (!an.fn) {
+      let prev = null;
+      an._k = an.k.map(k => { const f = fill(k, prev); prev = f; const P = prepPose(f); P.R_ = joints(P, an.front).res; return P; });
+    } else an._k = [];
+    // representative still: the keyframe furthest from the cycle's average pose
+    if (an.thumb == null) {
+      if (an.fn || an._k.length < 2) an.thumb = 0.3;
+      else {
+        const n = an._k.length, ts = an.ts || an._k.map((_, i) => i / n);
+        const Js = ts.map(t => frameAt(an, t));
+        const pts = J => [J.head, ...J.a.slice(1), ...J.A.slice(1), ...J.l.slice(1), ...J.L.slice(1)];
+        const avg = pts(Js[0]).map((_, k) => [Js.reduce((t, J) => t + pts(J)[k][0], 0) / n, Js.reduce((t, J) => t + pts(J)[k][1], 0) / n]);
+        let best = 0, bi = 0;
+        Js.forEach((J, i) => { const d = pts(J).reduce((t, p, k) => t + (p[0] - avg[k][0]) ** 2 + (p[1] - avg[k][1]) ** 2, 0); if (d >= best - 1e-6) { best = d; bi = i; } });
+        an.thumb = ts[bi];
+      }
+    }
+    an._xfc = {};
+    return an;
+  }
+
+  function frameAt(an, u) {
+    let P;
+    if (an.fn) { const k = fill(an.fn(u), null); P = prepPose(k); }
+    else {
+      const K = an._k, n = K.length;
+      if (n === 1) P = K[0];
+      else {
+        const ts = an.ts || K.map((_, i) => i / n);
+        let i = n - 1;
+        for (let j = 0; j < n - 1; j++) if (u < ts[j + 1]) { i = j; break; }
+        const t0 = ts[i], t1 = i < n - 1 ? ts[i + 1] : 1;
+        let v = (u - t0) / (t1 - t0);
+        v = an.ease === 'lin' ? v : ease(Math.max(0, Math.min(1, v)));
+        P = blend(K[i], K[(i + 1) % n], v);
+      }
+    }
+    return joints(P, an.front);
+  }
+
+  // ---------- 3D: lift the plane poses into a body with width, then view from any angle ----------
+  // world axes: X forward (the way the body faces in side-view moves), Y up, Z sideways
+  const V3 = {
+    add: (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]],
+    mul: (v, s) => [v[0] * s, v[1] * s, v[2] * s],
+    cross: (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+  };
+  function lift(J, an) {
+    const fr = !!an.front;
+    const W = (x, y) => fr ? [0, y, -x] : [x, y, 0];
+    const Q = { hip: W(...J.hip), mid: W(...J.mid), neck: W(...J.neck), head: W(...J.head) };
+    for (const key of LIMBS) {
+      const s = J.seg[key], leg = key === 'l' || key === 'L', near = key === 'A' || key === 'L';
+      const r = W(...s.root);
+      if (!fr) r[2] += (near ? 1 : -1) * (leg ? L.WH : 9.5);
+      const outv = fr ? [1, 0, 0] : [0, 0, near ? 1 : -1];
+      const step = (p, ang, len, k) => { const d = dir(ang); const m = Math.sqrt(Math.max(0, 1 - k * k)) * len; return V3.add(V3.add(p, W(d[0] * len * k, d[1] * len * k)), V3.mul(outv, m)); };
+      let j1 = step(r, s.a1, s.l1, s.k1), j2 = step(j1, s.a2, s.l2, s.k2);
+      if (!leg && !fr && an.hz != null) { const zc = r[2] * an.hz; j1 = [j1[0], j1[1], (r[2] + zc) / 2]; j2 = [j2[0], j2[1], zc]; }
+      const pts = [r, j1, j2];
+      if (leg) {
+        let fd;
+        if (fr && !s.fa) { const o = dir(s.f); fd = V3.add(V3.mul(W(o[0], o[1]), 0.35), [0.94, 0, 0]); }
+        else { const o = dir(s.f); fd = W(o[0], o[1]); }
+        pts.push(V3.add(j2, V3.mul(fd, L.FT)));
+      }
+      Q[key] = pts;
+    }
+    const hu = dir(J.h);
+    Q.U = W(hu[0], hu[1]);
+    Q.F = fr ? [1, 0, 0] : W(...dir(J.h - 90));
+    Q.lat = fr ? W(...dir(J.t2 + 90)) : [0, 0, 1];
+    Q.fwd = fr ? [1, 0, 0] : W(...dir(J.t2 - 90));
+    // rest on the floor instead of sinking into it
+    const rr = [[Q.hip, 8.8], [Q.mid, 9], [Q.neck, 9.6], [Q.head, 7.6], [Q.l[1], 4.5], [Q.L[1], 4.5], [Q.l[2], 3.3], [Q.L[2], 3.3], [Q.l[3], 2.7], [Q.L[3], 2.7], [Q.a[1], 3.3], [Q.A[1], 3.3], [Q.a[2], 2.9], [Q.A[2], 2.9]];
+    let lo = 1e9; for (const [q, r] of rr) lo = Math.min(lo, q[1] - r);
+    Q.dy = lo < -0.2 ? -lo - 0.2 : 0;
+    if (Q.dy) { for (const k of ['hip', 'mid', 'neck', 'head']) Q[k] = [Q[k][0], Q[k][1] + Q.dy, Q[k][2]]; for (const k of LIMBS) Q[k] = Q[k].map(p => [p[0], p[1] + Q.dy, p[2]]); }
+    Q.J = J;
+    return Q;
+  }
+  // camera turned by phi degrees around the vertical axis (0 = side, 90 = front)
+  function camera(phi, an) {
+    const c = Math.cos(phi * RAD), s = Math.sin(phi * RAD), fr = !!an.front;
+    const C = { c, s, fr };
+    C.P = p => [p[0] * c - p[2] * s, p[1]];
+    C.D = p => p[0] * s + p[2] * c;
+    // props are authored in the move's own plane (x along the plane, y up) with a half-width w across it
+    C.x = (x, w) => fr ? (w || 0) * c + x * s : x * c - (w || 0) * s;
+    C.pt = (x, y, w) => [C.x(x, w), y];
+    C.k = fr ? s : c;
+    C.rx = (x0, x1, w) => { const xs = [C.x(x0, -w), C.x(x0, w), C.x(x1, -w), C.x(x1, w)]; return [Math.min(...xs), Math.max(...xs)]; };
+    return C;
+  }
+  const VIEW = { side: 0, angle: 32, front: 90 };
+  const defView = an => an.view || (an.front ? 'front' : 'angle');
+
+  // ---------- props ----------
+  const f1 = n => (Math.round(n * 10) / 10);
+  const pt = p => f1(p[0]) + ',' + f1(p[1]);
+  const mid2 = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  const ln = (a, b, c, w) => `<line x1="${f1(a[0])}" y1="${f1(a[1])}" x2="${f1(b[0])}" y2="${f1(b[1])}" class="${c}" stroke-width="${w || 2.2}"/>`;
+  const rc = (x, y, w, h, c, r) => `<rect x="${f1(x)}" y="${f1(y)}" width="${f1(Math.max(0.6, w))}" height="${f1(h)}" rx="${r || 1}" class="${c}"/>`;
+  const rx2 = (r, y0, y1, c, rad) => rc(r[0], y0, r[1] - r[0], y1 - y0, c, rad);
+  const ci = (p, r, c, w) => `<circle cx="${f1(p[0])}" cy="${f1(p[1])}" r="${r}" class="${c}"${w ? ` stroke-width="${w}"` : ''}/>`;
+  const el2 = (p, rx, ry, c, w) => `<ellipse cx="${f1(p[0])}" cy="${f1(p[1])}" rx="${f1(Math.max(0.4, Math.abs(rx)))}" ry="${ry}" class="${c}"${w ? ` stroke-width="${w}"` : ''}/>`;
+  const dash = (C, u, sp, y, x0, x1, len) => { if (Math.abs(C.k) < 0.3) return ''; let s = ''; const gap = 22; const off = ((u * sp) % gap + gap) % gap; for (let x = x0 - gap + (gap - off); x < x1; x += gap) s += ln(C.pt(x, y), C.pt(x + len, y), 'pd', 1.6); return s; };
+  const wrist = (J, k) => J[k][2];
+  const ankle = (J, k) => J[k][2];
+  const PROPS = {
+    mat: { bx: (p, C) => C.rx(p.x0 || -50, p.x1 || 60, 13), draw: (J, u, p, C) => ({ b: rx2(C.rx(p.x0 || -50, p.x1 || 60, 13), -1.6, 0, 'pmat', 0.8) }) },
+    wall: { bx: (p, C) => C.rx(p.x, p.x + 4, 30).concat([124]), draw: (J, u, p, C) => ({ b: rx2(C.rx(p.x, p.x + 4, 30), 0, 124, 'pwall', 0.5) }) },
+    box: { bx: (p, C) => C.rx(p.x, p.x + p.w, 14), draw: (J, u, p, C) => ({ b: rx2(C.rx(p.x, p.x + p.w, 14), 0, p.h, 'pf', 1.5) }) },
+    table: {
+      bx: (p, C) => C.rx(p.x, p.x + p.w, 16),
+      draw: (J, u, p, C) => { let s = ''; for (const x of [p.x + 3, p.x + p.w - 3]) for (const w of [-13, 13]) s += ln(C.pt(x, 0, w), C.pt(x, p.h - 3, w), 'ps', 2.2); return { b: s + rx2(C.rx(p.x, p.x + p.w, 16), p.h - 3, p.h, 'pf', 1) }; }
+    },
+    chair: {
+      bx: (p, C) => C.rx(p.x - (p.w || 22) - 2, p.x + 2, 11),
+      draw: (J, u, p, C) => {
+        const w = p.w || 22, h = p.h || 21, x = p.x; let s = '';
+        for (const lx of [x - 2, x - w + 2]) for (const z of [-9, 9]) s += ln(C.pt(lx, 0, z), C.pt(lx, h - 2, z), 'ps', 2.2);
+        if (!p.noback) for (const z of [-9, 9]) s += ln(C.pt(x - w + 1.5, h, z), C.pt(x - w + 1.5, h + 30, z), 'ps', 2.2);
+        s += rx2(C.rx(x - w, x, 11), h - 2.5, h, 'pf', 1);
+        if (!p.noback) s += rx2(C.rx(x - w, x - w + 3, 11), h + 12, h + 30, 'pf', 1);
+        return { b: s };
+      }
+    },
+    db: { draw: (J, u, p) => { let s = ''; for (const k of p.one ? ['A'] : ['a', 'A']) { const w = wrist(J, k); s += ci(w, 4.2, 'pw') + ci(w, 1.4, 'pwc'); } return { f: s }; } },
+    kb: { draw: (J, u, p) => { const w = mid2(wrist(J, 'a'), wrist(J, 'A')); const c = [w[0], w[1] - 6.5]; return { f: `<path d="M${f1(w[0] - 3.5)},${f1(w[1] - 2)} Q${f1(w[0])},${f1(w[1] + 3)} ${f1(w[0] + 3.5)},${f1(w[1] - 2)}" class="pwl" stroke-width="2"/>` + ci(c, 5.5, 'pw') }; } },
+    gob: { draw: (J, u, p) => { const w = mid2(wrist(J, 'a'), wrist(J, 'A')); return { f: rc(w[0] - 2.5, w[1] - 7, 5, 14, 'pw', 1.5) + rc(w[0] - 4.5, w[1] + 4, 9, 3.5, 'pw', 1) + rc(w[0] - 4.5, w[1] - 7.5, 9, 3.5, 'pw', 1) }; } },
+    band: {
+      draw: (J, u, p, C) => {
+        let s = '';
+        if (p.to === 'hands') s = ln(wrist(J, 'a'), wrist(J, 'A'), 'pband', 1.8);
+        else { const an = mid2(ankle(J, 'l'), ankle(J, 'L')); for (const k of ['a', 'A']) s += ln(wrist(J, k), [an[0] + (p.dx || 4) * C.k, an[1] + (p.dy || 0)], 'pband', 1.6); }
+        return { b: s };
+      }
+    },
+    bar: { bx: (p, C) => C.rx(1, 7, 26).concat([p.y + 6]), draw: (J, u, p, C) => { let s = ln(C.pt(4, p.y, -26), C.pt(4, p.y, 26), 'ps', 3); for (const z of [-26, 26]) s += ln(C.pt(4, p.y, z), C.pt(4, p.y + 8, z), 'ps', 3); return { b: s }; } },
+    road: { draw: (J, u, p, C) => ({ b: dash(C, u, p.sp || 44, -5, -110, 110, 9) }) },
+    tread: {
+      bx: (p, C) => C.rx(-48, 46, 16).concat([66]),
+      draw: (J, u, p, C) => {
+        let s = rx2(C.rx(-46, 34, 15), -6, 0, 'pf', 3) + dash(C, u, p.sp || 44, -3, -42, 30, 7);
+        for (const z of [-14, 14]) s += ln(C.pt(34, -3, z), C.pt(42, 62, z), 'ps', 3) + ln(C.pt(42, 62, z), C.pt(22, 58, z), 'ps', 2.4);
+        s += ln(C.pt(42, 62, -14), C.pt(42, 62, 14), 'ps', 2.4) + rx2(C.rx(37, 45, 9), 59, 65, 'pf', 1.5);
+        return { b: s };
+      }
+    },
+    spin: {
+      bx: (p, C) => C.rx(-32, 40, 13).concat([64]),
+      draw: (J, u, p, C) => {
+        const c = C.pt(0, 16), P = (x, y, w) => C.pt(x, y, w);
+        let s = ln(P(-28, 1), P(36, 1), 'ps', 3) + ln(P(-24, 1, -12), P(-24, 1, 12), 'ps', 3) + ln(P(32, 1, -12), P(32, 1, 12), 'ps', 3)
+          + ln(P(-20, 1), P(-6, 16), 'ps', 3) + ln(P(-6, 16), P(-11, 44), 'ps', 3) + rx2(C.rx(-19, -6, 4), 44, 47.4, 'pf', 1.6)
+          + ln(P(0, 16), P(20, 30), 'ps', 3) + ln(P(20, 30), P(26, 60), 'ps', 3) + ln(P(26, 60), P(32, 59), 'ps', 3) + ln(P(32, 59, -9), P(32, 59, 9), 'ps', 3)
+          + el2(P(24, 18), 11 * C.k, 11, 'pring', 3) + ln(P(24, 18), P(30, 1), 'ps', 3);
+        return { b: s + ln(c, ankle(J, 'l'), 'ps2', 2), f: ln(c, ankle(J, 'L'), 'ps', 2.2) + ci(c, 2.4, 'pf') };
+      }
+    },
+    roadbike: {
+      bx: (p, C) => C.rx(-46, 50, 10).concat([58]),
+      draw: (J, u, p, C) => {
+        const P = (x, y, w) => C.pt(x, y, w), c = P(0, 14), rw = [-30, 14], fw = [34, 14];
+        const sp = w => { let s = ''; for (let i = 0; i < 4; i++) { const a = -u * 720 + i * 45; const q1 = mv(w, a, 13), q2 = mv(w, a + 180, 13); s += ln(P(...q1), P(...q2), 'ps2', 0.8); } return s; };
+        let s = el2(P(...rw), 14 * C.k, 14, 'pring', 2.4) + el2(P(...fw), 14 * C.k, 14, 'pring', 2.4) + sp(rw) + sp(fw)
+          + ln(P(...rw), c, 'ps', 2.6) + ln(c, P(-10, 44), 'ps', 2.6) + ln(P(...rw), P(-10, 44), 'ps', 2.2) + ln(P(-10, 44), P(28, 46), 'ps', 2.6) + ln(c, P(28, 46), 'ps', 2.6) + ln(P(28, 46), P(...fw), 'ps', 2.6)
+          + ln(P(28, 46), P(31, 52), 'ps', 2.6) + ln(P(31, 52, -8), P(31, 52, 8), 'ps', 2.4) + rx2(C.rx(-17, -4, 3), 44, 47, 'pf', 1.5) + dash(C, u, 60, -4, -110, 110, 9);
+        return { b: s + ln(c, ankle(J, 'l'), 'ps2', 2), f: ln(c, ankle(J, 'L'), 'ps', 2.2) + ci(c, 2.2, 'pf') };
+      }
+    },
+    ellip: {
+      bx: (p, C) => C.rx(-44, 40, 12).concat([80]),
+      draw: (J, u, p, C) => {
+        const P = (x, y, w) => C.pt(x, y, w);
+        let s = ln(P(-40, 1), P(36, 1), 'ps', 3) + ln(P(-36, 1, -12), P(-36, 1, 12), 'ps', 3) + el2(P(-30, 16), 12 * C.k, 12, 'pring', 3) + ln(P(30, 1), P(32, 70), 'ps', 3);
+        let f = '';
+        for (const k of ['l', 'L']) {
+          const a = ankle(J, k), w = wrist(J, k === 'l' ? 'a' : 'A'), cl = k === 'l' ? 'ps2' : 'ps', z = k === 'l' ? -6 : 6;
+          const seg = ln(P(-30, 16, z), a, cl, 2.2) + rc(a[0] - 6, a[1] - 3.5, 13, 2.4, cl === 'ps' ? 'pf' : 'pf2', 1) + ln(P(32, 66, z), w, cl, 2.2) + ln(w, P(32, 30, z), cl, 2);
+          if (k === 'l') s += seg; else f += seg;
+        }
+        return { b: s, f };
+      }
+    },
+    rower: {
+      bx: (p, C) => C.rx(-50, 56, 12).concat([30]),
+      draw: (J, u, p, C) => {
+        const P = (x, y, w) => C.pt(x, y, w), hx = J.p2hip[0], w = mid2(wrist(J, 'a'), wrist(J, 'A'));
+        const s = ln(P(-48, 5), P(40, 5), 'ps', 3) + ln(P(-44, 5), P(-44, 0), 'ps', 3) + ln(P(36, 5), P(36, 0), 'ps', 3) + el2(P(46, 18), 10 * C.k, 10, 'pring', 3) + ln(P(46, 8), P(46, 0), 'ps', 3)
+          + ln(P(30, 5), P(35, 18), 'ps', 3) + ln(P(33, 12, -9), P(33, 12, 9), 'ps', 2.6) + rx2(C.rx(hx - 7, hx + 7, 7), 6, 9.2, 'pf', 1.5) + ln(P(42, 20), w, 'ps2', 1.2);
+        return { b: s, f: rc(w[0] - 1.5, w[1] - 4, 3, 8, 'pw', 1) };
+      }
+    },
+    rope: {
+      draw: (J, u, p, C) => {
+        const hd = mid2(wrist(J, 'a'), wrist(J, 'A'));
+        const th = 90 - 360 * u;
+        const cpl = [J.p2hip[0], J.p2hip[1] + 4];
+        const ap = C.pt(cpl[0] + Math.cos(th * RAD) * 30, Math.max(-1, cpl[1] + Math.sin(th * RAD) * 58));
+        const dx = ap[0] - hd[0], dy = ap[1] - hd[1], dl = Math.hypot(dx, dy) || 1;
+        const sg = Math.cos(th * RAD) >= 0 ? 1 : -1;
+        const ctl = [(ap[0] + hd[0]) / 2 - dy / dl * 16 * sg, (ap[1] + hd[1]) / 2 + dx / dl * 16 * sg];
+        const behind = Math.sin(th * RAD + Math.PI / 2) < 0;
+        const s = `<path d="M${pt(hd)} Q${pt(ctl)} ${pt(ap)}" class="prope" stroke-width="1.6"/>`;
+        return behind ? { b: s } : { f: s };
+      }
+    }
+  };
+
+  // ---------- body drawing ----------
+  function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  const lerpP = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1e-3; return [dx / l, dy / l]; };
+  function cap(a, b, ra, rb) {
+    const u = unit(a, b), nx = -u[1], ny = u[0];
+    return `M${f1(a[0] + nx * ra)},${f1(a[1] + ny * ra)}L${f1(b[0] + nx * rb)},${f1(b[1] + ny * rb)}A${f1(rb)},${f1(rb)} 0 0 0 ${f1(b[0] - nx * rb)},${f1(b[1] - ny * rb)}L${f1(a[0] - nx * ra)},${f1(a[1] - ny * ra)}A${f1(ra)},${f1(ra)} 0 0 0 ${f1(a[0] + nx * ra)},${f1(a[1] + ny * ra)}Z`;
+  }
+  const R = { thigh: [6.1, 4.5], shortsLeg: [7.1, 6.4], shin: [4.4, 2.8], sock: [3.1, 2.9], shoe: [3.3, 2.6], up: [4.3, 3.3], sleeve: [5.3, 4.7], fore: [3.3, 2.5], hand: 2.9 };
+
+  // projected frame: 2D screen points + depths for one camera angle
+  function view(Q, C) {
+    const V = { hip: C.P(Q.hip), mid: C.P(Q.mid), neck: C.P(Q.neck), head: C.P(Q.head), d: {} };
+    for (const k of LIMBS) V[k] = Q[k].map(C.P);
+    V.p2hip = [Q.J.hip[0], Q.J.hip[1] + Q.dy];
+    const avg = arr => arr.reduce((t, p) => t + C.D(p), 0) / arr.length;
+    V.d.l = avg(Q.l.slice(0, 3)) - 3; V.d.L = avg(Q.L.slice(0, 3)) - 3;
+    V.d.a = avg(Q.a) + 2; V.d.A = avg(Q.A) + 2;
+    V.d.T = (2 * C.D(Q.hip) + C.D(Q.mid)) / 3;
+    return V;
+  }
+  function frameBounds(an, phi) {
+    const C = camera(phi, an);
+    let x0 = 1e9, x1 = -1e9, y1 = -1e9;
+    const add = (p, r) => { x0 = Math.min(x0, p[0] - r); x1 = Math.max(x1, p[0] + r); y1 = Math.max(y1, p[1] + r); };
+    const one = u => { const V = view(lift(frameAt(an, u), an), C); for (const k of LIMBS) for (const p of V[k]) add(p, 7); add(V.hip, 11); add(V.mid, 11); add(V.neck, 11); add(V.head, 9.5); };
+    return { C, one, get: () => [x0, x1, y1], addB: b => { if (!b) return; x0 = Math.min(x0, b[0]); x1 = Math.max(x1, b[1]); if (b[2] != null) y1 = Math.max(y1, b[2]); } };
+  }
+  function xfFor(an, v, thumb) {
+    const key = v + (thumb ? 't' : '');
+    if (an._xfc[key]) return an._xfc[key];
+    const phis = v === 'orbit' ? [0, 45, 90, 135, 180, 225, 270, 315] : [VIEW[v]];
+    let B = [1e9, -1e9, -1e9];
+    for (const phi of phis) {
+      const fb = frameBounds(an, phi);
+      if (thumb) fb.one(an.thumb); else for (let i = 0; i < 20; i++) fb.one(i / 20);
+      for (const p of an.props || []) { const P = PROPS[p.k]; if (P && P.bx) fb.addB(P.bx(p, fb.C)); }
+      const b = fb.get(); B = [Math.min(B[0], b[0]), Math.max(B[1], b[1]), Math.max(B[2], b[2])];
+    }
+    const s = Math.min(thumb ? 2.3 : 1.45, (thumb ? 184 : 186) / (B[1] - B[0]), (thumb ? 120 : 122) / B[2]);
+    return (an._xfc[key] = { s, ox: 100 - (B[0] + B[1]) / 2 * s, gy: 128 });
+  }
+
+  function build(ex, opts) {
+    opts = opts || {};
+    const an = prep(ex.an);
+    const svg = el('svg', { viewBox: '0 0 200 140', class: 'fig' + (opts.cls ? ' ' + opts.cls : ''), role: 'img', 'aria-label': ex.n + ' demonstration' });
+    el('rect', { x: 0, y: 128, width: 200, height: 12, class: 'ffloor' }, svg);
+    const g = el('g', {}, svg);
+    const ground = el('line', { y1: 0, y2: 0, class: 'fground' }, g);
+    const sh = el('ellipse', { cx: 0, cy: 0, rx: 20, ry: 2, class: 'fshadow' }, g);
+    const pb = el('g', {}, g);
+    const body = el('g', {}, g);
+    const P = (par, c) => el('path', { class: c }, par), Ci = (par, c, r) => el('circle', { class: c, r }, par);
+    const groups = {}, parts = {};
+    for (const k of ['l', 'L']) { const gg = el('g', {}, body); groups[k] = gg; parts[k] = { thigh: P(gg, 'sk'), shortsLeg: P(gg, 'so'), shin: P(gg, 'sk'), sock: P(gg, 'wh'), shoe: P(gg, 'shoe'), sole: P(gg, 'sole') }; }
+    const gT = el('g', {}, body); groups.T = gT;
+    parts.T = { shorts: P(gT, 'so'), neck: P(gT, 'sk'), shirtLow: P(gT, 'sh'), shirtUp: P(gT, 'sh'), yoke: P(gT, 'sh') };
+    const gH = el('g', {}, gT);
+    parts.H = { hair: Ci(gH, 'hair', 7.5), face: Ci(gH, 'sk', 6.9), ear: Ci(gH, 'skd', 1.5), ear2: Ci(gH, 'skd', 1.5), nose: Ci(gH, 'sk', 1.5), eye: Ci(gH, 'eye', 0.95), eye2: Ci(gH, 'eye', 0.95) };
+    for (const k of ['a', 'A']) { const gg = el('g', {}, body); groups[k] = gg; parts[k] = { up: P(gg, 'sk'), sleeve: P(gg, 'sh'), fore: P(gg, 'sk'), hand: Ci(gg, 'sk', R.hand) }; }
+    const pf = el('g', {}, g);
+    const h = { ex, an, svg, g, ground, sh, pb, pf, body, groups, parts, gH, thumb: opts.cls === 'thumb', t0: performance.now(), speed: 1, paused: false, order: '', away: null };
+    setView(h, opts.view || 'auto', true);
+    draw(h, opts.u != null ? opts.u : an.thumb);
+    return h;
+  }
+  function setView(h, v, noDraw) {
+    h.viewSel = v;
+    h.view = v === 'auto' || !v ? defView(h.an) : v;
+    const xf = xfFor(h.an, h.view, h.thumb);
+    h.g.setAttribute('transform', `translate(${f1(xf.ox)} ${xf.gy}) scale(${f1(xf.s * 1000) / 1000} ${-f1(xf.s * 1000) / 1000})`);
+    const left = -xf.ox / xf.s - 30, right = (200 - xf.ox) / xf.s + 30;
+    h.ground.setAttribute('x1', f1(left)); h.ground.setAttribute('x2', f1(right));
+    if (!noDraw && h.lastU != null) draw(h, h.lastU);
+  }
+
+  function draw(h, u) {
+    h.lastU = u;
+    const an = h.an, J = frameAt(an, u), Q = lift(J, an);
+    const phi = h.view === 'orbit' ? ((performance.now() / 1000) * 30) % 360 : VIEW[h.view];
+    const C = camera(phi, an), V = view(Q, C), p = h.parts;
+    const set = (e, d) => e.setAttribute('d', d);
+    const at = (c, q, r) => { c.setAttribute('cx', f1(q[0])); c.setAttribute('cy', f1(q[1])); if (r != null) c.setAttribute('r', r); };
+    // far-side shading (only meaningful when a limb is clearly behind the body)
+    for (const k of LIMBS) h.groups[k].setAttribute('class', V.d[k] < V.d.T - 5 ? 'far' : '');
+    for (const k of ['l', 'L']) {
+      const [hp, kn, ak, toe] = V[k], o = p[k];
+      set(o.thigh, cap(hp, kn, ...R.thigh));
+      set(o.shortsLeg, cap(hp, lerpP(hp, kn, 0.5), ...R.shortsLeg));
+      set(o.shin, cap(kn, ak, ...R.shin));
+      set(o.sock, cap(lerpP(kn, ak, 0.8), ak, ...R.sock));
+      const fl = Math.hypot(toe[0] - ak[0], toe[1] - ak[1]);
+      const fd = fl > 0.8 ? unit(ak, toe) : unit(kn, ak);
+      const heel = [ak[0] - fd[0] * Math.min(2.2, fl * 0.3), ak[1] - fd[1] * Math.min(2.2, fl * 0.3)], tip = [ak[0] + fd[0] * Math.max(0.3, fl - 0.8), ak[1] + fd[1] * Math.max(0.3, fl - 0.8)];
+      set(o.shoe, cap(heel, tip, ...R.shoe));
+      let n = [fd[1], -fd[0]]; const up = unit(ak, kn); if (n[0] * up[0] + n[1] * up[1] > 0) n = [-n[0], -n[1]];
+      set(o.sole, fl > 2 ? `M${pt([heel[0] + n[0] * 2.4, heel[1] + n[1] * 2.4])}L${pt([tip[0] + n[0] * 2, tip[1] + n[1] * 2])}` : '');
+    }
+    for (const k of ['a', 'A']) {
+      const [s0, e0, w0] = V[k], o = p[k];
+      set(o.up, cap(s0, e0, ...R.up));
+      set(o.sleeve, cap(s0, lerpP(s0, e0, 0.42), ...R.sleeve));
+      set(o.fore, cap(e0, w0, ...R.fore));
+      const fdir = unit(e0, w0); at(o.hand, [w0[0] + fdir[0] * 1.1, w0[1] + fdir[1] * 1.1]);
+    }
+    // torso: width depends on how much of the chest faces the camera
+    const ax = unit(V.hip, V.neck), nrm = [-ax[1], ax[0]], axLen = Math.hypot(V.neck[0] - V.hip[0], V.neck[1] - V.hip[1]);
+    const lat2 = C.P(Q.lat), fwd2 = C.P(Q.fwd);
+    const tw = (rl, rf) => axLen < 4 ? Math.max(rl * Math.hypot(...lat2), rf * Math.hypot(...fwd2)) : Math.hypot(rl * (lat2[0] * nrm[0] + lat2[1] * nrm[1]), rf * (fwd2[0] * nrm[0] + fwd2[1] * nrm[1]));
+    const T = p.T, ud = unit(V.mid, V.neck), td = unit(V.hip, V.mid);
+    set(T.shorts, cap(V.hip, lerpP(V.hip, V.mid, 0.45), tw(10.2, 8.8), tw(10, 8.6)));
+    set(T.shirtLow, cap([V.hip[0] + td[0] * 3, V.hip[1] + td[1] * 3], V.mid, tw(9.4, 8.3), tw(10, 8.9)));
+    const midToNeck = Math.hypot(V.neck[0] - V.mid[0], V.neck[1] - V.mid[1]);
+    const chest = [V.mid[0] + ud[0] * midToNeck * 0.74, V.mid[1] + ud[1] * midToNeck * 0.74];
+    set(T.shirtUp, cap(V.mid, chest, tw(9.6, 8.9), tw(10, 9.5)));
+    set(T.yoke, cap(V.a[0], V.A[0], 5.6, 5.6));
+    // head turns with the camera
+    const H = V.head, U3 = Q.U, F3 = Q.F, S3 = V3.cross(U3, F3);
+    const hp = (f, uu, ss) => C.P(V3.add(V3.add(V3.add(Q.head, V3.mul(F3, f)), V3.mul(U3, uu)), V3.mul(S3, ss)));
+    const dF = C.D(F3), dS = C.D(S3);
+    set(T.neck, cap([V.mid[0] + ud[0] * midToNeck * 0.78, V.mid[1] + ud[1] * midToNeck * 0.78], hp(0, -3, 0), 3.5, 3.3));
+    const away = dF < -0.35, Hp = p.H;
+    if (away !== h.away) { h.away = away; if (away) h.gH.appendChild(Hp.hair); else h.gH.insertBefore(Hp.hair, Hp.face); }
+    at(Hp.face, H);
+    if (away) at(Hp.hair, hp(-0.6, 0.6, 0), 7.3); else at(Hp.hair, hp(-1.1, 1.1, 0), 7.5);
+    const vis = (c, q, ok) => { if (ok) at(c, q, c === Hp.ear || c === Hp.ear2 ? 1.5 : c === Hp.nose ? 1.5 : 0.95); else c.setAttribute('r', 0); };
+    vis(Hp.ear, hp(-0.9, -0.3, 6.8), -0.9 * dF + 6.8 * dS > 0.5);
+    vis(Hp.ear2, hp(-0.9, -0.3, -6.8), -0.9 * dF - 6.8 * dS > 0.5);
+    vis(Hp.nose, hp(6.6, -0.5, 0), dF > -0.2);
+    vis(Hp.eye, hp(4, 1.2, 2.4), 4 * dF + 2.4 * dS > 0.8);
+    vis(Hp.eye2, hp(4, 1.2, -2.4), 4 * dF - 2.4 * dS > 0.8);
+    // draw order: far to near
+    const ord = ['l', 'L', 'a', 'A', 'T'].sort((x, y) => V.d[x] - V.d[y]).join('');
+    if (ord !== h.order) { h.order = ord; for (const k of ord) h.body.appendChild(h.groups[k]); }
+    const lowest = Math.min(Q.l[2][1], Q.L[2][1], Q.hip[1]);
+    h.sh.setAttribute('cx', f1(V.hip[0])); h.sh.setAttribute('rx', f1(Math.max(10, 24 - lowest * 0.15)));
+    let b = '', f = '';
+    for (const pr of an.props || []) { const Pp = PROPS[pr.k]; if (!Pp) continue; const r = Pp.draw(V, u, pr, C); if (r.b) b += r.b; if (r.f) f += r.f; }
+    if (b !== h._b) { h.pb.innerHTML = b; h._b = b; }
+    if (f !== h._f) { h.pf.innerHTML = f; h._f = f; }
+  }
+
+  // ---------- animation loop ----------
+  const live = new Set();
+  let raf = 0;
+  function loop(now) {
+    for (const h of live) {
+      if (!h.svg.isConnected) { live.delete(h); continue; }
+      if (h.paused && h.view !== 'orbit') continue;
+      const e2 = h.paused ? h.pausedAt : (now - h.t0) / 1000 * h.speed;
+      if (!h.paused) h.pausedAt = e2;
+      const u = ((e2 / h.an.dur) % 1 + 1) % 1;
+      draw(h, u);
+    }
+    raf = live.size ? requestAnimationFrame(loop) : 0;
+  }
+  function play(h) { h.paused = false; live.add(h); if (!raf) raf = requestAnimationFrame(loop); return h; }
+  function stop(h) { live.delete(h); }
+  function syncTo(h, epochMs) { h.t0 = performance.now() - (Date.now() - epochMs); }
+  function thumb(ex) { return build(ex, { cls: 'thumb' }).svg; }
+  return { build, draw, play, stop, syncTo, thumb, frameAt, prep, setView, defView, L };
+})();
+
+// ===== Exercise library =====
+// strain keys: k knees, b lower back, s shoulders, w wrists, n neck, h hips, a ankles/feet. 0 none, 1 some load, 2 heavy load
+// groups: warmup cardio steady push pull legs glutes core balance mobility
+const ST = { hip: [0, 50], t: 90, a: [-97, -90], A: [-84, -80], l: [-91, -91], L: [-89, -89] };
+const STK = { hip: [0, 50], t: 90, a: [-97, -90], A: [-84, -80], l: { p: [0.5, 3] }, L: { p: [2, 3] } };
+const FR = { hip: [0, 50], t: 90, a: [-100, -96], A: [-80, -84], l: [-93, -93], L: [-87, -87] };
+const SUP = { hip: [0, 7], t: 180, h: 180, a: [-7, -3], A: [-6, -2], l: [-3, -3], L: [-2, -2] };
+const KUP = { l: { p: [22, 4], f: 5 }, L: { p: [24, 4], f: 5 } };
+const PRN = { hip: [0, 7], t: 0, h: 6, a: [184, 182], A: [185, 183], l: [-178, -178, -180], L: [-177, -177, -180] };
+const QUAD = { hip: [0, 27], t: 17, h: 24, a: { p: [29, 2] }, A: { p: [31, 2] }, l: [-91, -180, -178], L: [-89, -180, -178] };
+const PLK = { hip: [-16, 24], t: 20, h: 26, a: { p: [12.5, 1.5] }, A: { p: [14.5, 1.5] }, l: [-160.5, -160.5, -82], L: [-160, -160, -80] };
+const FPL = { hip: [-13.6, 15.5], t: 9, h: 14, a: [-91, -1], A: [-89, 1], l: [-171.5, -171.5, -82], L: [-171, -171, -80] };
+const HIPS = { a: { r: [3, 6] }, A: { r: [4, 6] } };       // side view hands on hips
+const HIPSF = { a: { r: [-10, 5], b: -1 }, A: { r: [10, 5], b: 1 } }; // front view hands on hips
+const ARMS_UP_F = { a: [-232, -245], A: [52, 65] };
+const mat = (x0, x1) => ({ k: 'mat', x0, x1 });
+const S = (...o) => Object.assign({}, ...o);
+
+// walking / running cycles (shared)
+const WALK = {
+  dur: 1.1, ease: 'lin', k: [
+    { hip: [0, 49], t: 88, h: 90, L: [-68, -78, 12], l: [-112, -125, -30], A: [-115, -100], a: [-62, -45] },
+    { hip: [0, 50.5], L: [-90, -90, 0], l: [-78, -130], A: [-92, -85], a: [-88, -82] },
+    { hip: [0, 49], l: [-68, -78, 12], L: [-112, -125, -30], a: [-115, -100], A: [-62, -45] },
+    { hip: [0, 50.5], l: [-90, -90, 0], L: [-78, -130], a: [-92, -85], A: [-88, -82] }]
+};
+const RUN = {
+  dur: 0.72, ease: 'lin', k: [
+    { hip: [0, 47], t: 80, h: 84, L: [-58, -92, 5], l: [-128, -160, -70], A: [-135, -55], a: [-50, 25] },
+    { hip: [0, 49.5], L: [-100, -102, -10], l: [-35, -125], A: [-90, -10], a: [-95, -15] },
+    { hip: [0, 47], l: [-58, -92, 5], L: [-128, -160, -70], a: [-135, -55], A: [-50, 25] },
+    { hip: [0, 49.5], l: [-100, -102, -10], L: [-35, -125], a: [-90, -10], A: [-95, -15] }]
+};
+const withProps = (base, props, extra) => Object.assign({}, base, { props }, extra || {});
+const bikeFn = (seat, lean, hand, crank, r) => u => {
+  const ph = -360 * u;
+  const c = crank, rd = r;
+  const pn = [c[0] + Math.cos(ph * Math.PI / 180) * rd, c[1] + Math.sin(ph * Math.PI / 180) * rd + 3];
+  const pf = [c[0] + Math.cos((ph + 180) * Math.PI / 180) * rd, c[1] + Math.sin((ph + 180) * Math.PI / 180) * rd + 3];
+  return { hip: seat, t: lean, t2: lean - 6, h: lean + 15, a: { p: [hand[0] - 1, hand[1]] }, A: { p: hand }, l: { p: pf, f: -12 + 14 * Math.sin((ph + 180) * Math.PI / 180) }, L: { p: pn, f: -12 + 14 * Math.sin(ph * Math.PI / 180) } };
+};
+
+const EX = [
+  // ---------------- WARM-UP ----------------
+  {
+    id: 'march', n: 'March in place', g: ['warmup', 'cardio'], mu: 'Legs, heart', eq: '', st: {}, imp: 0, lv: 1, met: 3.5,
+    how: ['Stand tall and lift one knee toward hip height.', 'Swing the opposite arm forward.', 'Switch legs in a steady rhythm.'], cue: 'Stay tall and breathe easily.',
+    an: { dur: 1.3, k: [S(ST, { L: [-12, -96], a: [-55, -20], A: [-125, -110] }), S(ST), S(ST, { l: [-12, -96], A: [-55, -20], a: [-125, -110] }), S(ST)] }
+  },
+  {
+    id: 'heel_digs', n: 'Heel digs', g: ['warmup'], mu: 'Calves, hamstrings', eq: '', st: {}, imp: 0, lv: 1, met: 3.0,
+    how: ['Tap one heel forward on the floor, toes up.', 'Bring it back and switch sides.', 'Punch the opposite arm forward if you like.'], cue: 'Keep the standing knee soft.',
+    an: { dur: 1.6, k: [S(STK, { hip: [-3, 48.5], L: { p: [20, 4], f: 45 }, l: { p: [-1, 3] }, a: [-40, -10] }), S(STK), S(STK, { hip: [-3, 48.5], l: { p: [20, 4], f: 45 }, L: { p: [-1, 3] }, A: [-40, -10] }), S(STK)] }
+  },
+  {
+    id: 'arm_circles', n: 'Arm circles', g: ['warmup'], mu: 'Shoulders', eq: '', st: { s: 1 }, imp: 0, lv: 1, met: 2.8,
+    how: ['Lift your arms out to the sides.', 'Draw small circles forward for half the time, then backward.', 'Make the circles bigger as you warm up.'], cue: 'Relax your neck and keep shoulders down.',
+    an: { front: true, dur: 1.1, ease: 'lin', k: [S(FR, { a: [-174, -170], A: [-6, -10] }), S(FR, { a: [-186, -189], A: [6, 9] }), S(FR, { a: [-196, -201], A: [16, 21] }), S(FR, { a: [-186, -182], A: [6, 2] })] }
+  },
+  {
+    id: 'side_bend', n: 'Standing side bend', g: ['warmup', 'mobility'], mu: 'Obliques, sides', eq: '', st: { b: 1 }, imp: 0, lv: 1, met: 2.5,
+    how: ['Reach one arm overhead.', 'Lean gently to the opposite side.', 'Come back up and switch.'], cue: 'Lean sideways, not forward.',
+    an: {
+      front: true, dur: 5, k: [
+        S(FR, { A: [85, 95], a: [-97, -94] }),
+        S(FR, { t: 96, t2: 110, h: 116, A: [116, 140], a: [-104, -104] }),
+        S(FR, { t: 90, A: [-80, -84], a: [-265, -275] }),
+        S(FR, { t: 84, t2: 70, h: 64, a: [-296, -320], A: [-78, -78] })]
+    }
+  },
+  {
+    id: 'hip_circles', n: 'Hip circles', g: ['warmup'], mu: 'Hips, lower back', eq: '', st: { b: 1, h: 1 }, imp: 0, lv: 1, met: 2.5,
+    how: ['Stand with feet hip-width apart, hands on hips.', 'Draw slow circles with your hips.', 'Switch direction halfway.'], cue: 'Keep your head still.',
+    an: {
+      front: true, dur: 3, ease: 'lin', k: [
+        S(FR, HIPSF, { hip: [5, 49.3], t: 95, t2: 97, l: { p: [-6, 3], b: -1 }, L: { p: [6, 3], b: 1 } }),
+        S(FR, HIPSF, { hip: [0, 48.6], t: 90, l: { p: [-6, 3], b: -1 }, L: { p: [6, 3], b: 1 } }),
+        S(FR, HIPSF, { hip: [-5, 49.3], t: 85, t2: 83, l: { p: [-6, 3], b: -1 }, L: { p: [6, 3], b: 1 } }),
+        S(FR, HIPSF, { hip: [0, 49.8], t: 90, l: { p: [-6, 3], b: -1 }, L: { p: [6, 3], b: 1 } })]
+    }
+  },
+  {
+    id: 'arm_openers', n: 'Arm openers', g: ['warmup'], mu: 'Chest, upper back', eq: '', st: {}, imp: 0, lv: 1, met: 2.8,
+    how: ['Hold your arms out wide at chest height.', 'Swing them in to cross in front of your chest.', 'Open wide again and squeeze your shoulder blades.'], cue: 'Easy, relaxed swings.',
+    an: { front: true, dur: 1.8, k: [S(FR, { a: { fk: [-178, -178] }, A: { fk: [-2, -2] } }), S(FR, { a: { fk: [-178, -178], k: [-0.42, -0.45] }, A: { fk: [-2, -2], k: [-0.42, -0.45] } })] }
+  },
+  {
+    id: 'leg_swings', n: 'Leg swings', g: ['warmup'], mu: 'Hips, hamstrings', eq: '', st: { h: 1 }, imp: 0, lv: 1, met: 3.0, side: true,
+    how: ['Stand on one leg; hold a wall if needed.', 'Swing the other leg forward and back.', 'Switch legs halfway.'], cue: 'Let the leg swing, do not kick hard.',
+    an: { dur: 1.8, k: [S(ST, HIPS, { t: 94, L: [-42, -50] }), S(ST, HIPS, { t: 84, L: [-128, -122] })] }
+  },
+  {
+    id: 'hip_hinge', n: 'Hip hinge', g: ['warmup', 'glutes'], mu: 'Hamstrings, glutes, back', eq: '', st: { b: 1 }, imp: 0, lv: 1, met: 2.8,
+    how: ['Cross your arms over your chest.', 'Push your hips back and tip your chest forward with a flat back.', 'Squeeze your glutes to stand up.'], cue: 'Hips move back, not down.',
+    an: { hz: 0.3, dur: 3, k: [S(STK, { a: { s: [6, -7] }, A: { s: [7, -6] } }), S(STK, { hip: [-8, 48.5], t: 38, h: 44, a: { s: [6, -7] }, A: { s: [7, -6] }, l: { p: [0.5, 3] }, L: { p: [2, 3] } })] }
+  },
+  {
+    id: 'cross_crunch', n: 'Standing cross crunch', g: ['warmup', 'core'], mu: 'Abs, obliques', eq: '', st: {}, imp: 0, lv: 1, met: 3.8,
+    how: ['Place your hands lightly behind your head.', 'Lift one knee across your body as the opposite elbow comes down.', 'Return and switch sides.'], cue: 'Move from the waist, not the neck.',
+    an: {
+      front: true, dur: 1.8, k: [
+        S(FR, { a: { hd: [-3, -2], b: 1 }, A: { hd: [3, -2], b: -1 } }),
+        S(FR, { t: 92, t2: 104, h: 110, a: { hd: [-3, -2], b: 1 }, A: { hd: [3, -2], b: -1 }, l: { fk: [-30, -100], k: [0.55, 1] } }),
+        S(FR, { a: { hd: [-3, -2], b: 1 }, A: { hd: [3, -2], b: -1 } }),
+        S(FR, { t: 88, t2: 76, h: 70, a: { hd: [-3, -2], b: 1 }, A: { hd: [3, -2], b: -1 }, L: { fk: [-150, -80], k: [0.55, 1] } })]
+    }
+  },
+  {
+    id: 'inchworm', n: 'Inchworm', g: ['warmup', 'core'], mu: 'Hamstrings, core, shoulders', eq: '', st: { w: 1, s: 1, b: 1 }, imp: 0, lv: 2, met: 4.0,
+    how: ['Fold forward and put your hands on the floor.', 'Walk your hands out to a plank.', 'Walk them back and roll up to stand.'], cue: 'Bend your knees as much as you need.',
+    an: { hz: 1.1,
+      dur: 6, props: [mat(-20, 100)], k: [
+        S(ST, { l: { p: [0.5, 3] }, L: { p: [2, 3] } }),
+        { hip: [-6, 48], t: -48, t2: -58, h: -70, a: { p: [24, 2] }, A: { p: [26, 2] }, l: { p: [0.5, 3] }, L: { p: [2, 3] } },
+        { hip: [44, 24], t: 20, h: 26, a: { p: [72.5, 1.5] }, A: { p: [74.5, 1.5] }, l: [-160.5, -160.5, -82], L: [-160, -160, -80] },
+        { hip: [-6, 48], t: -48, t2: -58, h: -70, a: { p: [24, 2] }, A: { p: [26, 2] }, l: { p: [0.5, 3] }, L: { p: [2, 3] } }]
+    }
+  },
+
+  // ---------------- CARDIO (indoor intervals) ----------------
+  {
+    id: 'jumping_jacks', n: 'Jumping jacks', g: ['cardio'], mu: 'Full body, heart', eq: '', st: { k: 1, a: 1 }, imp: 1, lv: 1, met: 7.7,
+    how: ['Jump your feet out as your arms sweep overhead.', 'Jump back in with arms down.', 'Keep a quick, light rhythm.'], cue: 'Land softly on the balls of your feet.',
+    an: {
+      front: true, dur: 0.9, k: [
+        S(FR),
+        S(FR, { hip: [0, 52], a: [-170, -175], A: [-10, -5], l: [-102, -102, -150], L: [-78, -78, -30] }),
+        S(FR, ARMS_UP_F, { hip: [0, 47.5], l: [-112, -112], L: [-68, -68] }),
+        S(FR, { hip: [0, 52], a: [-170, -175], A: [-10, -5], l: [-102, -102, -150], L: [-78, -78, -30] })]
+    }
+  },
+  {
+    id: 'step_jacks', n: 'Step jacks', g: ['cardio', 'warmup'], mu: 'Full body, heart', eq: '', st: {}, imp: 0, lv: 1, met: 4.0,
+    how: ['Step one foot out to the side as your arms go up.', 'Step back in and lower your arms.', 'Alternate sides.'], cue: 'A no-jump version of jumping jacks.',
+    an: {
+      front: true, dur: 2.2, k: [
+        S(FR, { l: { p: [-5, 3], b: -1 }, L: { p: [5, 3], b: 1 } }),
+        S(FR, ARMS_UP_F, { hip: [2, 48.5], l: { p: [-5, 3], b: -1 }, L: { p: [22, 3], b: 1 } }),
+        S(FR, { l: { p: [-5, 3], b: -1 }, L: { p: [5, 3], b: 1 } }),
+        S(FR, ARMS_UP_F, { hip: [-2, 48.5], l: { p: [-22, 3], b: -1 }, L: { p: [5, 3], b: 1 } })]
+    }
+  },
+  {
+    id: 'high_knees', n: 'High knees', g: ['cardio'], mu: 'Legs, core, heart', eq: '', st: { k: 1, a: 1, h: 1 }, imp: 1, lv: 2, met: 8.0,
+    how: ['Run on the spot, driving your knees up to hip height.', 'Pump your arms.', 'Stay on the balls of your feet.'], cue: 'Lean slightly back, chest up.',
+    an: {
+      dur: 0.7, k: [
+        { hip: [0, 51], t: 86, L: [-5, -100], l: [-92, -95, -30], A: [-130, -50], a: [-40, 40] },
+        { hip: [0, 49], L: [-89, -91, -20], l: [-91, -93, -20], A: [-90, -10], a: [-90, -10] },
+        { hip: [0, 51], l: [-5, -100], L: [-92, -95, -30], a: [-130, -50], A: [-40, 40] },
+        { hip: [0, 49], L: [-89, -91, -20], l: [-91, -93, -20], A: [-90, -10], a: [-90, -10] }]
+    }
+  },
+  {
+    id: 'butt_kicks', n: 'Butt kicks', g: ['cardio', 'warmup'], mu: 'Hamstrings, heart', eq: '', st: { k: 1, a: 1 }, imp: 1, lv: 1, met: 8.0,
+    how: ['Jog on the spot.', 'Flick each heel up toward your glutes.', 'Keep your knees pointing down.'], cue: 'Quick feet, relaxed shoulders.',
+    an: {
+      dur: 0.7, k: [
+        { hip: [0, 50.5], t: 87, L: [-100, -258], l: [-90, -92, -20], A: [-110, -30], a: [-70, 10] },
+        { hip: [0, 49.5], L: [-89, -91, -10], l: [-91, -93, -10], A: [-90, -15], a: [-90, -15] },
+        { hip: [0, 50.5], l: [-100, -258], L: [-90, -92, -20], a: [-110, -30], A: [-70, 10] },
+        { hip: [0, 49.5], L: [-89, -91, -10], l: [-91, -93, -10], A: [-90, -15], a: [-90, -15] }]
+    }
+  },
+  {
+    id: 'mountain_climbers', n: 'Mountain climbers', g: ['cardio', 'core'], mu: 'Core, shoulders, heart', eq: '', st: { w: 2, s: 1, b: 1 }, imp: 0, lv: 2, met: 8.0,
+    how: ['Start in a high plank, hands under shoulders.', 'Drive one knee toward your chest.', 'Switch legs quickly, like running.'], cue: 'Keep your hips level with your shoulders.',
+    an: { hz: 1.1, dur: 0.8, props: [mat(-70, 30)], k: [S(PLK, { hip: [-16, 25], L: { p: [-21, 10], f: -150 }, l: { p: [-60, 8.5], f: -82 } }), S(PLK, { hip: [-16, 25], l: { p: [-21, 10], f: -150 }, L: { p: [-60, 8.5], f: -80 } })] }
+  },
+  {
+    id: 'burpee', n: 'Burpees', g: ['cardio'], mu: 'Full body, heart', eq: '', st: { k: 2, w: 2, s: 1, b: 1, a: 1 }, imp: 1, lv: 3, met: 8.0,
+    how: ['Squat and place your hands on the floor.', 'Jump or step your feet back to a plank.', 'Bring your feet back in and jump up.'], cue: 'Step back instead of jumping to make it easier.',
+    an: { hz: 1.1,
+      dur: 3.6, ts: [0, 0.22, 0.42, 0.62, 0.82], props: [mat(-70, 30)], k: [
+        S(ST, { l: { p: [0.5, 3] }, L: { p: [2, 3] } }),
+        { hip: [-6, 22], t: 40, t2: 30, h: 20, a: { p: [12.5, 2] }, A: { p: [14.5, 2] }, l: { p: [0.5, 3] }, L: { p: [2, 3] } },
+        S(PLK, { l: { p: [-60, 8], f: -82 }, L: { p: [-59, 8], f: -80 } }),
+        { hip: [-6, 22], t: 40, t2: 30, h: 20, a: { p: [12.5, 2] }, A: { p: [14.5, 2] }, l: { p: [0.5, 3] }, L: { p: [2, 3] } },
+        { hip: [0, 57], t: 92, a: [80, 90], A: [85, 95], l: [-91, -93, -60], L: [-89, -91, -60] }]
+    }
+  },
+  {
+    id: 'skaters', n: 'Skater hops', g: ['cardio'], mu: 'Legs, glutes, heart', eq: '', st: { k: 1, a: 2 }, imp: 1, lv: 2, met: 7.0,
+    how: ['Hop sideways onto one leg.', 'Let the other leg sweep behind you.', 'Hop back to the other side.'], cue: 'Land softly with a bent knee.',
+    an: {
+      front: true, dur: 1.4, k: [
+        { hip: [12, 40], t: 80, t2: 76, h: 80, L: { p: [14, 3], b: 1 }, l: { p: [24, 10], b: -1 }, a: [-40, -30], A: [-122, -112] },
+        { hip: [0, 52], t: 90, L: [-85, -82, -30], l: [-95, -98, -150], a: [-95, -95], A: [-85, -85] },
+        { hip: [-12, 40], t: 100, t2: 104, h: 100, l: { p: [-14, 3], b: -1 }, L: { p: [-24, 10], b: 1 }, A: [-140, -150], a: [-58, -68] },
+        { hip: [0, 52], t: 90, L: [-85, -82, -30], l: [-95, -98, -150], a: [-95, -95], A: [-85, -85] }]
+    }
+  },
+  {
+    id: 'shadow_boxing', n: 'Shadow boxing', g: ['cardio'], mu: 'Arms, shoulders, core, heart', eq: '', st: { s: 1 }, imp: 0, lv: 1, met: 5.0,
+    how: ['Stand in a staggered stance, fists up by your chin.', 'Punch straight out, alternating arms.', 'Bounce lightly on your feet.'], cue: 'Do not lock your elbows.',
+    an: { hz: 0.5,
+      dur: 1.2, k: [
+        { hip: [0, 48], t: 84, t2: 82, h: 86, l: { p: [9, 3] }, L: { p: [-9, 3] }, a: { s: [31, 2] }, A: { s: [9, 5] } },
+        { hip: [0, 48.6], a: { s: [10, 4] }, A: { s: [9, 5] } },
+        { hip: [0, 48], A: { s: [31, 2] }, a: { s: [10, 4] } },
+        { hip: [0, 48.6], a: { s: [10, 4] }, A: { s: [9, 5] } }]
+    }
+  },
+  {
+    id: 'squat_jumps', n: 'Squat jumps', g: ['cardio', 'legs'], mu: 'Legs, glutes, heart', eq: '', st: { k: 2, a: 1 }, imp: 1, lv: 2, met: 8.0,
+    how: ['Squat down with your arms back.', 'Jump up, swinging your arms overhead.', 'Land softly straight into the next squat.'], cue: 'Knees track over your toes.',
+    an: {
+      dur: 1.3, k: [
+        { hip: [-12, 28], t: 55, t2: 60, h: 70, l: { p: [3, 3] }, L: { p: [4, 3] }, a: [-140, -130], A: [-135, -125] },
+        { hip: [0, 59], t: 92, h: 92, l: [-91, -93, -55], L: [-89, -91, -55], a: [75, 85], A: [80, 90] }]
+    }
+  },
+  {
+    id: 'jump_rope', n: 'Jump rope', g: ['cardio'], mu: 'Calves, shoulders, heart', eq: 'rope', st: { a: 2, k: 1 }, imp: 1, lv: 2, met: 11.0,
+    how: ['Hold the handles at hip height.', 'Turn the rope with your wrists.', 'Make small, quick hops.'], cue: 'Stay on the balls of your feet.',
+    an: {
+      dur: 0.6, props: [{ k: 'rope' }], thumb: 0.5, fn: u => {
+        const lift = 4 * Math.sin(Math.PI * u) ** 2; const w = 12 * Math.sin(2 * Math.PI * u);
+        return { hip: [0, 49], lift, t: 89, a: [-104, -40 + w], A: [-100, -35 + w], l: [-91, -91, -40], L: [-89, -89, -40] };
+      }
+    }
+  },
+
+  // ---------------- STEADY CARDIO BLOCKS ----------------
+  {
+    id: 'walk', n: 'Brisk walk', g: ['steady'], mu: 'Heart, legs', eq: '', st: {}, imp: 0, lv: 1, met: [3.3, 4.3], out: 1,
+    how: ['Walk at a pace where you can talk but not sing.', 'Swing your arms naturally.', 'Speed up on the brisk segments.'], cue: 'Walk tall; look ahead, not down.',
+    an: withProps(WALK, [{ k: 'road', sp: 44 }])
+  },
+  {
+    id: 'jog', n: 'Jog / run-walk', g: ['steady'], mu: 'Heart, legs', eq: '', st: { k: 1, a: 1 }, imp: 1, lv: 1, met: [4.3, 7.0], out: 1,
+    how: ['Jog at an easy, conversational pace.', 'Walk the recovery segments.', 'Short steps, landing under your hips.'], cue: 'If you can not talk, slow down.',
+    an: withProps(RUN, [{ k: 'road', sp: 95 }])
+  },
+  {
+    id: 'cycle', n: 'Outdoor cycling', g: ['steady'], mu: 'Heart, legs', eq: '', st: {}, imp: 0, lv: 1, met: [4.0, 6.8], out: 1,
+    how: ['Ride at a steady, comfortable pace.', 'Push harder on the effort segments.', 'Keep a light grip on the bars.'], cue: 'Wear a helmet. Easy gears are kinder to your knees.',
+    an: { hz: 1.1, dur: 1.0, props: [{ k: 'roadbike' }], fn: bikeFn([-10, 51], 52, [33, 53], [0, 14], 8) }
+  },
+  {
+    id: 'walk_in', n: 'Walk in place', g: ['steady'], mu: 'Heart, legs', eq: '', st: {}, imp: 0, lv: 1, met: [3.0, 4.0],
+    how: ['March briskly on the spot.', 'Pump your arms on the faster segments.', 'Walk around the room if you have space.'], cue: 'Keep moving the whole time.',
+    an: { dur: 1.1, k: [S(ST, { L: [-25, -100], a: [-50, -10], A: [-125, -105] }), S(ST), S(ST, { l: [-25, -100], A: [-50, -10], a: [-125, -105] }), S(ST)] }
+  },
+  {
+    id: 'tread_walk', n: 'Treadmill walk', g: ['steady'], mu: 'Heart, legs', eq: 'treadmill', st: {}, imp: 0, lv: 1, met: [3.5, 5.3],
+    how: ['Start slow, then raise speed to a brisk walk.', 'On effort segments, add speed or incline.', 'Hold the rails only for balance.'], cue: 'Do not lean on the handles.',
+    an: withProps(WALK, [{ k: 'tread', sp: 44 }])
+  },
+  {
+    id: 'tread_run', n: 'Treadmill run', g: ['steady'], mu: 'Heart, legs', eq: 'treadmill', st: { k: 1, a: 1 }, imp: 1, lv: 2, met: [4.3, 8.0],
+    how: ['Warm up walking, then jog.', 'Run the effort segments, walk or jog the easy ones.', 'Stay near the middle of the belt.'], cue: 'Clip on the safety key.',
+    an: withProps(RUN, [{ k: 'tread', sp: 95 }])
+  },
+  {
+    id: 'bike', n: 'Exercise bike', g: ['steady'], mu: 'Heart, legs', eq: 'bike', st: {}, imp: 0, lv: 1, met: [4.0, 7.0],
+    how: ['Set the seat so your knee is slightly bent at the bottom.', 'Pedal easy on recovery, add resistance on efforts.', 'Keep your upper body relaxed.'], cue: 'Smooth circles, not stomps. Keep resistance light if your knees are sore.',
+    an: { hz: 1.2, dur: 0.9, props: [{ k: 'spin' }], fn: bikeFn([-12, 50], 68, [27, 59], [0, 16], 8) }
+  },
+  {
+    id: 'elliptical', n: 'Elliptical', g: ['steady'], mu: 'Heart, legs, arms', eq: 'elliptical', st: {}, imp: 0, lv: 1, met: [4.5, 6.0],
+    how: ['Stand tall and hold the moving handles.', 'Push and pull with your arms as your legs stride.', 'Raise resistance on effort segments.'], cue: 'Keep your heels down.',
+    an: { hz: 1.3,
+      dur: 1.2, props: [{ k: 'ellip' }], fn: u => {
+        const ph = 360 * u * Math.PI / 180; const c = [0, 15];
+        const fn = [c[0] + Math.cos(ph) * 13, c[1] + Math.sin(ph) * 4.5], ff = [c[0] + Math.cos(ph + Math.PI) * 13, c[1] + Math.sin(ph + Math.PI) * 4.5];
+        return { hip: [-3, 59 + Math.sin(2 * ph) * 0.6], t: 86, h: 88, l: { p: ff, f: 2 }, L: { p: fn, f: 2 }, a: { p: [20 + Math.cos(ph) * 7, 66] }, A: { p: [20 + Math.cos(ph + Math.PI) * 7, 66] } };
+      }
+    }
+  },
+  {
+    id: 'rower', n: 'Rowing machine', g: ['steady'], mu: 'Back, legs, arms, heart', eq: 'rower', st: { k: 1, b: 1 }, imp: 0, lv: 1, met: [4.8, 7.0],
+    how: ['Push with your legs first.', 'Then lean back slightly and pull the handle to your ribs.', 'Reverse: arms, body, then legs.'], cue: 'Legs, body, arms. Arms, body, legs.',
+    an: { hz: 0.3,
+      dur: 2.6, ts: [0, 0.18, 0.36, 0.52, 0.66], props: [{ k: 'rower' }], k: [
+        { hip: [2, 13], t: 66, h: 74, l: { p: [28, 10], f: 70 }, L: { p: [29, 10], f: 70 }, a: { p: [44, 20] }, A: { p: [45, 20] } },
+        { hip: [-12, 13], t: 72, h: 78, a: { p: [33, 24] }, A: { p: [34, 24] } },
+        { hip: [-17, 13], t: 106, h: 102, a: { p: [-13, 35] }, A: { p: [-12, 35] } },
+        { hip: [-17, 13], t: 104, h: 100, a: { p: [14, 24] }, A: { p: [15, 24] } },
+        { hip: [-15, 13], t: 70, h: 76, a: { p: [24, 22] }, A: { p: [25, 22] } }]
+    }
+  },
+
+  // ---------------- PUSH ----------------
+  {
+    id: 'wall_pushup', n: 'Wall push-up', g: ['push'], mu: 'Chest, shoulders, triceps', eq: '', st: { w: 1, s: 1 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Stand an arm’s length from a wall, hands on it at shoulder height.', 'Bend your elbows to bring your chest toward the wall.', 'Push back to straight arms.'], cue: 'Body in one straight line.',
+    an: { hz: 1.3,
+      dur: 2.4, props: [{ k: 'wall', x: 33 }], k: [
+        { hip: [-7.8, 48.4], t: 75, h: 78, a: { p: [32, 77] }, A: { p: [32, 79] }, l: [-105, -105, 0], L: [-105, -105, 0] },
+        { hip: [2.1, 44.5], t: 62, h: 66, a: { p: [32, 77] }, A: { p: [32, 79] }, l: [-118, -118, -18], L: [-118, -118, -18] }]
+    }
+  },
+  {
+    id: 'incline_pushup', n: 'Incline push-up', g: ['push'], mu: 'Chest, shoulders, triceps', eq: 'chair', st: { w: 1, s: 1 }, imp: 0, lv: 1, met: 3.8,
+    how: ['Put your hands on a sturdy table, counter or bench.', 'Walk your feet back so your body is straight.', 'Lower your chest to the edge and push back up.'], cue: 'The higher the surface, the easier it is.',
+    an: { hz: 1.3,
+      dur: 2.4, props: [{ k: 'table', x: 8, w: 34, h: 30 }], k: [
+        { hip: [-7.8, 39], t: 50, h: 54, a: { p: [13, 31] }, A: { p: [15, 31] }, l: [-130, -130, -60], L: [-130, -130, -60] },
+        { hip: [2.7, 26.5], t: 30, h: 35, a: { p: [13, 31] }, A: { p: [15, 31] }, l: [-150, -150, -72], L: [-150, -150, -72] }]
+    }
+  },
+  {
+    id: 'knee_pushup', n: 'Knee push-up', g: ['push'], mu: 'Chest, shoulders, triceps', eq: '', st: { w: 2, s: 1, k: 1 }, imp: 0, lv: 1, met: 3.8,
+    how: ['Start on hands and knees, hands a bit wider than shoulders.', 'Walk your hands forward so hips, shoulders and knees line up.', 'Lower your chest, then push up.'], cue: 'Put a folded towel under your knees.',
+    an: { hz: 1.35,
+      dur: 2.4, props: [mat(-50, 30)], k: [
+        { hip: [-20.2, 17], t: 34.3, h: 40, a: { p: [4.5, 1.5] }, A: { p: [6.5, 1.5] }, l: [-145.7, -195, -195], L: [-145.7, -195, -195] },
+        { hip: [-16.3, 7.2], t: 8.9, h: 15, a: { p: [4.5, 1.5] }, A: { p: [6.5, 1.5] }, l: [-171.1, -195, -195], L: [-171.1, -195, -195] }]
+    }
+  },
+  {
+    id: 'pushup', n: 'Push-up', g: ['push'], mu: 'Chest, shoulders, triceps, core', eq: '', st: { w: 2, s: 1 }, imp: 0, lv: 2, met: 5.0,
+    how: ['Hands under shoulders, body straight from head to heels.', 'Lower your chest close to the floor.', 'Push the floor away to come back up.'], cue: 'Elbows at about 45°, not flared out.',
+    an: { hz: 1.35,
+      dur: 2.2, props: [mat(-70, 30)], k: [
+        S(PLK),
+        { hip: [-13.1, 10.5], t: 3, h: 9, a: { p: [12.5, 1.5] }, A: { p: [14.5, 1.5] }, l: [-177.5, -177.5, -82], L: [-177, -177, -80] }]
+    }
+  },
+  {
+    id: 'chair_dips', n: 'Chair dips', g: ['push'], mu: 'Triceps, shoulders', eq: 'chair', st: { s: 2, w: 1 }, imp: 0, lv: 2, met: 4.0,
+    how: ['Sit on the edge of a sturdy chair, hands beside your hips.', 'Slide forward and bend your elbows to lower.', 'Press back up without locking your elbows.'], cue: 'Keep your back close to the chair.',
+    an: { hz: 1.2,
+      dur: 2.4, props: [{ k: 'chair', x: 2, w: 22, h: 24, noback: 1 }], k: [
+        { hip: [8, 26], t: 94, h: 96, a: { p: [0, 25], b: -1 }, A: { p: [1.5, 25], b: -1 }, l: { p: [32, 3] }, L: { p: [34, 3] } },
+        { hip: [8, 12], t: 98, h: 99, a: { p: [0, 25], b: -1 }, A: { p: [1.5, 25], b: -1 }, l: { p: [32, 3] }, L: { p: [34, 3] } }]
+    }
+  },
+  {
+    id: 'floor_press', n: 'Dumbbell floor press', g: ['push'], mu: 'Chest, triceps', eq: 'dumbbell', st: { s: 1 }, imp: 0, lv: 1, met: 3.5,
+    how: ['Lie on your back, knees bent, a dumbbell in each hand.', 'Upper arms on the floor, forearms pointing up.', 'Press the weights straight up, then lower slowly.'], cue: 'Lower until your elbows touch the floor.',
+    an: {
+      dur: 2.4, props: [mat(-55, 35), { k: 'db' }], k: [
+        S(SUP, KUP, { a: { fk: [-2, 88], k: [0.4, 1] }, A: { fk: [-4, 90], k: [0.4, 1] } }),
+        S(SUP, KUP, { a: { fk: [86, 88] }, A: { fk: [88, 90] } })]
+    }
+  },
+  {
+    id: 'shoulder_press', n: 'Dumbbell shoulder press', g: ['push'], mu: 'Shoulders, triceps', eq: 'dumbbell', st: { s: 2, b: 1 }, imp: 0, lv: 2, met: 3.5,
+    how: ['Stand tall, dumbbells at shoulder height, palms forward.', 'Press them overhead.', 'Lower back to your shoulders with control.'], cue: 'Brace your stomach; do not arch your back.',
+    an: { front: true, dur: 2.4, props: [{ k: 'db' }], k: [S(FR, { a: [-182, -268], A: [2, 88] }), S(FR, { a: [-252, -258], A: [72, 78] })] }
+  },
+  {
+    id: 'triceps_ext', n: 'Overhead triceps extension', g: ['push'], mu: 'Triceps', eq: 'dumbbell', st: { s: 2 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Hold one dumbbell overhead with both hands.', 'Bend your elbows to lower it behind your head.', 'Straighten your arms to lift it back up.'], cue: 'Keep your elbows pointing up.',
+    an: { hz: 0.15, dur: 2.4, props: [{ k: 'db', one: 1 }], k: [S(ST, { a: [100, 101], A: [98, 99] }), S(ST, { a: [102, 232], A: [100, 230] })] }
+  },
+  {
+    id: 'lateral_raise', n: 'Lateral raise', g: ['push'], mu: 'Shoulders', eq: 'dumbbell', st: { s: 1 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Stand tall with light dumbbells by your sides.', 'Lift your arms out to shoulder height, elbows soft.', 'Lower slowly.'], cue: 'Lead with your elbows; no swinging.',
+    an: { front: true, dur: 2.4, props: [{ k: 'db' }], k: [S(FR, { a: [-102, -100], A: [-78, -80] }), S(FR, { a: [-172, -168], A: [-8, -12] })] }
+  },
+
+  // ---------------- PULL ----------------
+  {
+    id: 'superman', n: 'Superman', g: ['pull', 'core'], mu: 'Lower back, glutes, upper back', eq: '', st: { b: 1, n: 1 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Lie face down, arms stretched overhead.', 'Lift your arms, chest and legs a little off the floor.', 'Hold for a breath, then lower.'], cue: 'Look at the floor to keep your neck long.',
+    an: { hz: 0.9, dur: 2.6, props: [mat(-55, 70)], k: [S(PRN, { a: [1, 1], A: [-1, -1] }), S(PRN, { t: 12, t2: 20, h: 24, a: [24, 24], A: [22, 22], l: [-196, -196, -198], L: [-194, -194, -196] })] }
+  },
+  {
+    id: 'snow_angel', n: 'Reverse snow angel', g: ['pull'], mu: 'Upper back, shoulders', eq: '', st: { s: 1 }, imp: 0, lv: 1, met: 2.8,
+    how: ['Lie face down, arms by your sides, palms down.', 'Lift your arms slightly and sweep them overhead.', 'Sweep back down to your hips.'], cue: 'Keep your arms just off the floor.',
+    an: { dur: 3, props: [mat(-55, 70)], k: [S(PRN, { t: 4, h: 9, a: { fk: [166, 166], k: [1, 1] }, A: { fk: [168, 168], k: [1, 1] } }), S(PRN, { t: 6, h: 11, a: { fk: [194, 194], k: [-1, -1] }, A: { fk: [192, 192], k: [-1, -1] } })] }
+  },
+  {
+    id: 'db_row', n: 'Bent-over row', g: ['pull'], mu: 'Upper back, biceps', eq: 'dumbbell', st: { b: 1 }, imp: 0, lv: 1, met: 3.5,
+    how: ['Hinge forward with a flat back, knees soft, weights hanging.', 'Pull the weights up toward your hips.', 'Lower with control.'], cue: 'Squeeze your shoulder blades together.',
+    an: {
+      dur: 2.2, props: [{ k: 'db' }], k: [
+        { hip: [-8, 46], t: 32, h: 40, a: [-92, -90], A: [-88, -90], l: { p: [0.5, 3] }, L: { p: [2, 3] } },
+        { hip: [-8, 46], t: 33, h: 41, a: [-160, -96], A: [-156, -94] }]
+    }
+  },
+  {
+    id: 'band_row', n: 'Seated band row', g: ['pull'], mu: 'Upper back, biceps', eq: 'band', st: {}, imp: 0, lv: 1, met: 3.0,
+    how: ['Sit with legs straight, band looped around your feet.', 'Pull the band toward your belly, elbows close.', 'Slowly let your arms straighten.'], cue: 'Sit tall; no leaning back.',
+    an: { hz: 0.5,
+      dur: 2.4, props: [mat(-30, 60), { k: 'band', dx: 5, dy: 2 }], k: [
+        { hip: [0, 7], t: 84, h: 88, l: [-2, -2, 85], L: [-1, -1, 85], a: { p: [26, 22] }, A: { p: [27, 22] } },
+        { hip: [0, 7], t: 92, h: 92, a: { p: [7, 20] }, A: { p: [8, 20] } }]
+    }
+  },
+  {
+    id: 'band_pull_apart', n: 'Band pull-apart', g: ['pull'], mu: 'Upper back, rear shoulders', eq: 'band', st: { s: 1 }, imp: 0, lv: 1, met: 2.8,
+    how: ['Hold a band at chest height, arms straight in front.', 'Pull your hands apart until the band touches your chest.', 'Return slowly.'], cue: 'Shoulders down, away from your ears.',
+    an: { front: true, dur: 2.2, props: [{ k: 'band', to: 'hands' }], k: [S(FR, { a: { fk: [-178, -178], k: [0.18, 0.18] }, A: { fk: [-2, -2], k: [0.18, 0.18] } }), S(FR, { a: { fk: [-178, -178] }, A: { fk: [-2, -2] } })] }
+  },
+  {
+    id: 'pullup', n: 'Pull-up', g: ['pull'], mu: 'Back, biceps', eq: 'bar', st: { s: 2, w: 1 }, imp: 0, lv: 3, met: 8.0,
+    how: ['Hang from the bar, hands shoulder-width.', 'Pull your chest up toward the bar.', 'Lower all the way down slowly.'], cue: 'Start each rep from a still hang.',
+    an: { hz: 1.5,
+      dur: 2.8, props: [{ k: 'bar', y: 118 }], k: [
+        { hip: [1, 54], t: 92, h: 92, a: { p: [4, 118] }, A: { p: [6, 118] }, l: [-100, -150], L: [-98, -148] },
+        { hip: [-1, 75], t: 94, h: 92, a: { p: [4, 118] }, A: { p: [6, 118] }, l: [-100, -150], L: [-98, -148] }]
+    }
+  },
+  {
+    id: 'curl', n: 'Biceps curl', g: ['pull'], mu: 'Biceps, forearms', eq: 'dumbbell|band', st: { w: 1 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Stand tall, weights or band handles in your hands.', 'Curl your hands up toward your shoulders.', 'Lower slowly.'], cue: 'Elbows stay pinned at your sides.',
+    an: { dur: 2.2, props: [{ k: 'db' }], k: [S(ST, { a: [-93, -90], A: [-90, -88] }), S(ST, { a: [-93, 62], A: [-90, 64] })] }
+  },
+
+  // ---------------- LEGS ----------------
+  {
+    id: 'chair_squat', n: 'Sit-to-stand', g: ['legs'], mu: 'Thighs, glutes', eq: 'chair', st: { k: 1 }, imp: 0, lv: 1, met: 3.5,
+    how: ['Sit near the front of a chair, feet flat.', 'Lean forward and stand up without using your hands.', 'Sit back down slowly.'], cue: 'Push through your heels.',
+    an: { hz: 0.8,
+      dur: 3, props: [{ k: 'chair', x: -4, w: 22, h: 22 }], k: [
+        { hip: [-12, 26], t: 72, h: 78, a: [-12, -6], A: [-10, -4], l: { p: [9, 3] }, L: { p: [11, 3] } },
+        { hip: [8, 49.5], t: 90, h: 90, a: [-80, -80], A: [-78, -78], l: { p: [9, 3] }, L: { p: [11, 3] } }]
+    }
+  },
+  {
+    id: 'squat', n: 'Bodyweight squat', g: ['legs'], mu: 'Thighs, glutes', eq: '', st: { k: 1 }, imp: 0, lv: 1, met: 5.0,
+    how: ['Feet shoulder-width apart, toes slightly out.', 'Sit your hips back and down, arms forward.', 'Stand back up, squeezing your glutes.'], cue: 'Go only as low as feels comfortable.',
+    an: { hz: 0.8,
+      dur: 2.6, k: [
+        { hip: [3, 50], t: 90, h: 90, a: [-80, -60], A: [-78, -58], l: { p: [4, 3] }, L: { p: [5.5, 3] } },
+        { hip: [-14, 27], t: 56, t2: 60, h: 72, a: [-2, 2], A: [0, 4], l: { p: [4, 3] }, L: { p: [5.5, 3] } }]
+    }
+  },
+  {
+    id: 'sumo_squat', n: 'Sumo squat', g: ['legs', 'glutes'], mu: 'Inner thighs, glutes', eq: '', st: { k: 1, h: 1 }, imp: 0, lv: 1, met: 5.0,
+    how: ['Stand with feet wide, toes turned out.', 'Bend your knees out over your toes and lower your hips.', 'Press back up.'], cue: 'Keep your chest up.',
+    an: {
+      front: true, dur: 2.6, k: [
+        S(FR, { hip: [0, 46], a: { r: [-3, 21], b: -1 }, A: { r: [3, 21], b: 1 }, l: { p: [-17, 3], b: -1 }, L: { p: [17, 3], b: 1 } }),
+        S(FR, { hip: [0, 31], a: { r: [-3, 21], b: -1 }, A: { r: [3, 21], b: 1 }, l: { p: [-17, 3], b: -1 }, L: { p: [17, 3], b: 1 } })]
+    }
+  },
+  {
+    id: 'reverse_lunge', n: 'Reverse lunge', g: ['legs', 'glutes'], mu: 'Thighs, glutes', eq: '', st: { k: 2, a: 1 }, imp: 0, lv: 2, met: 5.0,
+    how: ['Stand tall, hands on hips.', 'Step one foot back and bend both knees.', 'Push through the front heel to return. Alternate legs.'], cue: 'Front knee stays over the ankle.',
+    an: {
+      dur: 3.2, k: [
+        S(ST, HIPS, { l: { p: [0.5, 3] }, L: { p: [2, 3] } }),
+        S(ST, HIPS, { hip: [-6, 28], t: 90, l: { p: [3, 3] }, L: { p: [-30, 7], f: -40 } }),
+        S(ST, HIPS, { hip: [0, 50], l: { p: [0.5, 3] }, L: { p: [2, 3] } }),
+        S(ST, HIPS, { hip: [-6, 28], t: 90, L: { p: [3, 3] }, l: { p: [-30, 7], f: -40 } })]
+    }
+  },
+  {
+    id: 'wall_sit', n: 'Wall sit', g: ['legs'], mu: 'Thighs', eq: '', st: { k: 1 }, imp: 0, lv: 1, met: 3.5, hold: 1,
+    how: ['Lean your back against a wall.', 'Slide down until your knees are bent (90° or higher).', 'Hold, breathing steadily.'], cue: 'Higher is easier; knees over ankles.',
+    an: { dur: 4, props: [{ k: 'wall', x: -22 }], k: [{ hip: [-12, 26], t: 90, h: 90, a: [-55, -5], A: [-52, -3], l: [0, -90], L: [1, -89] }, { hip: [-12, 25.6], t: 91, h: 90, a: [-56, -6], A: [-53, -4], l: [-0.5, -90], L: [0.5, -89] }] }
+  },
+  {
+    id: 'step_up', n: 'Step-ups', g: ['legs', 'glutes'], mu: 'Thighs, glutes', eq: 'chair', st: { k: 2, a: 1 }, imp: 0, lv: 2, met: 5.0,
+    how: ['Stand facing a sturdy step or the bottom stair.', 'Step up with one foot and drive up to stand on it.', 'Step down and repeat; switch lead leg halfway.'], cue: 'Push through the whole foot on the step.',
+    an: {
+      dur: 3, props: [{ k: 'box', x: 8, w: 30, h: 18 }], k: [
+        { hip: [-6, 50], t: 90, h: 90, l: { p: [-5, 3] }, L: { p: [-4, 3] } },
+        { hip: [0, 47], t: 78, h: 82, l: { p: [-5, 3] }, L: { p: [17, 21] }, a: [-60, -30], A: [-110, -95] },
+        { hip: [15, 67], t: 88, h: 90, l: { p: [15, 21] }, L: { p: [17, 21] }, a: [-92, -88], A: [-88, -86] },
+        { hip: [2, 49], t: 84, h: 86, l: { p: [-5, 3] }, L: { p: [17, 21] }, a: [-100, -90], A: [-80, -70] }]
+    }
+  },
+  {
+    id: 'calf_raise', n: 'Calf raises', g: ['legs', 'balance'], mu: 'Calves, ankles', eq: '', st: { a: 1 }, imp: 0, lv: 1, met: 3.0,
+    how: ['Stand tall; hold a chair or wall for balance.', 'Rise up onto your toes.', 'Lower your heels slowly.'], cue: 'Pause for a second at the top.',
+    an: { dur: 2, k: [S(ST, { l: [-91, -91, 0], L: [-89, -89, 0] }), S(ST, { hip: [2.9, 54], l: [-91, -91, -50], L: [-89, -89, -50] })] }
+  },
+  {
+    id: 'goblet_squat', n: 'Goblet squat', g: ['legs'], mu: 'Thighs, glutes, core', eq: 'dumbbell|kettlebell', st: { k: 1, b: 1 }, imp: 0, lv: 1, met: 5.0,
+    how: ['Hold one weight against your chest.', 'Squat down between your heels, chest tall.', 'Drive back up.'], cue: 'Elbows inside your knees at the bottom.',
+    an: { hz: 0.15,
+      dur: 2.8, props: [{ k: 'gob' }], k: [
+        { hip: [3, 50], t: 90, h: 90, a: { s: [7, -10] }, A: { s: [8, -10] }, l: { p: [4, 3] }, L: { p: [5.5, 3] } },
+        { hip: [-12, 26], t: 68, t2: 72, h: 80, a: { s: [8, -10] }, A: { s: [9, -10] }, l: { p: [4, 3] }, L: { p: [5.5, 3] } }]
+    }
+  },
+  {
+    id: 'leg_ext', n: 'Seated knee extension', g: ['legs'], mu: 'Thighs', eq: 'chair', st: {}, imp: 0, lv: 1, met: 2.5,
+    how: ['Sit tall on a chair, hands on the seat.', 'Straighten one knee until the leg is level.', 'Lower slowly; alternate legs.'], cue: 'Tighten the thigh at the top.',
+    an: {
+      dur: 2.8, props: [{ k: 'chair', x: 6, w: 22, h: 22 }], k: [
+        { hip: [-6, 25], t: 92, h: 92, a: { p: [-2, 23] }, A: { p: [0, 23] }, l: [0, -90], L: [1, -89] },
+        { hip: [-6, 25], L: [2, -2, 82] }, { hip: [-6, 25], L: [1, -89] }, { hip: [-6, 25], l: [1, -2, 82] }]
+    }
+  },
+  {
+    id: 'ham_curl', n: 'Standing hamstring curl', g: ['legs', 'glutes'], mu: 'Hamstrings', eq: '', st: {}, imp: 0, lv: 1, met: 3.0, side: true,
+    how: ['Stand tall holding a chair or wall.', 'Bend one knee to lift your heel toward your glutes.', 'Lower slowly; switch legs halfway.'], cue: 'Keep your knees side by side.',
+    an: { hz: 1.0, dur: 2.2, props: [{ k: 'chair', x: 36, w: 20, h: 22 }], k: [S(ST, { a: { p: [18, 53] }, A: { p: [19, 53] } }), S(ST, { a: { p: [18, 53] }, A: { p: [19, 53] }, L: [-94, -205] })] }
+  },
+  {
+    id: 'slr', n: 'Straight-leg raise', g: ['legs'], mu: 'Thighs, hip flexors', eq: '', st: {}, imp: 0, lv: 1, met: 2.5, side: true,
+    how: ['Lie on your back, one knee bent, the other leg straight.', 'Tighten the straight leg and lift it to the height of the bent knee.', 'Lower slowly; switch legs halfway.'], cue: 'Keep the knee locked straight.',
+    an: { dur: 3, props: [mat(-55, 55)], k: [S(SUP, { l: { p: [22, 4], f: 5 }, L: [-2, -2] }), S(SUP, { l: { p: [22, 4], f: 5 }, L: [38, 38] })] }
+  },
+
+  // ---------------- GLUTES ----------------
+  {
+    id: 'glute_bridge', n: 'Glute bridge', g: ['glutes'], mu: 'Glutes, hamstrings', eq: '', st: {}, imp: 0, lv: 1, met: 3.0,
+    how: ['Lie on your back, knees bent, feet flat.', 'Squeeze your glutes and lift your hips.', 'Lower slowly.'], cue: 'Ribs down; do not over-arch your back.',
+    an: { dur: 2.6, props: [mat(-55, 40)], k: [S(SUP, KUP), S(SUP, KUP, { hip: [-1, 23], t: 206, t2: 196, h: 180, a: [-4, -2], A: [-3, -1] })] }
+  },
+  {
+    id: 'single_bridge', n: 'Single-leg bridge', g: ['glutes'], mu: 'Glutes, hamstrings', eq: '', st: { b: 1 }, imp: 0, lv: 2, met: 3.5, side: true,
+    how: ['Lie on your back, one foot flat, the other leg straight up at an angle.', 'Lift your hips using the planted leg.', 'Lower; switch legs halfway.'], cue: 'Keep your hips level.',
+    an: { dur: 2.6, props: [mat(-55, 50)], k: [S(SUP, { l: { p: [22, 4], f: 5 }, L: [30, 30] }), S(SUP, { hip: [-1, 23], t: 206, t2: 196, h: 180, a: [-4, -2], A: [-3, -1], l: { p: [22, 4], f: 5 }, L: [22, 22] })] }
+  },
+  {
+    id: 'donkey_kick', n: 'Donkey kicks', g: ['glutes'], mu: 'Glutes', eq: '', st: { k: 1, w: 1 }, imp: 0, lv: 1, met: 3.0, side: true,
+    how: ['Start on hands and knees.', 'Keeping the knee bent, lift one foot toward the ceiling.', 'Lower without touching down; switch legs halfway.'], cue: 'Do not arch your lower back.',
+    an: { dur: 2, props: [mat(-35, 45)], k: [S(QUAD), S(QUAD, { L: [-188, -272] })] }
+  },
+  {
+    id: 'kickback', n: 'Standing kickback', g: ['glutes'], mu: 'Glutes', eq: '', st: {}, imp: 0, lv: 1, met: 3.0, side: true,
+    how: ['Stand tall; hold a chair or wall.', 'Squeeze your glute and push one leg straight back.', 'Return; switch legs halfway.'], cue: 'Small range, no back arch.',
+    an: { hz: 1.0, dur: 2, props: [{ k: 'chair', x: 36, w: 20, h: 22 }], k: [S(ST, { t: 86, a: { p: [18, 53] }, A: { p: [19, 53] } }), S(ST, { t: 80, a: { p: [18, 53] }, A: { p: [19, 53] }, L: [-128, -126] })] }
+  },
+  {
+    id: 'side_raise', n: 'Standing side leg raise', g: ['glutes', 'balance'], mu: 'Outer hips', eq: '', st: { h: 1 }, imp: 0, lv: 1, met: 3.0, side: true,
+    how: ['Stand tall, hands on hips or on a chair.', 'Lift one leg out to the side, toes forward.', 'Lower slowly; switch legs halfway.'], cue: 'Keep your torso upright.',
+    an: { front: true, dur: 2.2, k: [S(FR, HIPSF), S(FR, HIPSF, { t: 94, L: [-52, -52] })] }
+  },
+  {
+    id: 'side_lying_raise', n: 'Side-lying leg raise', g: ['glutes'], mu: 'Outer hips', eq: '', st: { h: 1 }, imp: 0, lv: 1, met: 2.5, side: true,
+    how: ['Lie on your side, head resting on your arm.', 'Lift the top leg, keeping it straight.', 'Lower slowly; switch sides halfway.'], cue: 'Toes point forward, not up.',
+    an: {
+      front: true, dur: 2.4, props: [mat(-75, 55)], k: [
+        { hip: [0, 10], t: 180, h: 180, a: [182, 180], A: { p: [-20, 4] }, l: [-2, -2, 2], L: [0, 0, 2] },
+        { hip: [0, 10], t: 180, h: 180, a: [182, 180], A: { p: [-20, 4] }, l: [-2, -2, 2], L: [34, 34, 36] }]
+    }
+  },
+  {
+    id: 'rdl', n: 'Romanian deadlift', g: ['glutes'], mu: 'Hamstrings, glutes, back', eq: 'dumbbell|kettlebell', st: { b: 2 }, imp: 0, lv: 2, met: 4.0,
+    how: ['Stand holding weights in front of your thighs.', 'Push your hips back and slide the weights down your legs, back flat.', 'Drive your hips forward to stand.'], cue: 'Weights stay close to your legs.',
+    an: { hz: 0.7,
+      dur: 3, props: [{ k: 'db' }], k: [
+        { hip: [0, 50], t: 90, a: [-92, -90], A: [-88, -88], l: { p: [0.5, 3] }, L: { p: [2, 3] } },
+        { hip: [-11, 47], t: 30, h: 38, a: [-92, -90], A: [-88, -88], l: { p: [0.5, 3] }, L: { p: [2, 3] } }]
+    }
+  },
+  {
+    id: 'kb_swing', n: 'Kettlebell swing', g: ['glutes', 'cardio'], mu: 'Glutes, hamstrings, core', eq: 'kettlebell|dumbbell', st: { b: 2, s: 1 }, imp: 0, lv: 2, met: 6.0,
+    how: ['Hinge and swing the weight back between your legs.', 'Snap your hips forward to swing it to chest height.', 'Let it fall and hinge again.'], cue: 'Power comes from the hips, not the arms.',
+    an: { hz: 0.2,
+      dur: 1.5, props: [{ k: 'kb' }], k: [
+        { hip: [-12, 45], t: 34, h: 44, a: [-118, -118], A: [-116, -116], l: { p: [3, 3] }, L: { p: [5, 3] } },
+        { hip: [2, 50], t: 96, h: 94, a: [-2, -2], A: [0, 0], l: { p: [3, 3] }, L: { p: [5, 3] } }]
+    }
+  },
+
+  // ---------------- CORE ----------------
+  {
+    id: 'plank', n: 'Forearm plank', g: ['core'], mu: 'Core, shoulders', eq: '', st: { b: 1, s: 1 }, imp: 0, lv: 1, met: 3.8, hold: 1,
+    how: ['Forearms on the floor, elbows under shoulders.', 'Lift your body into a straight line from head to heels.', 'Hold, breathing steadily.'], cue: 'Squeeze your glutes; do not let hips sag.',
+    an: { dur: 3.5, props: [mat(-70, 40)], k: [S(FPL), S(FPL, { hip: [-13.6, 16.1] })] }
+  },
+  {
+    id: 'knee_plank', n: 'Knee plank', g: ['core'], mu: 'Core, shoulders', eq: '', st: { s: 1, k: 1 }, imp: 0, lv: 1, met: 3.0, hold: 1,
+    how: ['Forearms on the floor, knees down.', 'Lift your hips so knees, hips and shoulders line up.', 'Hold, breathing steadily.'], cue: 'An easier plank; same straight line.',
+    an: { dur: 3.5, props: [mat(-60, 40)], k: [{ hip: [-12.2, 10.9], t: 18, h: 22, a: [-91, -1], A: [-89, 1], l: [-162, -195, -195], L: [-162, -195, -195] }, { hip: [-12.2, 11.4], t: 18.5, h: 22, a: [-91, -1], A: [-89, 1], l: [-161, -195, -195], L: [-161, -195, -195] }] }
+  },
+  {
+    id: 'side_plank', n: 'Side plank', g: ['core'], mu: 'Obliques, shoulders', eq: '', st: { s: 1, h: 1 }, imp: 0, lv: 2, met: 3.8, hold: 1, side: true,
+    how: ['Lie on your side, elbow under your shoulder.', 'Lift your hips so your body is straight.', 'Hold; switch sides halfway.'], cue: 'Bend the bottom knee to make it easier.',
+    an: { front: true, dur: 3.5, props: [mat(-60, 50)], k: [{ hip: [0, 20.2], t: 14, h: 18, A: { fk: [-90, 0], k: [1, 0.45] }, a: [96, 96], l: [-166, -166, -166], L: [-166, -166, -166] }, { hip: [0, 21], t: 14.5, h: 18, A: { fk: [-91, 0], k: [1, 0.45] }, a: [97, 97], l: [-165.5, -165.5, -166], L: [-165.5, -165.5, -166] }] }
+  },
+  {
+    id: 'crunch', n: 'Crunch', g: ['core'], mu: 'Abs', eq: '', st: { n: 1, b: 1 }, imp: 0, lv: 1, met: 3.5,
+    how: ['Lie on your back, knees bent, feet flat.', 'Reach your hands toward your knees as you lift your shoulders.', 'Lower slowly.'], cue: 'Lift with your stomach, not your neck.',
+    an: { dur: 2.2, props: [mat(-55, 40)], k: [S(SUP, KUP, { a: [4, 4], A: [5, 5] }), S(SUP, KUP, { t: 175, t2: 145, h: 135, a: [-8, -8], A: [-6, -6] })] }
+  },
+  {
+    id: 'bicycle', n: 'Bicycle crunch', g: ['core'], mu: 'Abs, obliques', eq: '', st: { n: 1, b: 1 }, imp: 0, lv: 2, met: 4.5,
+    how: ['Lie on your back, hands by your ears, shoulders lifted.', 'Bring one knee in as you turn the opposite elbow toward it.', 'Switch sides in a pedaling motion.'], cue: 'Slow and controlled beats fast.',
+    an: { hz: 0.5,
+      dur: 1.8, props: [mat(-55, 55)], k: [
+        { hip: [0, 7], t: 176, t2: 150, h: 140, a: { hd: [3, -2] }, A: { hd: [4, -2] }, L: [100, 2], l: [22, 22] },
+        { hip: [0, 7], t: 176, t2: 152, h: 142, a: { hd: [3, -2] }, A: { hd: [4, -2] }, l: [100, 2], L: [22, 22] }]
+    }
+  },
+  {
+    id: 'dead_bug', n: 'Dead bug', g: ['core'], mu: 'Deep core', eq: '', st: {}, imp: 0, lv: 1, met: 3.0,
+    how: ['Lie on your back, arms up, knees bent over hips.', 'Slowly lower one arm overhead and the opposite leg toward the floor.', 'Return and switch sides.'], cue: 'Press your lower back into the floor.',
+    an: {
+      dur: 3.2, props: [mat(-60, 55)], k: [
+        S(SUP, { a: [90, 90], A: [92, 92], l: [90, 2], L: [92, 4] }),
+        S(SUP, { a: [90, 90], A: [168, 172], l: [12, 10], L: [92, 4] }),
+        S(SUP, { a: [90, 90], A: [92, 92], l: [90, 2], L: [92, 4] }),
+        S(SUP, { a: [168, 172], A: [92, 92], l: [90, 2], L: [12, 10] })]
+    }
+  },
+  {
+    id: 'bird_dog', n: 'Bird dog', g: ['core', 'balance'], mu: 'Back, glutes, core', eq: '', st: { k: 1, w: 1 }, imp: 0, lv: 1, met: 2.8,
+    how: ['Start on hands and knees.', 'Reach one arm forward and the opposite leg back.', 'Hold a breath, return, and switch.'], cue: 'Keep your hips square to the floor.',
+    an: {
+      dur: 3.2, props: [mat(-50, 70)], k: [
+        S(QUAD), S(QUAD, { A: [4, 4], l: [-178, -178, -178] }), S(QUAD), S(QUAD, { a: [3, 3], L: [-177, -177, -178] })]
+    }
+  },
+  {
+    id: 'leg_raise', n: 'Lying leg raise', g: ['core'], mu: 'Lower abs, hip flexors', eq: '', st: { b: 2 }, imp: 0, lv: 2, met: 3.8,
+    how: ['Lie on your back, legs straight, hands under your hips.', 'Lift your legs to vertical.', 'Lower slowly without arching your back.'], cue: 'Bend your knees to make it easier.',
+    an: { dur: 2.8, props: [mat(-55, 55)], k: [S(SUP, { l: [6, 6], L: [7, 7] }), S(SUP, { l: [84, 84], L: [86, 86] })] }
+  },
+  {
+    id: 'flutter', n: 'Flutter kicks', g: ['core'], mu: 'Lower abs', eq: '', st: { b: 2 }, imp: 0, lv: 2, met: 4.0,
+    how: ['Lie on your back, legs straight and slightly lifted.', 'Kick your legs up and down in small, quick movements.', 'Keep your lower back down.'], cue: 'Raise your legs higher if your back lifts.',
+    an: { dur: 0.8, props: [mat(-55, 55)], k: [S(SUP, { t: 178, t2: 168, h: 165, l: [20, 20], L: [6, 6] }), S(SUP, { t: 178, t2: 168, h: 165, l: [6, 6], L: [20, 20] })] }
+  },
+  {
+    id: 'hang_knee', n: 'Hanging knee raise', g: ['core'], mu: 'Abs, grip', eq: 'bar', st: { s: 1, w: 1 }, imp: 0, lv: 3, met: 4.0,
+    how: ['Hang from the bar with straight arms.', 'Lift your knees up to hip height.', 'Lower slowly without swinging.'], cue: 'Breathe out as you lift.',
+    an: { hz: 1.5, dur: 2.6, props: [{ k: 'bar', y: 118 }], k: [{ hip: [1, 54], t: 92, h: 92, a: { p: [4, 118] }, A: { p: [6, 118] }, l: [-92, -92, -40], L: [-90, -90, -40] }, { hip: [-1, 55], t: 96, h: 92, a: { p: [4, 118] }, A: { p: [6, 118] }, l: [2, -90, -20], L: [4, -88, -20] }] }
+  },
+
+  // ---------------- BALANCE ----------------
+  {
+    id: 'single_leg', n: 'Single-leg balance', g: ['balance'], mu: 'Ankles, hips, core', eq: '', st: { a: 1 }, imp: 0, lv: 1, met: 2.0, hold: 1, side: true,
+    how: ['Stand near a wall or chair.', 'Lift one foot off the floor.', 'Hold steady; switch legs halfway.'], cue: 'Fix your eyes on one spot.',
+    an: { dur: 4, k: [S(ST, HIPS, { L: [-20, -100] }), S(ST, HIPS, { t: 91, L: [-22, -101] })] }
+  },
+
+  // ---------------- MOBILITY / COOL-DOWN ----------------
+  {
+    id: 'cat_cow', n: 'Cat-cow', g: ['mobility'], mu: 'Spine', eq: '', st: { w: 1, k: 1 }, imp: 0, lv: 1, met: 2.3,
+    how: ['Start on hands and knees.', 'Round your back up and tuck your chin (cat).', 'Let your belly drop and lift your chest (cow).'], cue: 'Move slowly with your breath.',
+    an: { dur: 5, props: [mat(-35, 45)], k: [S(QUAD, { t: 32, t2: 0, h: -42 }), S(QUAD, { t: 4, t2: 30, h: 38 })] }
+  },
+  {
+    id: 'child_pose', n: 'Child’s pose', g: ['mobility'], mu: 'Back, hips, shoulders', eq: '', st: { k: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1,
+    how: ['Kneel and sit back toward your heels.', 'Walk your hands forward and rest your forehead down.', 'Breathe slowly into your back.'], cue: 'Widen your knees if your hips are tight.',
+    an: { hz: 0.9, dur: 5, props: [mat(-30, 60)], k: [{ hip: [-11, 14.6], t: 0, t2: -12, h: -24, a: { p: [50, 3] }, A: { p: [52, 3] }, l: [-28.9, -180, -180], L: [-28.4, -180, -180] }, { hip: [-11, 15.6], t: 3, t2: -9, h: -22, a: { p: [50, 3] }, A: { p: [52, 3] }, l: [-31, -180, -180], L: [-30.5, -180, -180] }] }
+  },
+  {
+    id: 'cobra', n: 'Cobra stretch', g: ['mobility'], mu: 'Abs, hip flexors, back', eq: '', st: { b: 1, w: 1 }, imp: 0, lv: 1, met: 2.3,
+    how: ['Lie face down, hands under your shoulders.', 'Gently press your chest up, hips stay down.', 'Lower slowly and repeat.'], cue: 'Only go as high as is comfortable.',
+    an: { hz: 1.3, dur: 4, props: [mat(-55, 50)], k: [S(PRN, { a: { p: [23, 2] }, A: { p: [25, 2] } }), S(PRN, { t: 8, t2: 58, h: 62, a: { p: [23, 2] }, A: { p: [25, 2] } })] }
+  },
+  {
+    id: 'down_dog', n: 'Downward dog', g: ['mobility'], mu: 'Hamstrings, calves, shoulders', eq: '', st: { w: 1, s: 1 }, imp: 0, lv: 1, met: 2.5,
+    how: ['From hands and knees, lift your hips up and back.', 'Press your chest toward your thighs.', 'Pedal your heels gently.'], cue: 'Bend your knees if your back rounds.',
+    an: { hz: 1.1,
+      dur: 4, props: [mat(-35, 55)], k: [
+        { hip: [-5, 45], t: -40, t2: -42, h: -62, a: { p: [39, 2] }, A: { p: [41, 2] }, l: { p: [-21, 3], f: 0 }, L: { p: [-19, 4], f: -10 } },
+        { hip: [-5, 45], l: { p: [-21, 4], f: -10 }, L: { p: [-19, 3], f: 0 } }]
+    }
+  },
+  {
+    id: 'hip_flexor', n: 'Kneeling hip flexor stretch', g: ['mobility'], mu: 'Hip flexors, thighs', eq: '', st: { k: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1, side: true,
+    how: ['Kneel on one knee, other foot flat in front.', 'Tuck your hips under and shift forward gently.', 'Hold; switch sides halfway.'], cue: 'Pad the back knee with a towel.',
+    an: { dur: 4, props: [mat(-45, 35)], k: [{ hip: [0, 24], t: 92, h: 92, a: { r: [3, 6] }, A: { r: [4, 6] }, L: { p: [20, 3] }, l: { p: [-35, 3], f: -180 } }, { hip: [3, 23.4], t: 95, h: 94, a: { r: [3, 6] }, A: { r: [4, 6] }, L: { p: [20, 3] }, l: { p: [-35, 3], f: -180 } }] }
+  },
+  {
+    id: 'quad_stretch', n: 'Standing quad stretch', g: ['mobility'], mu: 'Thighs', eq: '', st: { k: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1, side: true,
+    how: ['Stand on one leg; hold a wall if needed.', 'Bend the other knee and hold your foot behind you.', 'Hold; switch sides halfway.'], cue: 'Knees side by side; stand tall.',
+    an: { dur: 4, k: [S(ST, { a: [-40, -20], L: [-95, -260], A: { p: [-6, 48] } }), S(ST, { t: 89, a: [-42, -22], L: [-96, -261], A: { p: [-6.5, 48] } })] }
+  },
+  {
+    id: 'hamstring', n: 'Seated hamstring stretch', g: ['mobility'], mu: 'Hamstrings, back', eq: '', st: { b: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1,
+    how: ['Sit with your legs straight out in front.', 'Hinge forward from your hips and reach toward your toes.', 'Hold and breathe.'], cue: 'Reach long, not low.',
+    an: { hz: 0.6, dur: 5, props: [mat(-25, 60)], k: [{ hip: [0, 7], t: 62, t2: 44, h: 28, a: { p: [38, 10] }, A: { p: [40, 10] }, l: [-2, -2, 85], L: [-1, -1, 85] }, { hip: [0, 7], t: 56, t2: 38, h: 22, a: { p: [42, 9] }, A: { p: [44, 9] } }] }
+  },
+  {
+    id: 'knee_hug', n: 'Knee hug', g: ['mobility'], mu: 'Lower back, glutes', eq: '', st: {}, imp: 0, lv: 1, met: 2.3, hold: 1,
+    how: ['Lie on your back.', 'Hug both knees toward your chest.', 'Rock gently side to side if it feels good.'], cue: 'Keep your head relaxed on the floor.',
+    an: { hz: 0.5, dur: 4.5, props: [mat(-55, 30)], k: [S(SUP, { l: [112, 8], L: [114, 10], a: { p: [-5, 30] }, A: { p: [-4, 30] } }), S(SUP, { l: [118, 12], L: [120, 14], a: { p: [-7, 31] }, A: { p: [-6, 31] } })] }
+  },
+  {
+    id: 'calf_stretch', n: 'Wall calf stretch', g: ['mobility'], mu: 'Calves', eq: '', st: {}, imp: 0, lv: 1, met: 2.3, hold: 1, side: true,
+    how: ['Hands on a wall, one foot forward, the other back.', 'Keep the back heel down and lean into the wall.', 'Hold; switch legs halfway.'], cue: 'Back leg straight, toes forward.',
+    an: { hz: 1.2, dur: 4, props: [{ k: 'wall', x: 38 }], k: [{ hip: [-2, 46], t: 70, h: 74, a: { p: [37, 78] }, A: { p: [37, 80] }, l: { p: [11, 3] }, L: { p: [-26, 3], f: 0 } }, { hip: [0, 45.5], t: 68, h: 72, a: { p: [37, 78] }, A: { p: [37, 80] }, l: { p: [11, 3] }, L: { p: [-26, 3], f: 0 } }] }
+  },
+  {
+    id: 'chest_opener', n: 'Chest opener', g: ['mobility'], mu: 'Chest, shoulders', eq: '', st: { s: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1,
+    how: ['Clasp your hands behind your back.', 'Straighten your arms and lift them gently.', 'Open your chest and breathe.'], cue: 'Do not lean forward.',
+    an: { hz: 0.15, dur: 4.5, k: [S(ST, { t: 92, a: [-118, -120], A: [-116, -118] }), S(ST, { t: 95, h: 100, a: [-134, -136], A: [-132, -134] })] }
+  },
+  {
+    id: 'shoulder_cross', n: 'Cross-body shoulder stretch', g: ['mobility'], mu: 'Shoulders, upper back', eq: '', st: { s: 1 }, imp: 0, lv: 1, met: 2.3, hold: 1, side: true,
+    how: ['Bring one arm across your chest.', 'Hold it above the elbow with the other hand.', 'Hold; switch sides halfway.'], cue: 'Keep the shoulder down.',
+    an: { front: true, dur: 4, k: [S(FR, { A: { fk: [-178, -178], k: [0.85, 0.85] }, a: { p: [-5, 78], b: -1 } }), S(FR, { A: { fk: [-180, -180], k: [0.9, 0.9] }, a: { p: [-6, 78.5], b: -1 } })] }
+  },
+  {
+    id: 'neck_tilt', n: 'Neck side stretch', g: ['mobility'], mu: 'Neck, upper traps', eq: '', st: { n: 1 }, imp: 0, lv: 1, met: 2.0,
+    how: ['Sit or stand tall.', 'Slowly tilt one ear toward your shoulder.', 'Return to centre and tilt to the other side.'], cue: 'Gentle; no bouncing.',
+    an: { front: true, dur: 6, k: [S(FR, { h: 90 }), S(FR, { h: 115 }), S(FR, { h: 90 }), S(FR, { h: 65 })] }
+  },
+  {
+    id: 'breathing', n: 'Deep breathing', g: ['mobility'], mu: 'Relaxation', eq: '', st: {}, imp: 0, lv: 1, met: 1.8,
+    how: ['Stand or sit tall.', 'Breathe in through your nose as your arms rise.', 'Breathe out slowly as they float down.'], cue: 'Make the out-breath longer than the in-breath.',
+    an: { front: true, dur: 8, k: [S(FR), S(FR, { a: [-250, -258], A: [70, 78] })], ts: [0, 0.42] }
+  }
+];
+const EXM = Object.fromEntries(EX.map(e => [e.id, e]));
+
+// ===== Home Workout Coach: app =====
+(() => {
+  'use strict';
+  // ---------- helpers ----------
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const pad = n => String(n).padStart(2, '0');
+  const mmss = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + pad(s % 60); };
+  const dkey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  const fromKey = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+  const wdIdx = d => (d.getDay() + 6) % 7;
+  const addDays = (d, n) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() + n); return x; };
+  const monday = d => addDays(d, -wdIdx(d));
+  const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const DOWL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const hash = str => { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const rnd01 = s => (hash(s) % 100000) / 100000;
+  const listJoin = a => a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  const metOf = e => typeof e.met === 'number' ? e.met : e.met[1];
+
+  const ICON = {
+    today: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+    week: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    lib: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
+    prog: '<path d="M4 4v16h16"/><path d="M8 15l4-4 3 3 5-6"/>',
+    me: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+    play: '<path d="M7 4.5v15l13-7.5z" fill="currentColor" stroke="none"/>',
+    pause: '<rect x="6" y="4.5" width="4" height="15" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4.5" width="4" height="15" rx="1" fill="currentColor" stroke="none"/>',
+    next: '<path d="M5 5l10 7-10 7z" fill="currentColor" stroke="none"/><path d="M19 5v14"/>',
+    prev: '<path d="M19 5L9 12l10 7z" fill="currentColor" stroke="none"/><path d="M5 5v14"/>',
+    close: '<path d="M6 6l12 12M18 6L6 18"/>',
+    sound: '<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 9a4 4 0 010 6M19 6.5a7.5 7.5 0 010 11"/>',
+    mute: '<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>',
+    swap: '<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>',
+    shuffle: '<path d="M3 7h3.5c2 0 3.2 1 4.4 2.6l2.2 3c1.2 1.6 2.4 2.4 4.4 2.4H21M18 12l3 3-3 3M3 17h3.5c1.3 0 2.2-.4 3-1.1M13.6 8.1C14.4 7.4 15.3 7 16.5 7H21M18 4l3 3-3 3"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+    x: '<path d="M7 7l10 10M17 7L7 17"/>'
+  };
+  const ic = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+
+  // ---------- options ----------
+  const ISSUES = [['k', 'Knees'], ['b', 'Lower back'], ['s', 'Shoulders'], ['w', 'Wrists'], ['n', 'Neck'], ['h', 'Hips'], ['a', 'Ankles & feet']];
+  const ISSUE_NAME = { k: 'knees', b: 'lower back', s: 'shoulders', w: 'wrists', n: 'neck', h: 'hips', a: 'ankles' };
+  const EQUIP = [['chair', 'Sturdy chair or step'], ['mat', 'Exercise mat'], ['dumbbell', 'Dumbbells'], ['kettlebell', 'Kettlebell'], ['band', 'Resistance band'], ['bar', 'Pull-up bar'], ['rope', 'Jump rope'], ['treadmill', 'Treadmill'], ['bike', 'Exercise bike'], ['elliptical', 'Elliptical'], ['rower', 'Rowing machine']];
+  const EQ_NAME = Object.fromEntries(EQUIP);
+  const GOALS = [['lose', 'Lose weight'], ['fit', 'Get fitter'], ['strong', 'Build strength'], ['flex', 'Mobility & ease']];
+  const LEVELS = [[1, 'Beginner'], [2, 'Intermediate'], [3, 'Advanced']];
+  const CARDIO = [['walk', 'Walk outside'], ['jog', 'Jog or run-walk'], ['cycle', 'Cycle outside'], ['machine', 'My cardio machine'], ['indoor', 'Indoors, no machine']];
+  const GROUP_NAME = { warmup: 'Warm-up', cardio: 'Cardio', steady: 'Cardio session', push: 'Push (chest, shoulders, arms)', pull: 'Pull (back, arms)', legs: 'Legs', glutes: 'Glutes & hips', core: 'Core', balance: 'Balance', mobility: 'Stretch & mobility' };
+  const LIB_CATS = [['all', 'All'], ['warmup', 'Warm-up'], ['cardio', 'Cardio'], ['steady', 'Walk, run, machines'], ['push', 'Push'], ['pull', 'Pull'], ['legs', 'Legs'], ['glutes', 'Glutes'], ['core', 'Core'], ['balance', 'Balance'], ['mobility', 'Stretch'], ['equip', 'With equipment']];
+
+  // ---------- storage ----------
+  const LS = {
+    get(k, d) { try { const v = localStorage.getItem('hwc.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('hwc.' + k, JSON.stringify(v)); } catch (e) { } }
+  };
+  const EXAMPLE = { name: '', age: 35, height: 170, weight: 75, target: 70, mins: 30, days: [0, 1, 3, 4, 5], goal: 'lose', level: 1, issues: [], careful: false, impact: true, equip: ['chair'], cardio: 'walk', sound: true, adapt: 0 };
+  let P = LS.get('profile', null);
+  let LOG = LS.get('log', null) || { workouts: [], weights: [] };
+  let OV = LS.get('ov', {});
+  let SES = LS.get('session', null);
+  let stamp = LS.get('stamp', 0);
+  const prof = () => Object.assign({}, EXAMPLE, P || {});
+  function saveAll() {
+    stamp = Date.now();
+    if (LOG.workouts.length > 400) LOG.workouts = LOG.workouts.slice(-400);
+    if (LOG.weights.length > 400) LOG.weights = LOG.weights.slice(-400);
+    LS.set('profile', P); LS.set('log', LOG); LS.set('stamp', stamp);
+    cloudSave();
+  }
+  function saveOV() {
+    const cut = dkey(addDays(new Date(), -10));
+    for (const k of Object.keys(OV)) if (k < cut) delete OV[k];
+    LS.set('ov', OV);
+  }
+  const persistSes = () => LS.set('session', SES);
+
+  // ---------- accounts & sync ----------
+  // claude: inside a Claude artifact the viewer's Claude account is the login and data goes to a private per-person store
+  // firebase: on a self-hosted copy (e.g. GitHub Pages) with window.HWC_FIREBASE set, Google or email sign-in + Firestore
+  // local: data stays in this browser only
+  const FBCFG = (() => { try { const c = window.HWC_FIREBASE; return c && c.apiKey && !/YOUR_|PASTE/i.test(c.apiKey) ? c : null; } catch (e) { return null; } })();
+  let MODE = 'local', ACCOUNT = null, FB = null, cloud = null, cloudBusy = false, cloudDirty = false, cloudState = FBCFG ? 'connecting' : 'checking';
+  function mergeData(d) {
+    if (!d) return;
+    const remoteNewer = (d.stamp || 0) > stamp;
+    const ws = new Map();
+    for (const w of [...((d.log && d.log.workouts) || []), ...LOG.workouts]) ws.set(w.ts, Object.assign({}, ws.get(w.ts) || {}, w));
+    const wt = new Map();
+    const first = remoteNewer ? LOG.weights : ((d.log && d.log.weights) || []), second = remoteNewer ? ((d.log && d.log.weights) || []) : LOG.weights;
+    for (const w of [...first, ...second]) wt.set(w.d, w);
+    LOG = { workouts: [...ws.values()].sort((x, y) => x.ts - y.ts), weights: [...wt.values()].sort((x, y) => x.d < y.d ? -1 : 1) };
+    if (remoteNewer && d.profile) P = d.profile; else if (!P && d.profile) P = d.profile;
+    stamp = Math.max(stamp, d.stamp || 0);
+    LS.set('profile', P); LS.set('log', LOG); LS.set('stamp', stamp);
+  }
+  async function cloudInit() {
+    if (FBCFG) return fbBoot();
+    try {
+      const c = window.claude;
+      if (!c || typeof c.use !== 'function') { cloudState = 'local'; refreshAcct(); return; }
+      const [db, user] = await Promise.all([c.use('db'), c.use('user')]);
+      if (!db || !user) { cloudState = 'local'; refreshAcct(); return; }
+      const id = await user.id();
+      if (!id) { cloudState = 'local'; refreshAcct(); return; }
+      const ref = db.doc('data/users/' + id + '/fit');
+      const snap = await Promise.race([ref.get(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000))]);
+      cloud = { ref }; MODE = 'claude'; ACCOUNT = { claude: true }; cloudState = 'on';
+      const before = stamp;
+      if (snap && snap.exists) mergeData(snap.data());
+      if (P || LOG.workouts.length || LOG.weights.length) cloudSave();
+      if (stamp !== before && !$('#player')) render();
+    } catch (e) { cloud = null; cloudState = 'local'; }
+    refreshAcct();
+  }
+  async function fbBoot() {
+    try {
+      const base = 'https://www.gstatic.com/firebasejs/10.12.2/';
+      const [A, Au, Fs] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+      const app = A.initializeApp(FBCFG);
+      FB = { Au, Fs, auth: Au.getAuth(app), db: Fs.getFirestore(app) };
+      cloudState = 'ready'; refreshGate();
+      try { await Au.getRedirectResult(FB.auth); } catch (e) { gateErr(authMsg(e)); }
+      Au.onAuthStateChanged(FB.auth, async u => {
+        if (u) {
+          ACCOUNT = { uid: u.uid, name: u.displayName || '', email: u.email || '' }; MODE = 'firebase'; cloudState = 'on'; LS.set('guest', false);
+          try { const snap = await Fs.getDoc(Fs.doc(FB.db, 'users', u.uid)); if (snap.exists()) mergeData(snap.data()); } catch (e) { }
+          if (P && !P.name && ACCOUNT.name) P.name = ACCOUNT.name.split(' ')[0];
+          cloudSave(); LS.set('welcomed', true); closeGate(); render();
+        } else {
+          ACCOUNT = null; MODE = 'local'; cloudState = 'ready';
+          if (!LS.get('guest', false)) showGate(LS.get('welcomed', false) ? 'auth' : 'welcome');
+        }
+        refreshAcct();
+      });
+    } catch (e) { FB = null; cloudState = 'offline'; refreshGate(); refreshAcct(); }
+  }
+  async function cloudSave() {
+    if (MODE === 'local') return;
+    if (cloudBusy) { cloudDirty = true; return; }
+    cloudBusy = true;
+    const body = JSON.parse(JSON.stringify({ profile: P, log: LOG, stamp }));
+    try {
+      if (MODE === 'claude' && cloud) await cloud.ref.set(body);
+      else if (MODE === 'firebase' && FB && ACCOUNT) await FB.Fs.setDoc(FB.Fs.doc(FB.db, 'users', ACCOUNT.uid), body);
+    } catch (e) { if (MODE === 'claude' && e && (e.code === 'invalid_argument' || e.code === 'revoked' || e.code === 'not_granted')) { cloud = null; MODE = 'local'; cloudState = 'local'; refreshAcct(); } }
+    cloudBusy = false;
+    if (cloudDirty) { cloudDirty = false; cloudSave(); }
+  }
+  function authMsg(e) {
+    const c = (e && e.code) || '';
+    if (c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found')) return 'That email and password don’t match. Try again or reset your password.';
+    if (c.includes('email-already-in-use')) return 'An account with this email already exists. Sign in instead.';
+    if (c.includes('weak-password')) return 'Use a password with at least 6 characters.';
+    if (c.includes('invalid-email')) return 'Check the email address.';
+    if (c.includes('network')) return 'No connection. Check your internet and try again.';
+    if (c.includes('popup-closed') || c.includes('cancelled')) return '';
+    if (c.includes('unauthorized-domain')) return 'This website isn’t allowed to sign in yet. Add it under Authorized domains in Firebase.';
+    return 'Sign-in didn’t work. Please try again.';
+  }
+  function acctLine() {
+    if (MODE === 'claude') return ['on', 'Signed in with your Claude account. Your progress is saved to it.'];
+    if (MODE === 'firebase' && ACCOUNT) return ['on', `Signed in as ${ACCOUNT.email || ACCOUNT.name}. Your progress is saved to your account.`];
+    if (cloudState === 'checking') return ['off', 'Checking your account…'];
+    if (FBCFG) return ['off', 'Not signed in. Progress is saved on this device only.'];
+    return ['off', 'Progress is saved in this browser on this device.'];
+  }
+  function refreshAcct() { for (const e of $$('[data-acct]')) { const [st, t] = acctLine(); e.innerHTML = `<span class="dot ${st === 'on' ? '' : 'off'}"></span><span>${esc(t)}</span>`; } }
+
+  // ---------- welcome & sign-in screen ----------
+  let gateStep = null, gateFig = null;
+  function needGate() {
+    if (FBCFG) return !LS.get('welcomed', false) || (!ACCOUNT && !LS.get('guest', false));
+    return !LS.get('welcomed', false);
+  }
+  function showGate(step) {
+    gateStep = step || 'welcome';
+    let g = $('#gate');
+    if (g) g.classList.toggle('auth', gateStep === 'auth');
+    if (!g) {
+      g = document.createElement('div'); g.id = 'gate'; g.className = 'gate'; g.setAttribute('role', 'dialog'); g.setAttribute('aria-label', 'Welcome');
+      g.innerHTML = `<div class="gwrap"><div class="gstage" id="gstage"></div><div><div class="eyebrow" style="color:color-mix(in srgb,var(--on-hero) 70%,transparent)">Daily workouts at home</div><h1 class="gtitle">Home<br>Workout<br>Coach</h1></div><div id="gbody" style="display:flex;flex-direction:column;gap:14px"></div></div>`;
+      document.body.appendChild(g); g.classList.toggle('auth', gateStep === 'auth');
+      gateFig = FIG.build(EXM.march, { view: 'orbit' }); $('#gstage').appendChild(gateFig.svg); FIG.play(gateFig);
+    }
+    refreshGate();
+  }
+  function closeGate() { const g = $('#gate'); if (g) g.remove(); gateStep = null; gateFig = null; }
+  function gateErr(t) { const e = $('#gerr'); if (e) e.textContent = t || ''; }
+  function refreshGate() {
+    const b = $('#gbody'); if (!b) return;
+    if (gateStep === 'welcome') {
+      b.innerHTML = `<ul class="gpoints"><li>A plan that fits the minutes you have, every day</li><li>Leaves out moves that strain sore knees, backs or shoulders</li><li>A moving coach you can follow from the side, at an angle or from the front</li><li>Walks, runs and rides keep timing when your phone is locked</li></ul>
+        <button class="btn primary big" data-act="g-start">Get started</button>
+        ${FBCFG ? '<button class="btn ghost" data-act="g-signin">I already have an account</button>' : ''}`;
+    } else if (gateStep === 'auth') {
+      const ready = !!FB;
+      b.innerHTML = `<div class="h2" style="font-size:28px">Sign in to save your progress</div>
+        <div class="note">Your plan, workouts and weight log are kept in your account, so you can switch phones without losing anything.</div>
+        <button class="btn light" data-act="g-google" ${ready ? '' : 'disabled'}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 01-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2.1v2.8A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.7 14.1a6.6 6.6 0 010-4.2V7.1H2.1a11 11 0 000 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 002.1 7.1l3.6 2.8C6.6 7.4 9.1 5.4 12 5.4z"/></svg> Continue with Google</button>
+        <div class="or">or use email</div>
+        <form data-form="g-email" class="field" style="gap:10px" novalidate>
+          <label class="sr" for="g-em" style="position:absolute;left:-9999px">Email</label><input class="inp" id="g-em" type="email" autocomplete="email" placeholder="Email">
+          <label for="g-pw" style="position:absolute;left:-9999px">Password</label><input class="inp" id="g-pw" type="password" autocomplete="current-password" placeholder="Password (6+ characters)">
+          <div class="row"><button class="btn primary" type="submit" style="flex:1" ${ready ? '' : 'disabled'}>Sign in</button><button class="btn ghost" type="button" data-act="g-create" style="flex:1" ${ready ? '' : 'disabled'}>Create account</button></div>
+        </form>
+        <button class="linkbtn" data-act="g-reset">Forgot password?</button>
+        <div id="gerr" class="err" role="alert">${cloudState === 'offline' ? 'Couldn’t reach the sign-in service. Check your connection, or continue without an account.' : ready ? '' : '<span class="note">Connecting…</span>'}</div>
+        <button class="btn ghost" data-act="g-guest">Use without an account</button>
+        <div class="note">Without an account, progress is saved on this phone only.</div>`;
+    }
+  }
+  async function gateAction(a) {
+    const em = () => ($('#g-em') || {}).value.trim(), pw = () => ($('#g-pw') || {}).value;
+    if (a === 'g-start') {
+      LS.set('welcomed', true);
+      if (FBCFG && !ACCOUNT) return showGate('auth');
+      closeGate();
+      if (!P) { go('profile'); toast('Tell me a little about you to build your plan'); } else render();
+      return;
+    }
+    if (a === 'g-signin') { LS.set('welcomed', true); return showGate('auth'); }
+    if (a === 'g-guest') { LS.set('guest', true); LS.set('welcomed', true); closeGate(); if (!P) go('profile'); else render(); refreshAcct(); return; }
+    if (!FB) return;
+    const Au = FB.Au;
+    gateErr('');
+    try {
+      if (a === 'g-google') {
+        const prov = new Au.GoogleAuthProvider();
+        try { await Au.signInWithPopup(FB.auth, prov); }
+        catch (e) { if (/popup-blocked|operation-not-supported|cancelled-popup/.test(e.code || '')) await Au.signInWithRedirect(FB.auth, prov); else throw e; }
+      } else if (a === 'g-email') {
+        if (!em() || !pw()) return gateErr('Enter your email and password.');
+        await Au.signInWithEmailAndPassword(FB.auth, em(), pw());
+      } else if (a === 'g-create') {
+        if (!em() || pw().length < 6) return gateErr('Enter your email and a password with at least 6 characters.');
+        await Au.createUserWithEmailAndPassword(FB.auth, em(), pw());
+      } else if (a === 'g-reset') {
+        if (!em()) return gateErr('Type your email above, then tap “Forgot password?” again.');
+        await Au.sendPasswordResetEmail(FB.auth, em());
+        gateErr('Check your email for a link to reset your password.');
+      }
+    } catch (e) { gateErr(authMsg(e)); }
+  }
+  async function signOut() {
+    if (MODE === 'firebase' && FB) {
+      const r = await confirmBox('Sign out?', 'Your progress stays in your account. This phone will forget it until you sign in again.', [['Cancel', null, 'primary'], ['Sign out', 'yes', 'ghost']]);
+      if (r !== 'yes') return;
+      P = null; LOG = { workouts: [], weights: [] }; stamp = 0; LS.set('profile', null); LS.set('log', LOG); LS.set('stamp', 0); LS.set('guest', false);
+      await FB.Au.signOut(FB.auth);
+    }
+  }
+
+  // ---------- planner ----------
+  const ROT = {
+    lose: ['full', 'cardio', 'lower', 'upper', 'full', 'cardio', 'mobility'],
+    fit: ['full', 'cardio', 'lower', 'upper', 'mobility', 'full', 'cardio'],
+    strong: ['full', 'lower', 'upper', 'full', 'lower', 'upper', 'mobility'],
+    flex: ['mobility', 'core', 'mobility', 'balance', 'mobility', 'core', 'mobility']
+  };
+  const FOCUS = {
+    full: { title: 'Full body', slots: ['legs', 'push', 'core', 'glutes', 'pull', 'core', 'legs', 'push'], circ: 'Strength circuit' },
+    lower: { title: 'Legs & glutes', slots: ['legs', 'glutes', 'core', 'legs', 'glutes', 'core', 'balance', 'legs'], circ: 'Lower-body circuit' },
+    upper: { title: 'Upper body & core', slots: ['push', 'pull', 'core', 'push', 'pull', 'core', 'push', 'pull'], circ: 'Upper-body circuit' },
+    cardio: { title: 'Cardio & core', slots: ['cardio', 'core', 'cardio', 'legs', 'cardio', 'core', 'cardio', 'glutes'], circ: 'Cardio circuit', share: 0.55 },
+    mobility: { title: 'Mobility & stretch', slots: ['mobility', 'core', 'mobility', 'glutes', 'mobility', 'balance', 'mobility', 'mobility'], circ: 'Mobility flow', share: 0.3, gentle: true },
+    core: { title: 'Core & balance', slots: ['core', 'balance', 'glutes', 'core', 'balance', 'core', 'mobility', 'core'], circ: 'Core circuit', share: 0.25 },
+    balance: { title: 'Balance & strength', slots: ['balance', 'legs', 'core', 'balance', 'glutes', 'core', 'mobility', 'balance'], circ: 'Balance circuit', share: 0.25 }
+  };
+  const SHARE = { lose: 0.45, fit: 0.35, strong: 0.2, flex: 0.25 };
+  const FALLBACK = { push: ['pull', 'core'], pull: ['push', 'core'], legs: ['glutes', 'core'], glutes: ['legs', 'core'], core: ['glutes', 'mobility'], cardio: ['legs', 'core'], balance: ['core', 'glutes'], mobility: ['core', 'balance'] };
+  const STEADY_ALT = { tread_run: 'tread_walk', jog: 'walk', cycle: 'walk', rower: 'walk_in', bike: 'walk_in', elliptical: 'walk_in', tread_walk: 'walk_in' };
+  const STEADY_SHORT = { walk: 'walk', jog: 'run-walk', cycle: 'ride', walk_in: 'cardio', tread_walk: 'treadmill', tread_run: 'treadmill run', bike: 'bike', elliptical: 'elliptical', rower: 'row' };
+
+  // knees: no jumping and nothing that loads or kneels on the knee; ankles: no jumping
+  const noJump = p => !p.impact || p.issues.includes('k') || p.issues.includes('a');
+  const limitOf = (p, a) => (a === 'k' || p.careful) ? 1 : 2;
+  function allowed(e, p, loose) {
+    if (e.eq && !e.eq.split('|').some(q => p.equip.includes(q))) return false;
+    if (e.imp && noJump(p)) return false;
+    if (!loose && e.lv > p.level) return false;
+    for (const a of p.issues) if ((e.st[a] || 0) >= limitOf(p, a)) return false;
+    return true;
+  }
+  function blockedBy(e, p) {
+    const r = [];
+    for (const a of p.issues) if ((e.st[a] || 0) >= limitOf(p, a) || (e.imp && (a === 'k' || a === 'a'))) r.push(ISSUE_NAME[a]);
+    return r;
+  }
+  function score(e, p, seed, recent) {
+    let s = 0;
+    for (const a of p.issues) s -= (e.st[a] || 0) * 1.6;
+    s -= Object.values(e.st).reduce((t, v) => t + v, 0) * 0.15;
+    if (e.eq) s += p.goal === 'strong' ? 1.6 : 0.9;
+    s -= Math.abs(p.level - e.lv) * 0.5;
+    if (p.goal === 'lose') s += metOf(e) * 0.08;
+    if (p.goal === 'flex') s -= e.imp;
+    if (recent.has(e.id)) s -= 0.9;
+    return s + rnd01(seed + e.id) * 1.8;
+  }
+  function candidates(group, p, seed, recent, used) {
+    return EX.filter(e => e.g.includes(group) && !e.g.includes('steady') && allowed(e, p) && !used.has(e.id))
+      .map(e => [score(e, p, seed, recent), e]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
+  }
+  function pick(group, p, seed, recent, used) {
+    for (const g of [group, ...(FALLBACK[group] || [])]) { const c = candidates(g, p, seed, recent, used); if (c.length) return { e: c[0], g }; }
+    return null;
+  }
+  function steadyFor(p, n) {
+    const m = ['treadmill', 'bike', 'elliptical', 'rower'].filter(x => p.equip.includes(x));
+    let id = null;
+    if (p.cardio === 'machine') id = m.length ? (m[n % m.length] === 'treadmill' ? (p.level >= 2 && p.impact ? 'tread_run' : 'tread_walk') : m[n % m.length]) : 'walk_in';
+    else if (p.cardio === 'jog') id = 'jog';
+    else if (p.cardio === 'cycle') id = 'cycle';
+    else if (p.cardio === 'walk') id = 'walk';
+    else return null;
+    while (id && !allowed(EXM[id], p, true)) id = STEADY_ALT[id] || null;
+    return id;
+  }
+  function segsFor(id, secs, p) {
+    const run = id === 'jog' || id === 'tread_run', walkish = id === 'walk' || id === 'tread_walk' || id === 'walk_in';
+    const HARD = run ? 'Jog' : walkish ? 'Brisk' : 'Push harder', EASY = run ? 'Walk' : 'Easy';
+    const L = p.goal === 'flex' ? 1 : p.level;
+    const pat = run ? [[60, 120], [180, 60], [300, 60]][L - 1] : walkish ? [[120, 60], [180, 60], [240, 60]][L - 1] : [[60, 120], [120, 60], [90, 30]][L - 1];
+    const warm = clamp(Math.round(secs * 0.15 / 30) * 30, 60, 300), cool = clamp(Math.round(secs * 0.1 / 30) * 30, 60, 180);
+    let mid = secs - warm - cool;
+    const segs = [{ lab: EASY + ' warm-up', s: warm, i: 0 }];
+    if (mid < 60) segs[0].s += Math.max(0, mid);
+    else {
+      let h = true;
+      while (mid > 0) {
+        let d = Math.min(mid, h ? pat[0] : pat[1]);
+        if (mid - d > 0 && mid - d < 45) d = mid;
+        segs.push({ lab: h ? HARD : EASY, s: d, i: h ? 1 : 0 }); mid -= d; h = !h;
+      }
+    }
+    segs.push({ lab: EASY + ' cool-down', s: cool, i: 0 });
+    return segs;
+  }
+  function fitCircuit(S, work, rest, rr, gentle) {
+    let best = null;
+    const ideal = gentle ? 8 : 6, maxN = gentle ? 10 : 8;
+    for (let n = 3; n <= maxN; n++) for (let R = 1; R <= 5; R++) {
+      const tot = R * n * work + R * (n - 1) * rest + (R - 1) * rr;
+      const cost = Math.abs(tot - S) / 60 + (R === 1 && S > 420 && !gentle ? 1.5 : 0) + Math.abs(n - ideal) * 0.45 + (R > 3 ? 0.6 : 0) + (gentle && R > 2 ? 1.2 : 0);
+      if (!best || cost < best.cost) best = { n, R, tot, cost };
+    }
+    return best;
+  }
+  function recentIds(key) {
+    const lo = dkey(addDays(fromKey(key), -4)), s = new Set();
+    for (const w of LOG.workouts) if (w.d >= lo && w.d < key) for (const id of w.ids || []) s.add(id);
+    return s;
+  }
+  function focusFor(p, date) {
+    const wd = wdIdx(date), days = p.days.slice().sort((a, b) => a - b);
+    let pos = days.indexOf(wd);
+    const planned = pos >= 0;
+    if (pos < 0) pos = days.filter(d => d < wd).length;
+    const weekN = Math.round((monday(date) - new Date(2024, 0, 1)) / (7 * 864e5));
+    const rot = ROT[p.goal] || ROT.fit;
+    return { focus: rot[(weekN * Math.max(1, days.length) + pos) % rot.length], planned, n: weekN + pos };
+  }
+
+  function planFor(date, force) {
+    const p = prof(), key = dkey(date), ov = OV[key] || {};
+    const ff = focusFor(p, date);
+    if (!ff.planned && !force && !ov.force) return { rest: true, key, date };
+    let focus = ov.focus || ff.focus;
+    const mins = ov.mins || p.mins, seed = key + ':' + (ov.seed || 0), recent = recentIds(key);
+    const F = Object.assign({}, FOCUS[focus]);
+    let slots = F.slots.slice();
+    if (p.age >= 60 && (focus === 'full' || focus === 'lower' || focus === 'upper')) slots[5] = 'balance';
+    const T = mins * 60;
+    const warm = clamp(Math.round(T * 0.12 / 30) * 30, 120, 360), cool = clamp(Math.round(T * 0.1 / 30) * 30, 90, 360);
+    let M = T - warm - cool - 30;
+    let sid = ov.steady || steadyFor(p, ff.n);
+    if (sid && !allowed(EXM[sid], p, true)) sid = steadyFor(p, ff.n);
+    if (focus === 'mobility' && !ov.steady && (sid === 'jog' || sid === 'tread_run')) sid = sid === 'jog' ? 'walk' : 'tread_walk';
+    const share = F.share != null ? F.share : SHARE[p.goal];
+    let C = sid ? Math.round(M * share / 60) * 60 : 0;
+    if (C < 300) C = 0;
+    if (!C) sid = null;
+    let S = M - C;
+    if (!sid && share >= 0.35 && focus !== 'mobility' && focus !== 'cardio') slots = slots.flatMap((g, i) => i % 2 ? [g] : ['cardio', g]).slice(0, 8);
+    const base = { 1: [30, 30], 2: [40, 20], 3: [45, 15] }[p.level];
+    let work = clamp(base[0] + (p.adapt || 0) * 5, 20, 60), rest = clamp(base[1] - (p.adapt || 0) * 5, 10, 45);
+    if (F.gentle) { work = 45; rest = 10; }
+    const rr = F.gentle ? 20 : 60;
+    const fit = fitCircuit(S, work, rest, rr, F.gentle);
+    const used = new Set(), blocks = [];
+    const swaps = ov.swaps || {}, rm = new Set(ov.rm || []);
+    const takeItem = (key2, g) => {
+      let r = pick(g, p, seed, recent, used);
+      if (swaps[key2] && EXM[swaps[key2]] && allowed(EXM[swaps[key2]], p, true)) r = { e: EXM[swaps[key2]], g: r ? r.g : g };
+      if (!r) return null;
+      used.add(r.e.id);
+      return { id: r.e.id, g: r.g, key: key2 };
+    };
+    // warm-up
+    const wk = Math.max(3, Math.round(warm / 40)), ws = Math.round(warm / wk / 5) * 5;
+    const wItems = [];
+    const firstW = ['march', 'step_jacks', 'heel_digs'].find(id => allowed(EXM[id], p) && !used.has(id));
+    for (let i = 0; i < wk; i++) {
+      const k2 = 'w' + i;
+      let it;
+      if (i === 0 && firstW && !swaps[k2]) { used.add(firstW); it = { id: firstW, g: 'warmup', key: k2 }; }
+      else it = takeItem(k2, 'warmup');
+      if (it && !rm.has(k2)) wItems.push(Object.assign(it, { s: EXM[it.id].side ? Math.max(ws, 40) : ws }));
+    }
+    // circuit
+    const cItems = [];
+    for (let i = 0; i < fit.n; i++) { const k2 = 'c' + i; const it = takeItem(k2, slots[i % slots.length]); if (it && !rm.has(k2)) cItems.push(Object.assign(it, { s: work })); }
+    // cool-down
+    const ck = Math.max(2, Math.round(cool / 45)), cs = clamp(Math.round(cool / ck / 5) * 5, 30, 60);
+    const cItems2 = [];
+    for (let i = 0; i < ck; i++) { const k2 = 'z' + i; const it = takeItem(k2, 'mobility'); if (it && !rm.has(k2)) cItems2.push(Object.assign(it, { s: EXM[it.id].side ? Math.max(cs * 2, 60) : cs })); }
+    if (wItems.length) blocks.push({ k: 'warm', title: 'Warm-up', items: wItems });
+    const circ = cItems.length ? { k: 'circ', title: F.circ, items: cItems, R: fit.R, work, rest, rr } : null;
+    const st = sid ? { k: 'steady', title: EXM[sid].n, id: sid, s: C, segs: segsFor(sid, C, p) } : null;
+    if (focus === 'cardio') { if (st) blocks.push(st); if (circ) blocks.push(circ); }
+    else { if (circ) blocks.push(circ); if (st) blocks.push(st); }
+    if (cItems2.length) blocks.push({ k: 'cool', title: 'Cool-down', items: cItems2 });
+    const plan = { key, date, focus, title: F.title + (st ? ' + ' + STEADY_SHORT[sid] : ''), blocks, sid, target: mins };
+    plan.steps = buildSteps(plan, p.weight);
+    plan.secs = plan.steps.reduce((t, s) => t + s.s, 0);
+    plan.kcal = Math.round(plan.steps.reduce((t, s) => t + s.kc, 0));
+    plan.moves = new Set(plan.steps.filter(s => s.k === 'ex').map(s => s.id)).size;
+    return plan;
+  }
+  function kcalStep(st, kg) {
+    const f = kg * 3.5 / 200 / 60;
+    if (st.k === 'ex') return metOf(EXM[st.id]) * st.s * f;
+    if (st.k === 'steady') return st.segs.reduce((t, g) => t + EXM[st.id].met[g.i] * g.s, 0) * f;
+    return 1.8 * st.s * f;
+  }
+  function buildSteps(plan, kg) {
+    const out = [{ k: 'prep', s: 10 }];
+    plan.blocks.forEach((b, bi) => {
+      if (bi > 0) out.push({ k: 'tr', s: 10 });
+      if (b.k === 'steady') { out.push({ k: 'steady', id: b.id, s: b.s, segs: b.segs, blk: b.title }); return; }
+      if (b.k === 'circ') {
+        for (let r = 0; r < b.R; r++) b.items.forEach((it, i) => {
+          out.push({ k: 'ex', id: it.id, s: it.s, blk: b.title, r: r + 1, R: b.R });
+          if (i < b.items.length - 1) out.push({ k: 'rest', s: b.rest });
+          else if (r < b.R - 1) out.push({ k: 'rest', s: b.rr, big: 1 });
+        });
+        return;
+      }
+      b.items.forEach((it, i) => { out.push({ k: 'ex', id: it.id, s: it.s, blk: b.title }); if (i < b.items.length - 1) out.push({ k: 'tr', s: 5 }); });
+    });
+    let n = 0;
+    for (const s of out) { s.kc = kcalStep(s, kg); if (s.k === 'ex' || s.k === 'steady') s.n = ++n; }
+    out.N = n;
+    return out;
+  }
+  function stepsMeta(steps) { let n = 0; for (const s of steps) if (s.k === 'ex' || s.k === 'steady') n = Math.max(n, s.n || 0); return n; }
+
+  // ---------- derived stats ----------
+  function weekStats(ref) {
+    const mon = monday(ref || new Date()), lo = dkey(mon), hi = dkey(addDays(mon, 7));
+    let mins = 0, str = new Set(), done = new Set();
+    for (const w of LOG.workouts) if (w.d >= lo && w.d < hi) { mins += w.mins; done.add(w.d); if (w.str) str.add(w.d); }
+    return { mins, strDays: str.size, done, mon };
+  }
+  function streak() {
+    const p = prof(), done = new Set(LOG.workouts.map(w => w.d));
+    let n = 0, d = new Date();
+    for (let i = 0; i < 400; i++) {
+      const k = dkey(d), planned = p.days.includes(wdIdx(d));
+      if (done.has(k)) n++;
+      else if (planned && i > 0) break;
+      d = addDays(d, -1);
+    }
+    return n;
+  }
+  const lastWeight = () => { const w = LOG.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1); return w.length ? w[w.length - 1].kg : prof().weight; };
+
+  // ---------- views ----------
+  let TAB = 'today';
+  const TABS = [['today', 'Today', 'today'], ['week', 'Week', 'week'], ['library', 'Exercises', 'lib'], ['progress', 'Progress', 'prog'], ['profile', 'Profile', 'me']];
+  let libCat = 'all', libFit = true, libQ = '';
+  let draft = null;
+
+  function th(id) { return `<span class="th" data-th="${id}"></span>`; }
+  function fillThumbs(root) { for (const s of $$('[data-th]', root)) { if (s.firstChild) continue; const e = EXM[s.dataset.th]; if (e) s.appendChild(FIG.thumb(e)); } }
+
+  function exRow(it, opts) {
+    const e = EXM[it.id];
+    const meta = opts.meta || ((it.s >= 60 ? mmss(it.s) : it.s + ' s') + (e.side ? ' · both sides' : '') + ' · ' + e.mu);
+    return `<div class="exrow"><button class="exmain" data-act="ex" data-id="${e.id}">${th(e.id)}<span class="tx"><b>${esc(e.n)}</b><span>${esc(meta)}</span></span></button>${opts.swap ? `<button class="iconbtn" data-act="${opts.swapAct || 'swap'}" data-key="${opts.swap}" aria-label="Swap ${esc(e.n)} for another exercise">${ic('swap')}</button>` : ''}</div>`;
+  }
+  function segSummary(segs) {
+    const hard = segs.find(s => s.i === 1), easy = segs.filter(s => s.i === 0)[1];
+    if (!hard) return 'Steady, comfortable pace';
+    return `${segs[0].lab} ${Math.round(segs[0].s / 60)} min, then ${hard.lab.toLowerCase()} ${hard.s >= 60 ? Math.round(hard.s / 60) + ' min' : hard.s + ' s'} / ${(easy ? easy.lab : 'easy').toLowerCase()} ${easy ? (easy.s >= 60 ? Math.round(easy.s / 60) + ' min' : easy.s + ' s') : ''}`;
+  }
+  function blocksHTML(plan, editable) {
+    return plan.blocks.map(b => {
+      let meta = '', rows = '';
+      if (b.k === 'steady') {
+        meta = Math.round(b.s / 60) + ' min';
+        const e = EXM[b.id];
+        rows = exRow({ id: b.id, s: b.s }, { meta: segSummary(b.segs) + (e.out ? ' · keeps timing with your phone locked' : ''), swap: editable ? 'steady' : null, swapAct: 'swapsteady' });
+      } else {
+        const tot = b.k === 'circ' ? b.R * b.items.length * b.work + b.R * (b.items.length - 1) * b.rest + (b.R - 1) * b.rr : b.items.reduce((t, i) => t + i.s, 0);
+        meta = b.k === 'circ' ? `${b.R} ${b.R > 1 ? 'rounds' : 'round'} · ${b.work}s / ${b.rest}s rest` : mmss(tot) + ' min';
+        rows = b.items.map(it => exRow(it, { swap: editable ? it.key : null, meta: b.k === 'circ' ? `${b.work} s${EXM[it.id].side ? ' (half each side)' : ''} · ${EXM[it.id].mu}` : null })).join('');
+      }
+      return `<section class="block"><div class="blockhead"><h2 class="h2">${esc(b.title)}</h2><span class="small num">${meta}</span></div><div class="exlist">${rows}</div></section>`;
+    }).join('');
+  }
+  function ringSVG(frac) {
+    const r = 26, c = 2 * Math.PI * r;
+    return `<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="bgc" cx="32" cy="32" r="${r}"/>${frac > 0 ? `<circle class="fgc" cx="32" cy="32" r="${r}" stroke-dasharray="${(c * clamp(frac, 0, 1)).toFixed(1)} ${c.toFixed(1)}"/>` : ''}</svg>`;
+  }
+  function weekCard() {
+    const p = prof(), w = weekStats(), today = dkey(new Date());
+    const strip = DOW.map((d, i) => {
+      const k = dkey(addDays(w.mon, i)), cls = ['wd', p.days.includes(i) ? 'plan' : '', w.done.has(k) ? 'done' : '', k === today ? 'today' : ''].join(' ');
+      return `<div class="${cls}"><i>${w.done.has(k) ? ic('check').replace('stroke-width="2"', 'stroke-width="3" width="16" height="16"') : addDays(w.mon, i).getDate()}</i>${d}</div>`;
+    }).join('');
+    return `<div class="card"><div class="row">${ringSVG(w.mins / 150)}<div><div class="h2 num" style="font-size:24px">${w.mins} / 150 min</div><div class="small">active minutes this week · strength days ${w.strDays} / 2</div></div></div><div class="weekstrip">${strip}</div><div class="small">The WHO suggests 150–300 minutes of moderate activity a week and muscle-strengthening on 2 or more days.</div></div>`;
+  }
+  function vToday() {
+    const p = prof(), now = new Date(), key = dkey(now), ov = OV[key] || {};
+    const plan = planFor(now), st = streak();
+    const hi = p.name ? `Hi ${esc(p.name)} · ` : '';
+    let top = `<div class="row between" style="position:relative;z-index:1"><div class="eyebrow">${hi}${DOWL[wdIdx(now)]}, ${now.getDate()} ${MON[now.getMonth()]}</div>${st > 0 ? `<span class="tag acc num">${st}-day streak</span>` : ''}</div>`;
+    let h = '';
+    if (SES && !SES.fin) h += `<div class="banner"><b>Workout in progress: ${esc(SES.title)}</b><div class="row"><button class="btn primary sm" data-act="resume">Resume</button><button class="btn sm" data-act="discard">Discard</button></div></div>`;
+    if (plan.rest) {
+      h = `<section class="hero">${top}<h1 class="display">Rest day</h1><p style="margin:0;position:relative">Recovery is when your body adapts. A short walk or a gentle stretch still helps.</p>
+        <div class="row wrap" style="position:relative"><button class="btn primary" data-act="restmob">10-minute stretch</button><button class="btn" data-act="force">Do a workout anyway</button></div></section>` + h;
+      if (!P) h += exampleBanner();
+      return h + weekCard();
+    }
+    const done = LOG.workouts.some(w => w.d === key);
+    h = `<section class="hero">${top}
+      <div style="position:relative"><h1 class="display">${esc(plan.title)}</h1>${done ? '<div class="tag good" style="display:inline-block;margin-top:8px">Done today. Nice work.</div>' : ''}</div>
+      <div class="stats" style="position:relative"><div class="stat"><b>${Math.round(plan.secs / 60)}</b><span>minutes</span></div><div class="stat"><b>≈${plan.kcal}</b><span>kcal for ${Math.round(p.weight)} kg</span></div><div class="stat"><b>${plan.moves}</b><span>moves</span></div></div>
+      <button class="btn primary big" data-act="start" style="position:relative">${ic('play')} ${done ? 'Go again' : 'Start workout'}</button></section>` + h;
+    if (!P) h += exampleBanner();
+    h += `<div class="field"><span class="lbl">Time today (minutes)</span><div class="chips" style="flex-wrap:nowrap;gap:6px">${[10, 15, 20, 30, 45, 60].map(m => `<button class="chip num" style="flex:1;padding:7px 0" data-act="mins" data-v="${m}" aria-pressed="${(ov.mins || p.mins) === m}" aria-label="${m} minutes">${m}</button>`).join('')}</div></div>
+      <div class="row wrap"><button class="btn sm ghost" data-act="shuffle">${ic('shuffle')} New mix</button>${ov.seed || ov.swaps || ov.mins || ov.rm || ov.steady || ov.force ? '<button class="btn sm ghost" data-act="resetday">Back to plan</button>' : ''}</div>`;
+    if (p.issues.length) {
+      const out = EX.filter(e => !e.g.includes('steady') && (!e.eq || e.eq.split('|').some(q => p.equip.includes(q))) && blockedBy(e, p).length);
+      const kn = p.issues.includes('k') ? ' For your knees that means no jumping, kneeling, lunges, step-ups or squats.' : '';
+      h += `<details class="card"><summary>Going easy on your ${esc(listJoin(p.issues.map(a => ISSUE_NAME[a])))}</summary><div class="small">${out.length} exercises are left out because they strain those areas.${kn} Left out: ${esc(out.map(e => e.n).join(', ') || 'none')}. Stop anything that causes sharp pain.</div></details>`;
+    }
+    h += blocksHTML(plan, true);
+    h += weekCard();
+    return h;
+  }
+  function exampleBanner() {
+    return `<div class="banner"><b>This is an example plan.</b><span class="small">It’s set for a 35-year-old beginner with 30 minutes a day. Add your age, weight, target, time and any sore spots to get your own.</span><button class="btn primary sm" data-act="tab" data-tab="profile" style="align-self:flex-start">Set up my plan</button></div>`;
+  }
+
+  function vWeek() {
+    const p = prof(), w = weekStats(), today = dkey(new Date());
+    let kcal = 0, mins = 0;
+    const rows = DOW.map((d, i) => {
+      const date = addDays(w.mon, i), k = dkey(date), plan = planFor(date);
+      const done = w.done.has(k);
+      if (!plan.rest) { kcal += plan.kcal; mins += Math.round(plan.secs / 60); }
+      return `<button class="exrow" data-act="day" data-key="${k}" ${plan.rest ? 'data-rest="1"' : ''}><span class="th" style="display:grid;place-items:center;background:${k === today ? 'var(--accent)' : 'var(--sunk)'};color:${k === today ? 'var(--on-accent)' : 'var(--ink)'};font-family:var(--font-d);font-weight:800;font-size:19px;line-height:1.05;text-align:center">${d}<br>${date.getDate()}</span><span class="tx"><b>${plan.rest ? 'Rest' : esc(plan.title)}</b><span>${plan.rest ? 'Recovery day' : Math.round(plan.secs / 60) + ' min · ≈' + plan.kcal + ' kcal · ' + plan.moves + ' moves'}</span></span>${done ? `<span class="tag good">${ic('check').replace('<svg', '<svg width="14" height="14"')} Done</span>` : ''}</button>`;
+    }).join('');
+    return `<div><div class="eyebrow">Week of ${w.mon.getDate()} ${MON[w.mon.getMonth()]}</div><h1 class="display">Your week</h1></div>
+      <div class="stats"><div class="stat"><b>${p.days.length}</b><span>workout days</span></div><div class="stat"><b>${mins}</b><span>planned min</span></div><div class="stat"><b>≈${kcal}</b><span>planned kcal</span></div></div>
+      <div class="exlist">${rows}</div>
+      <p class="small" style="margin:0">Each workout day rotates its focus so muscles get time to recover. Change days and time in Profile.</p>
+      ${weekCard()}`;
+  }
+
+  function libList() {
+    const p = prof(), q = libQ.trim().toLowerCase();
+    const list = EX.filter(e => {
+      if (libCat === 'equip' ? !e.eq : libCat !== 'all' && !e.g.includes(libCat)) return false;
+      if (q && !(e.n + ' ' + e.mu).toLowerCase().includes(q)) return false;
+      if (libFit && !allowed(e, p, true)) return false;
+      return true;
+    });
+    if (!list.length) return `<p class="muted">No exercises match. ${libFit ? 'Turn off “Only what suits me” to see everything.' : ''}</p>`;
+    return `<div class="exlist">${list.map(e => {
+      const why = blockedBy(e, p), noEq = e.eq && !e.eq.split('|').some(x => p.equip.includes(x));
+      const tags = [`Level ${e.lv}`, e.eq ? e.eq.split('|').map(x => EQ_NAME[x]).join(' or ') : 'No equipment'].join(' · ');
+      return `<div class="exrow"><button class="exmain" data-act="ex" data-id="${e.id}">${th(e.id)}<span class="tx"><b>${esc(e.n)}</b><span>${esc(e.mu)}</span><span>${esc(tags)}${why.length ? ` · <span style="color:var(--warn);font-weight:700">loads ${esc(listJoin(why))}</span>` : ''}${noEq ? ' · <span style="color:var(--warn);font-weight:700">needs equipment</span>' : ''}${e.imp && noJump(p) ? ' · <span style="color:var(--warn);font-weight:700">jumping</span>' : ''}</span></span></button></div>`;
+    }).join('')}</div>`;
+  }
+  function vLibrary() {
+    return `<div><div class="eyebrow">${EX.length} exercises with follow-along figures</div><h1 class="display">Exercises</h1></div>
+      <input class="inp" id="libq" type="search" placeholder="Search: squat, plank, shoulders…" value="${esc(libQ)}" aria-label="Search exercises">
+      <div class="chips scroll" role="group" aria-label="Category">${LIB_CATS.map(([k, n]) => `<button class="chip" data-act="libcat" data-v="${k}" aria-pressed="${libCat === k}">${n}</button>`).join('')}</div>
+      <label class="row small" style="gap:8px"><input type="checkbox" id="libfit" ${libFit ? 'checked' : ''}> Only what suits me (my equipment and sore spots)</label>
+      <div id="liblist">${libList()}</div>`;
+  }
+
+  function chartSVG(p) {
+    const ws = LOG.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1);
+    if (ws.length < 2) return `<p class="small" style="margin:0">Log your weight once a week or so to see a trend line here.</p>`;
+    const W = 340, H = 170, L = 34, R = 10, T = 12, B = 24;
+    const t0 = fromKey(ws[0].d).getTime(), t1 = Math.max(fromKey(ws[ws.length - 1].d).getTime(), t0 + 864e5);
+    const vals = ws.map(w => w.kg).concat([p.target]);
+    let lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
+    const x = t => L + (t - t0) / (t1 - t0) * (W - L - R), y = v => T + (hi - v) / (hi - lo) * (H - T - B);
+    const step = Math.max(1, Math.ceil((hi - lo) / 4));
+    let g = '';
+    for (let v = lo; v <= hi; v += step) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v}</text>`;
+    const pts = ws.map(w => [x(fromKey(w.d).getTime()), y(w.kg)]);
+    const line = pts.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ');
+    const area = `M${pts[0][0].toFixed(1)},${(H - B).toFixed(1)} L${line.replace(/ /g, ' L')} L${pts[pts.length - 1][0].toFixed(1)},${(H - B).toFixed(1)}Z`;
+    const last = pts[pts.length - 1], d0 = fromKey(ws[0].d), d1 = fromKey(ws[ws.length - 1].d);
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weight trend from ${ws[0].kg} to ${ws[ws.length - 1].kg} kg, target ${p.target} kg">${g}
+      <line class="tg" x1="${L}" x2="${W - R}" y1="${y(p.target).toFixed(1)}" y2="${y(p.target).toFixed(1)}"/><text x="${W - R}" y="${(y(p.target) - 5).toFixed(1)}" text-anchor="end" style="fill:var(--good);font-weight:700">target ${p.target} kg</text>
+      <path class="ar" d="${area}"/><polyline class="ln" points="${line}"/><circle class="dot" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="5"/>
+      <text x="${L}" y="${H - 6}">${d0.getDate()} ${MON[d0.getMonth()]}</text><text x="${W - R}" y="${H - 6}" text-anchor="end">${d1.getDate()} ${MON[d1.getMonth()]}</text></svg>`;
+  }
+  function vProgress() {
+    const p = prof(), w = lastWeight(), hm = p.height / 100, bmi = w / (hm * hm), tb = p.target / (hm * hm);
+    const cat = bmi < 18.5 ? 'below the healthy range' : bmi < 25 ? 'in the healthy range' : bmi < 30 ? 'in the overweight range' : 'in the obesity range';
+    const diff = Math.round((w - p.target) * 10) / 10;
+    let weekK = 0; for (let i = 0; i < 7; i++) { const pl = planFor(addDays(monday(new Date()), i)); if (!pl.rest) weekK += pl.kcal; }
+    let goalTxt;
+    if (diff > 0.4) goalTxt = `<b>${diff} kg to go.</b> At a steady, safe pace of about 0.5 kg a week that’s roughly ${Math.ceil(diff / 0.5)} weeks. Your planned workouts burn about ${weekK} kcal a week (around ${(weekK * 4.3 / 7700).toFixed(1)} kg a month on their own); eating a little less than you burn does the rest.`;
+    else if (diff < -0.4) goalTxt = `<b>${-diff} kg to gain.</b> Pair your strength days with enough protein and a small food surplus.`;
+    else goalTxt = `<b>You’re at your target.</b> Keep the routine going to hold it.`;
+    const tot = LOG.workouts.reduce((a, x) => ({ n: a.n + 1, m: a.m + x.mins, k: a.k + x.kcal }), { n: 0, m: 0, k: 0 });
+    const hist = LOG.workouts.slice(-25).reverse().map(x => { const d = fromKey(x.d); return `<div><span><b>${esc(x.title)}</b><br><span class="small">${DOW[wdIdx(d)]} ${d.getDate()} ${MON[d.getMonth()]}${x.feel ? ' · felt ' + x.feel : ''}</span></span><span class="num" style="text-align:right">${x.mins} min<br><span class="small">≈${x.kcal} kcal</span></span></div>`; }).join('');
+    return `<div><div class="eyebrow">Weight, target and history</div><h1 class="display">Progress</h1></div>
+      <div class="stats"><div class="stat"><b>${w}</b><span>kg now</span></div><div class="stat"><b>${p.target}</b><span>kg target</span></div><div class="stat"><b>${bmi.toFixed(1)}</b><span>BMI</span></div></div>
+      <div class="card">${chartSVG(p)}
+        <form class="row" data-form="weight" style="align-items:flex-end"><div class="field" style="flex:1"><label for="wkg">Log today’s weight (kg)</label><input class="inp num" id="wkg" type="number" inputmode="decimal" step="0.1" min="30" max="300" value="${w}"></div><button class="btn primary" type="submit">Save</button></form>
+        <div id="werr" class="err" role="alert"></div></div>
+      <div class="card"><div>${goalTxt}</div><div class="small">BMI ${bmi.toFixed(1)} is ${cat}. For South Asian adults, health risks start at a lower BMI (from about 23).${tb < 18.5 ? ' <b style="color:var(--warn)">Your target is below the healthy BMI range for your height;</b> a doctor or dietitian can help you choose a safe target.' : ''}</div></div>
+      <div class="stats"><div class="stat"><b>${tot.n}</b><span>workouts</span></div><div class="stat"><b>${tot.m}</b><span>minutes</span></div><div class="stat"><b>${tot.k >= 10000 ? Math.round(tot.k / 1000) + 'k' : tot.k}</b><span>kcal</span></div></div>
+      <div class="card"><h2 class="h2" style="font-size:22px">History</h2>${hist ? `<div class="hist">${hist}</div>` : '<p class="small" style="margin:0">Finished workouts show up here.</p>'}</div>`;
+  }
+
+  function chipGroup(field, opts, multi, val) {
+    return `<div class="chips" role="group">${opts.map(([v, n]) => `<button type="button" class="chip" data-act="dchip" data-f="${field}" data-v="${v}" ${multi ? 'data-multi="1"' : ''} aria-pressed="${multi ? val.includes(v) : val === v}">${esc(n)}</button>`).join('')}</div>`;
+  }
+  function vProfile() {
+    draft = JSON.parse(JSON.stringify(prof()));
+    const d = draft;
+    const lock = d.issues.includes('k') || d.issues.includes('a');
+    const acctBtns = MODE === 'firebase' ? '<button class="btn sm ghost" data-act="signout">Sign out</button>' : (FBCFG ? '<button class="btn sm primary" data-act="signin">Sign in to save across devices</button>' : '');
+    return `<div><div class="eyebrow">${P ? 'Your details' : 'Set up your plan'}</div><h1 class="display">Profile</h1></div>
+      <div class="card"><div class="acct small" data-acct></div>${acctBtns ? `<div class="row">${acctBtns}</div>` : ''}</div>
+      <form class="card" data-form="profile" novalidate style="gap:16px">
+        <div class="grid3"><div class="field"><label for="f-age">Age</label><input class="inp num" id="f-age" type="number" inputmode="numeric" min="16" max="100" value="${d.age}"></div>
+          <div class="field"><label for="f-h">Height (cm)</label><input class="inp num" id="f-h" type="number" inputmode="numeric" min="120" max="230" value="${d.height}"></div>
+          <div class="field"><label for="f-name">Name</label><input class="inp" id="f-name" type="text" autocomplete="given-name" value="${esc(d.name)}" placeholder="optional"></div></div>
+        <div class="grid2"><div class="field"><label for="f-w">Weight (kg)</label><input class="inp num" id="f-w" type="number" inputmode="decimal" step="0.1" min="30" max="300" value="${lastWeight()}"></div>
+          <div class="field"><label for="f-t">Target weight (kg)</label><input class="inp num" id="f-t" type="number" inputmode="decimal" step="0.1" min="30" max="300" value="${d.target}"></div></div>
+        <fieldset><legend>Time for exercise each day</legend>${chipGroup('mins', [10, 15, 20, 30, 45, 60].map(m => [m, m + ' min']), false, d.mins)}</fieldset>
+        <fieldset><legend>Workout days</legend>${chipGroup('days', DOW.map((n, i) => [i, n]), true, d.days)}<span class="small">The other days are rest days.</span></fieldset>
+        <fieldset><legend>Main goal</legend>${chipGroup('goal', GOALS, false, d.goal)}</fieldset>
+        <fieldset><legend>Fitness level</legend>${chipGroup('level', LEVELS, false, d.level)}<span class="small">Beginner: little or no regular exercise. Intermediate: active 2–3 times a week. Advanced: training most days.</span></fieldset>
+        <fieldset><legend>Go easy on (sore or problem areas)</legend>${chipGroup('issues', ISSUES, true, d.issues)}
+          <label class="row small" style="gap:8px"><input type="checkbox" id="f-careful" ${d.careful ? 'checked' : ''}> Be extra careful: also leave out moves with light load on these areas</label></fieldset>
+        <fieldset><legend>Jumping and hopping</legend>${chipGroup('impact', [['1', 'Jumping is fine'], ['0', 'No jumping']], false, d.impact && !lock ? '1' : '0')}<span class="small" id="impnote">${lock ? 'Jumping is switched off while knees or ankles are marked.' : ''}</span></fieldset>
+        <fieldset><legend>Equipment at home</legend>${chipGroup('equip', EQUIP, true, d.equip)}</fieldset>
+        <fieldset><legend>Cardio style</legend>${chipGroup('cardio', CARDIO, false, d.cardio)}<span class="small">Outdoor and machine sessions run on a timer that keeps going when your phone is locked or you switch apps.</span></fieldset>
+        <fieldset><legend>Sound</legend>${chipGroup('sound', [['1', 'Beeps and voice cues'], ['0', 'Silent']], false, d.sound ? '1' : '0')}</fieldset>
+        <div id="perr" class="err" role="alert"></div>
+        <button class="btn primary big" type="submit">${P ? 'Save and update plan' : 'Build my plan'}</button>
+      </form>
+      <div class="card small"><b style="color:var(--ink)">Safety first.</b> If you have a heart condition, high blood pressure, a recent injury or surgery, are pregnant, or feel chest pain or dizziness when active, check with a doctor before starting. Stop any move that causes sharp pain. Mild muscle soreness for a day or two is normal.</div>
+      ${P ? '<button class="btn ghost" data-act="wipe">Erase my data</button>' : ''}`;
+  }
+
+  const VIEWS = { today: vToday, week: vWeek, library: vLibrary, progress: vProgress, profile: vProfile };
+  function render() {
+    const m = $('main');
+    m.innerHTML = VIEWS[TAB]();
+    fillThumbs(m);
+    refreshAcct();
+    for (const b of $$('.tabs button')) b.setAttribute('aria-current', b.dataset.tab === TAB ? 'page' : 'false');
+  }
+  function go(tab) {
+    TAB = tab;
+    if (location.hash.slice(1) !== tab) { try { history.replaceState(null, '', '#' + tab); } catch (e) { location.hash = tab; } }
+    render(); $('main').scrollTop = 0;
+  }
+
+  // ---------- camera angle for the coach figure ----------
+  let VIEWPREF = LS.get('views', {});
+  const VIEW_OPTS = [['side', 'Side'], ['angle', 'Angle'], ['front', 'Front'], ['orbit', '360°']];
+  function viewSeg(e, compact) {
+    const cur = VIEWPREF[e.id] || FIG.defView(e.an);
+    return `<div class="seg" role="group" aria-label="Camera angle" data-ex="${e.id}">${VIEW_OPTS.map(([v, n]) => `<button data-act="view" data-v="${v}" aria-pressed="${cur === v}"${compact ? ' style="padding:5px 8px"' : ''}>${n}</button>`).join('')}</div>`;
+  }
+  function setViewPref(btn) {
+    const box = btn.closest('.seg'), id = box.dataset.ex, v = btn.dataset.v;
+    VIEWPREF[id] = v; LS.set('views', VIEWPREF);
+    for (const b of $$('button', box)) b.setAttribute('aria-pressed', b === btn);
+    const sh = $('.scrim'); if (sh && sh._fig && sh._fig.ex.id === id) FIG.setView(sh._fig, v);
+    if (FIGH && FIGH.ex.id === id) FIG.setView(FIGH, v);
+  }
+
+  // ---------- sheets / dialogs ----------
+  function closeSheet() { const s = $('.scrim'); if (s) s.remove(); }
+  function sheet(html, cls) {
+    closeSheet();
+    const s = document.createElement('div');
+    s.className = 'scrim';
+    s.innerHTML = `<div class="${cls || 'sheet'}" role="dialog" aria-modal="true">${html}</div>`;
+    s.addEventListener('click', e => { if (e.target === s) closeSheet(); });
+    document.body.appendChild(s);
+    const f = s.querySelector('button, input'); if (f) f.focus({ preventScroll: true });
+    return s;
+  }
+  function confirmBox(title, body, btns) {
+    return new Promise(res => {
+      const s = sheet(`<h2 class="h2">${esc(title)}</h2><p style="margin:0">${esc(body)}</p><div class="row wrap">${btns.map((b, i) => `<button class="btn ${b[2] || ''}" data-i="${i}">${esc(b[0])}</button>`).join('')}</div>`, 'dialog');
+      s.style.alignItems = 'center';
+      s.addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) { closeSheet(); res(btns[+b.dataset.i][1]); } else if (e.target === s) res(null); });
+    });
+  }
+  function toast(t) {
+    let el = $('#toast');
+    if (!el) { el = document.createElement('div'); el.id = 'toast'; el.setAttribute('role', 'status'); el.style.cssText = 'position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;z-index:60;max-width:90%;text-align:center'; document.body.appendChild(el); }
+    el.textContent = t; el.style.display = 'block';
+    clearTimeout(el._t); el._t = setTimeout(() => { el.style.display = 'none'; }, 2600);
+  }
+  function openEx(id) {
+    const e = EXM[id], p = prof(), why = blockedBy(e, p);
+    const light = p.issues.filter(a => (e.st[a] || 0) === 1).map(a => ISSUE_NAME[a]);
+    let note = '';
+    if (why.length) note = `<span class="tag warn">Left out of your plans: loads your ${esc(listJoin(why))}</span>`;
+    else if (light.length) note = `<span class="tag warn">Some load on your ${esc(listJoin(light))}: go gently</span>`;
+    else if (p.issues.length) note = `<span class="tag good">Easy on your ${esc(listJoin(p.issues.map(a => ISSUE_NAME[a])))}</span>`;
+    const tags = [e.g.map(g => GROUP_NAME[g]).join(' · '), e.eq ? e.eq.split('|').map(x => EQ_NAME[x]).join(' or ') : 'No equipment', 'Level ' + e.lv, e.imp ? 'Jumping' : 'Low impact', e.hold ? 'Hold' : '', e.side ? 'Both sides' : ''].filter(Boolean);
+    const trySecs = e.g.includes('steady') ? 300 : e.side ? 60 : 40;
+    const s = sheet(`<div class="row between" style="align-items:flex-start"><div><div class="eyebrow">${esc(e.mu)}</div><h2 class="h2" style="font-size:32px">${esc(e.n)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic('close')}</button></div>
+      <div class="stagebox" id="exstage"></div>
+      <div class="row between"><span class="small">Camera</span>${viewSeg(e)}</div>
+      <div class="row between"><div class="chips" role="group" aria-label="Speed"><button class="chip" data-act="speed" data-v="0.5" aria-pressed="false">Slow</button><button class="chip" data-act="speed" data-v="1" aria-pressed="true">Normal</button></div><span class="small num">${e.hold ? 'Hold' : (e.an.dur).toFixed(1) + ' s per rep'}</span></div>
+      <div class="chips">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}${note}</div>
+      <ol class="steps">${e.how.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+      <p style="margin:0"><b>Tip:</b> ${esc(e.cue)}</p>
+      <button class="btn primary" data-act="try" data-id="${e.id}">${ic('play')} Follow along for ${trySecs >= 60 ? trySecs / 60 + ' min' : trySecs + ' s'}</button>`);
+    const h = FIG.build(e, { view: VIEWPREF[e.id] || 'auto' }); $('#exstage', s).appendChild(h.svg); FIG.play(h); s._fig = h;
+  }
+  function openDay(key) {
+    const date = fromKey(key), plan = planFor(date, true);
+    sheet(`<div class="row between"><div><div class="eyebrow">${DOWL[wdIdx(date)]} ${date.getDate()} ${MON[date.getMonth()]}${focusFor(prof(), date).planned ? '' : ' · rest day'}</div><h2 class="h2" style="font-size:30px">${esc(plan.title)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic('close')}</button></div>
+      <div class="stats"><div class="stat"><b>${Math.round(plan.secs / 60)}</b><span>minutes</span></div><div class="stat"><b>≈${plan.kcal}</b><span>kcal</span></div><div class="stat"><b>${plan.moves}</b><span>moves</span></div></div>
+      <button class="btn primary" data-act="startday" data-key="${key}">${ic('play')} Start this workout</button>
+      ${blocksHTML(plan, false)}`);
+    fillThumbs($('.sheet'));
+  }
+
+  // ---------- profile form ----------
+  function dchip(btn) {
+    const f = btn.dataset.f, multi = btn.dataset.multi;
+    let v = btn.dataset.v;
+    if (['mins', 'level', 'days'].includes(f)) v = +v;
+    if (multi) {
+      const arr = draft[f]; const i = arr.indexOf(v);
+      if (i >= 0) arr.splice(i, 1); else arr.push(v);
+      btn.setAttribute('aria-pressed', i < 0);
+    } else {
+      if (f === 'impact' && v === '1' && (draft.issues.includes('k') || draft.issues.includes('a'))) { toast('Jumping stays off while knees or ankles are marked'); return; }
+      if (f === 'impact' || f === 'sound') draft[f] = v === '1'; else draft[f] = v;
+      for (const b of $$(`[data-f="${f}"]`)) b.setAttribute('aria-pressed', b === btn);
+    }
+    if (f === 'issues') {
+      const lock = draft.issues.includes('k') || draft.issues.includes('a');
+      for (const b of $$('[data-f="impact"]')) b.setAttribute('aria-pressed', b.dataset.v === (draft.impact && !lock ? '1' : '0'));
+      const n = $('#impnote'); if (n) n.textContent = lock ? 'Jumping is switched off while knees or ankles are marked.' : '';
+    }
+  }
+  function submitProfile() {
+    const num = id => parseFloat(($('#' + id) || {}).value);
+    const d = draft, err = $('#perr');
+    d.age = Math.round(num('f-age')); d.height = Math.round(num('f-h')); d.name = $('#f-name').value.trim().slice(0, 40);
+    const w = Math.round(num('f-w') * 10) / 10; d.target = Math.round(num('f-t') * 10) / 10;
+    d.careful = $('#f-careful').checked;
+    let msg = '';
+    if (!(d.age >= 16 && d.age <= 100)) msg = 'Enter an age between 16 and 100. This app is designed for adults.';
+    else if (!(d.height >= 120 && d.height <= 230)) msg = 'Enter your height in centimetres (120–230).';
+    else if (!(w >= 30 && w <= 300)) msg = 'Enter your weight in kilograms (30–300).';
+    else if (!(d.target >= 30 && d.target <= 300)) msg = 'Enter a target weight in kilograms (30–300).';
+    else if (!d.days.length) msg = 'Pick at least one workout day.';
+    if (msg) { err.textContent = msg; err.scrollIntoView({ block: 'center' }); return; }
+    if (d.age >= 60 && !P && d.impact) d.impact = d.impact;
+    d.weight = w;
+    const prevW = lastWeight();
+    const levelChanged = P && P.level !== d.level;
+    if (levelChanged) d.adapt = 0;
+    P = d;
+    if (!LOG.weights.length || Math.abs(prevW - w) >= 0.05) addWeight(w);
+    const k = dkey(new Date()); if (OV[k]) { delete OV[k]; saveOV(); }
+    saveAll();
+    go('today');
+    toast('Plan updated');
+  }
+  function addWeight(kg) {
+    const k = dkey(new Date());
+    LOG.weights = LOG.weights.filter(x => x.d !== k);
+    LOG.weights.push({ d: k, kg });
+    if (P) P.weight = kg;
+  }
+
+  // ---------- today actions ----------
+  function ovFor(k) { return OV[k] || (OV[k] = {}); }
+  function swapItem(itemKey) {
+    const now = new Date(), key = dkey(now), plan = planFor(now), p = prof();
+    let it = null;
+    for (const b of plan.blocks) for (const x of b.items || []) if (x.key === itemKey) it = x;
+    if (!it) return;
+    const used = new Set(plan.blocks.flatMap(b => (b.items || []).map(x => x.id)));
+    const grp = itemKey[0] === 'w' ? 'warmup' : itemKey[0] === 'z' ? 'mobility' : it.g;
+    const seed = key + ':' + ((OV[key] || {}).seed || 0);
+    const c = candidates(grp, p, seed, new Set(), used);
+    if (!c.length) { toast('No other options suit your settings'); return; }
+    const o = ovFor(key); o.swaps = o.swaps || {};
+    const tried = o.tried = o.tried || {};
+    const t = tried[itemKey] = tried[itemKey] || [];
+    t.push(it.id);
+    let nx = c.find(e => !t.includes(e.id)) || c[0];
+    if (!c.find(e => !t.includes(e.id))) tried[itemKey] = [it.id];
+    o.swaps[itemKey] = nx.id;
+    saveOV(); render();
+    toast(`Swapped in ${nx.n}`);
+  }
+  function swapSteady() {
+    const now = new Date(), key = dkey(now), plan = planFor(now), p = prof();
+    const opts = EX.filter(e => e.g.includes('steady') && allowed(e, p, true)).map(e => e.id);
+    const i = opts.indexOf(plan.sid);
+    const nx = opts[(i + 1) % opts.length];
+    ovFor(key).steady = nx; saveOV(); render();
+    toast(`Cardio: ${EXM[nx].n}`);
+  }
+
+  // ---------- player ----------
+  let TICK = 0, AC = null, KEEP = null, WAKE = null, FIGH = null, lastPersist = 0;
+  const muted = () => !prof().sound;
+  function audioUnlock() {
+    try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) { }
+    try { if (!KEEP) { KEEP = new Audio(quietWav()); KEEP.loop = true; } KEEP.play().then(() => { if (!needKeep()) KEEP.pause(); }).catch(() => { }); } catch (e) { }
+    try { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch (e) { }
+  }
+  function quietWav() {
+    const sr = 8000, n = sr, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.round(Math.sin(2 * Math.PI * 50 * i / sr) * 40), true);
+    return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  }
+  const needKeep = () => SES && !SES.fin && !SES.paused && !muted() && SES.steps[SES.i] && SES.steps[SES.i].k === 'steady';
+  function keepAlive() { try { if (!KEEP) return; if (needKeep()) { if (KEEP.paused) KEEP.play().catch(() => { }); } else if (!KEEP.paused) KEEP.pause(); } catch (e) { } }
+  function beep(f, d, vol) {
+    if (muted()) return;
+    try {
+      if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+      if (AC.state === 'suspended') AC.resume();
+      const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime;
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.35, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+      o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + 0.03);
+    } catch (e) { }
+  }
+  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) { } }
+  function say(t) {
+    if (muted()) return;
+    try { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.rate = 1.02; speechSynthesis.speak(u); } catch (e) { }
+  }
+  async function wakeOn() { try { if ('wakeLock' in navigator && document.visibilityState === 'visible') WAKE = await navigator.wakeLock.request('screen'); } catch (e) { } }
+  function wakeOff() { try { if (WAKE) WAKE.release(); } catch (e) { } WAKE = null; }
+  function media() {
+    if (!('mediaSession' in navigator) || !SES) return;
+    try {
+      const st = SES.steps[SES.i]; const e = EXM[st.id || nextExId(SES.i)];
+      navigator.mediaSession.metadata = new MediaMetadata({ title: st.k === 'ex' || st.k === 'steady' ? e.n : 'Rest', artist: 'Home Workout Coach', album: SES.title });
+      navigator.mediaSession.setActionHandler('play', () => { if (SES && SES.paused) togglePause(); });
+      navigator.mediaSession.setActionHandler('pause', () => { if (SES && !SES.paused) togglePause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', () => skip(1));
+      navigator.mediaSession.setActionHandler('previoustrack', () => skip(-1));
+    } catch (e) { }
+  }
+  const elapsed = () => ((SES.paused || Date.now()) - SES.t0) / 1000;
+  function nextExId(i) { for (let j = i + 1; j < SES.steps.length; j++) if (SES.steps[j].id) return SES.steps[j].id; return null; }
+  function nextExStep(i) { for (let j = i + 1; j < SES.steps.length; j++) if (SES.steps[j].id) return SES.steps[j]; return null; }
+
+  function startSession(plan, title) {
+    SES = { key: plan.key, title: title || plan.title, steps: plan.steps.map(s => Object.assign({}, s)), N: stepsMeta(plan.steps), i: 0, t0: Date.now(), paused: null, done: 0, kc: 0, ids: [], str: false, cued: {}, started: Date.now(), seen: Date.now() };
+    persistSes();
+    openPlayer(true);
+  }
+  function openPlayer(fromClick) {
+    closeSheet();
+    const tt = $('#toast'); if (tt) tt.style.display = 'none';
+    let box = $('#player');
+    if (!box) { box = document.createElement('div'); box.id = 'player'; box.className = 'player'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Workout player'); document.body.appendChild(box); }
+    if (fromClick) { audioUnlock(); wakeOn(); }
+    renderStep(); stepCue();
+    clearInterval(TICK); TICK = setInterval(tick, 200);
+  }
+  function closePlayer() { clearInterval(TICK); TICK = 0; const b = $('#player'); if (b) b.remove(); FIGH = null; wakeOff(); keepAlive(); try { speechSynthesis.cancel(); } catch (e) { } document.title = 'Home Workout Coach'; render(); }
+  function markDone(st, frac) {
+    SES.done += st.s * frac; SES.kc += st.kc * frac;
+    if (st.k === 'ex' && frac > 0.3) { if (!SES.ids.includes(st.id)) SES.ids.push(st.id); const g = EXM[st.id].g; if (g.some(x => ['push', 'pull', 'legs', 'glutes', 'core'].includes(x))) SES.str = true; }
+  }
+  function tick() {
+    if (!SES || SES.fin) return;
+    let changed = false, guard = 0;
+    while (SES.i < SES.steps.length && elapsed() >= SES.steps[SES.i].s && guard++ < 600) {
+      const st = SES.steps[SES.i]; markDone(st, 1); SES.t0 += st.s * 1000; SES.i++; changed = true;
+    }
+    if (SES.i >= SES.steps.length) return finish();
+    if (changed) { renderStep(); stepCue(); persistSes(); }
+    update(); cues();
+    if (Date.now() - lastPersist > 4000) { SES.seen = Date.now(); persistSes(); lastPersist = Date.now(); }
+  }
+  function segAt(st, t) { let a = 0; for (let i = 0; i < st.segs.length; i++) { if (t < a + st.segs[i].s) return { i, left: a + st.segs[i].s - t, start: a }; a += st.segs[i].s; } return { i: st.segs.length - 1, left: 0, start: a }; }
+  function stepCue() {
+    const st = SES.steps[SES.i], nx = nextExStep(SES.i);
+    media(); keepAlive();
+    if (SES.cued['s' + SES.i]) return; SES.cued['s' + SES.i] = 1;
+    if (st.k === 'ex') { beep(1046, 0.35); buzz(200); say(EXM[st.id].n + (EXM[st.id].side ? '. Start with your left side.' : '')); }
+    else if (st.k === 'steady') { beep(1046, 0.35); buzz([200, 100, 200]); say(`${EXM[st.id].n}. ${Math.round(st.s / 60)} minutes. Start with ${st.segs[0].lab.toLowerCase()}.`); }
+    else if (st.k === 'prep') say('Get ready. First up: ' + (nx ? EXM[nx.id].n : ''));
+    else if (st.k === 'rest' || st.k === 'tr') { beep(660, 0.2); if (nx) say((st.k === 'rest' ? 'Rest. ' : '') + 'Next: ' + EXM[nx.id].n); }
+  }
+  function cues() {
+    const st = SES.steps[SES.i], t = elapsed(), left = st.s - t, c = SES.cued, i = SES.i;
+    if (SES.paused) return;
+    const sec = Math.ceil(left);
+    if (sec <= 3 && sec >= 1 && st.s > 5 && !c[i + 'b' + sec]) { c[i + 'b' + sec] = 1; beep(880, 0.12, 0.3); }
+    if (st.k === 'ex' && EXM[st.id].side && t >= st.s / 2 && !c[i + 'sw']) { c[i + 'sw'] = 1; beep(988, 0.25); buzz(150); say('Switch sides'); }
+    if (st.k === 'steady') {
+      const g = segAt(st, t);
+      if (g.i > 0 && !c[i + 'g' + g.i]) { c[i + 'g' + g.i] = 1; beep(988, 0.2); setTimeout(() => beep(1175, 0.25), 260); buzz([150, 80, 150]); const sg = st.segs[g.i]; say(`${sg.lab} for ${sg.s >= 60 ? Math.round(sg.s / 60) + ' minute' + (sg.s >= 120 ? 's' : '') : sg.s + ' seconds'}`); }
+      if (EXM[st.id].out && t >= st.s / 2 && !c[i + 'half']) { c[i + 'half'] = 1; beep(784, 0.3); buzz([300, 100, 300]); say('Halfway. If you are out and back, turn around now.'); }
+      if (left <= 10 && left > 9 && !c[i + 'ten']) { c[i + 'ten'] = 1; say('Ten seconds'); }
+    }
+  }
+  function renderStep() {
+    const box = $('#player'); if (!box || !SES) return;
+    const st = SES.steps[SES.i], nx = nextExStep(SES.i);
+    const showId = st.id || (nx && nx.id);
+    const e = showId ? EXM[showId] : null;
+    box.className = 'player ' + (st.k === 'ex' ? 'work' : st.k);
+    let phase = '', title = '', sub = '';
+    if (st.k === 'ex') { phase = (st.blk || '') + (st.R > 1 ? ` · round ${st.r} of ${st.R}` : ''); title = e.n; }
+    else if (st.k === 'steady') { phase = 'Cardio'; title = e.n; }
+    else if (st.k === 'prep') { phase = 'Get ready'; title = 'Get ready'; sub = nx ? 'First: ' + EXM[nx.id].n : ''; }
+    else { phase = st.big ? 'Round break' : st.k === 'tr' ? 'Next up' : 'Rest'; title = st.k === 'tr' ? (nx ? EXM[nx.id].n : 'Next') : (st.big ? 'Round break' : 'Rest'); sub = nx && st.k !== 'tr' ? 'Next: ' + EXM[nx.id].n : ''; }
+    const after = st.k === 'ex' || st.k === 'steady' ? nx : null;
+    let extra = '';
+    if (st.k === 'steady') extra = `<div class="segs" id="segs">${st.segs.map((g, j) => `<div data-j="${j}" hidden><span>${esc(g.lab)}</span><span class="num">${mmss(g.s)}</span></div>`).join('')}</div><div class="pnote">${e.out ? 'Lock your phone or switch apps and the timer keeps time. Cues for each change and the halfway turn play in the background if your browser allows it.' : 'Switch apps if you like: the timer keeps time.'}</div>`;
+    else if (e && (st.k === 'ex')) extra = `<details class="howbox"><summary>How to do it</summary><ol class="steps" style="margin-top:6px">${e.how.map(x => `<li>${esc(x)}</li>`).join('')}</ol><div style="margin-top:6px"><b>Tip:</b> ${esc(e.cue)}</div></details>`;
+    box.innerHTML = `<div class="pwrap">
+      <div class="ptop"><button class="iconbtn" data-act="pclose" aria-label="End workout">${ic('close')}</button><div class="pphase">${esc(phase)}${st.n ? ` <span class="num">· ${st.n}/${SES.N}</span>` : ''}</div><button class="iconbtn" data-act="psound" aria-label="${muted() ? 'Turn sound on' : 'Turn sound off'}">${ic(muted() ? 'mute' : 'sound')}</button></div>
+      <div class="pstage" id="pstage">${st.k !== 'ex' && st.k !== 'steady' && e ? '<span class="badge">Next</span>' : ''}</div>
+      ${e ? `<div class="row between pcam"><span class="small" style="color:inherit;opacity:.85">Camera</span>${viewSeg(e, true)}</div>` : ''}
+      <div><div class="ptitle">${esc(title)}</div><div class="psub" id="psub">${esc(sub)}</div></div>
+      <div class="row between" style="align-items:flex-end"><div class="ptime" id="ptime">0:00</div>${st.k === 'ex' || st.k === 'rest' || st.k === 'tr' ? `<button class="btn sm" data-act="pplus" style="background:rgba(255,255,255,.2);color:inherit">+15 s</button>` : ''}</div>
+      <div class="pbar"><i id="pbar"></i></div>
+      ${extra}
+      ${after ? `<div class="pnext">${th(after.id)}<span>Then <b>${esc(EXM[after.id].n)}</b></span></div>` : ''}
+      <div class="pctl"><button data-act="pprev" aria-label="Previous">${ic('prev')}</button><button class="main" data-act="ppause" id="ppause" aria-label="${SES.paused ? 'Resume' : 'Pause'}">${ic(SES.paused ? 'play' : 'pause')}</button><button data-act="pnext" aria-label="Skip">${ic('next')}</button></div>
+    </div>`;
+    fillThumbs(box);
+    FIGH = null;
+    if (e) {
+      FIGH = FIG.build(e, { view: VIEWPREF[e.id] || 'auto' }); $('#pstage').appendChild(FIGH.svg);
+      if (st.k === 'ex' || st.k === 'steady') { FIG.syncTo(FIGH, SES.t0); FIG.play(FIGH); if (SES.paused) FIGH.paused = true; }
+      else { FIGH.speed = 1; FIG.play(FIGH); }
+    }
+    update();
+  }
+  function update() {
+    if (!SES || SES.fin) return;
+    const st = SES.steps[SES.i], t = elapsed(), left = Math.max(0, st.s - t);
+    const tm = $('#ptime'); if (!tm) return;
+    tm.textContent = mmss(left);
+    $('#pbar').style.width = clamp(t / st.s * 100, 0, 100).toFixed(1) + '%';
+    const sub = $('#psub');
+    if (st.k === 'ex') {
+      const e = EXM[st.id];
+      let s = '';
+      if (e.side) s = t < st.s / 2 ? 'Left side' : 'Right side';
+      if (!e.hold) { const tot = Math.max(1, Math.floor(st.s / e.an.dur)); const rep = Math.min(tot, Math.floor(t / e.an.dur) + 1); s = (s ? s + ' · ' : '') + `Rep ${rep} of ~${tot}`; }
+      else s = (s ? s + ' · ' : '') + 'Hold steady, keep breathing';
+      if (sub.textContent !== s) sub.textContent = s;
+    } else if (st.k === 'steady') {
+      const g = segAt(st, t), sg = st.segs[g.i];
+      const s = `${sg.lab}: ${mmss(g.left)} left`;
+      if (sub.textContent !== s) sub.textContent = s;
+      const lo = Math.max(0, Math.min(g.i - 1, st.segs.length - 4));
+      for (const d of $$('#segs div')) { const j = +d.dataset.j; d.className = j === g.i ? 'on' : j < g.i ? 'past' : ''; d.hidden = j < lo || j > lo + 3; }
+    }
+    const nm = st.k === 'ex' || st.k === 'steady' ? EXM[st.id].n : 'Rest';
+    document.title = mmss(left) + ' · ' + nm;
+  }
+  function togglePause() {
+    if (!SES) return;
+    if (SES.paused) { SES.t0 += Date.now() - SES.paused; SES.paused = null; wakeOn(); if (FIGH) { FIG.syncTo(FIGH, SES.t0); FIGH.paused = false; } }
+    else { SES.paused = Date.now(); if (FIGH && SES.steps[SES.i].id) FIGH.paused = true; try { speechSynthesis.cancel(); } catch (e) { } }
+    persistSes(); keepAlive();
+    const b = $('#ppause'); if (b) { b.innerHTML = ic(SES.paused ? 'play' : 'pause'); b.setAttribute('aria-label', SES.paused ? 'Resume' : 'Pause'); }
+  }
+  function skip(dir) {
+    if (!SES || SES.fin) return;
+    const st = SES.steps[SES.i], t = elapsed();
+    if (dir > 0) { markDone(st, clamp(t / st.s, 0, 1)); SES.i++; }
+    else { if (t > 3 || SES.i === 0) { /* restart current */ } else { SES.i--; } }
+    const now = Date.now(); SES.t0 = now; if (SES.paused) SES.paused = now;
+    if (SES.i >= SES.steps.length) return finish();
+    delete SES.cued['s' + SES.i];
+    for (const k of Object.keys(SES.cued)) if (k.startsWith(SES.i + '')) delete SES.cued[k];
+    renderStep(); stepCue(); persistSes();
+  }
+  function plus15() { const st = SES.steps[SES.i]; st.s += 15; for (const k of Object.keys(SES.cued)) if (k.startsWith(SES.i + 'b')) delete SES.cued[k]; update(); persistSes(); }
+  function finish() {
+    if (!SES) return;
+    clearInterval(TICK); TICK = 0;
+    SES.fin = true;
+    const mins = Math.round(SES.done / 60), kcal = Math.round(SES.kc);
+    let entry = null;
+    if (SES.done >= 60) {
+      entry = { d: SES.key, ts: Date.now(), mins, kcal, title: SES.title, ids: SES.ids.slice(0, 40), str: SES.str, feel: '' };
+      LOG.workouts.push(entry); saveAll();
+    }
+    persistSes(); keepAlive(); wakeOff();
+    try { speechSynthesis.cancel(); } catch (e) { }
+    beep(1318, 0.5); buzz([200, 100, 200, 100, 400]); say(entry ? 'Workout complete. Great job.' : 'Stopped.');
+    const box = $('#player'); if (!box) return;
+    box.className = 'player done';
+    document.title = 'Home Workout Coach';
+    box.innerHTML = `<div class="pwrap" style="gap:16px"><div class="ptop"><span></span><button class="iconbtn" data-act="pdone" aria-label="Close">${ic('close')}</button></div>
+      <div><div class="eyebrow">${entry ? 'Workout complete' : 'Workout stopped'}</div><h1 class="display" style="font-size:56px">${entry ? 'Well done' : 'No problem'}</h1></div>
+      <div class="stats"><div class="stat"><b>${mins}</b><span>minutes</span></div><div class="stat"><b>≈${kcal}</b><span>kcal</span></div><div class="stat"><b>${SES.ids.length}</b><span>moves</span></div></div>
+      ${entry ? `<div class="card"><b>How did it feel?</b><span class="small">Your next workouts adjust work and rest times to match.</span><div class="row wrap"><button class="btn" data-act="feel" data-v="easy">Too easy</button><button class="btn" data-act="feel" data-v="right">Just right</button><button class="btn" data-act="feel" data-v="hard">Too hard</button></div></div>` : '<p class="muted" style="margin:0">Less than a minute was done, so nothing was logged.</p>'}
+      <button class="btn primary big" data-act="pdone">Done</button></div>`;
+  }
+  function feel(v) {
+    const last = LOG.workouts[LOG.workouts.length - 1];
+    if (last) last.feel = v === 'easy' ? 'easy' : v === 'hard' ? 'hard' : 'just right';
+    if (P) {
+      if (v === 'easy') P.adapt = clamp((P.adapt || 0) + 1, -2, 3);
+      if (v === 'hard') P.adapt = clamp((P.adapt || 0) - 1, -2, 3);
+    }
+    saveAll();
+    let msg = v === 'easy' ? 'Next time: longer work, shorter rest.' : v === 'hard' ? 'Next time: shorter work, more rest.' : 'Keeping things as they are.';
+    if (P && v === 'easy' && P.adapt >= 3 && P.level < 3) msg = 'You’ve outgrown this level. Try Intermediate in Profile.';
+    SES = null; persistSes(); closePlayer(); toast(msg);
+  }
+  async function askClose() {
+    if (!SES || SES.fin) return closePlayer();
+    const wasPaused = !!SES.paused; if (!wasPaused) togglePause();
+    const r = await confirmBox('End this workout?', 'You can save what you’ve done so far or discard it.', [['Keep going', 'keep', 'primary'], ['Save and end', 'save'], ['Discard', 'discard', 'ghost']]);
+    if (r === 'save') { const st = SES.steps[SES.i]; markDone(st, clamp(elapsed() / st.s, 0, 1)); finish(); }
+    else if (r === 'discard') { SES = null; persistSes(); closePlayer(); }
+    else if (!wasPaused) togglePause();
+  }
+  function tryEx(id) {
+    const e = EXM[id], p = prof();
+    const s = e.g.includes('steady') ? 300 : e.side ? 60 : 40;
+    const steps = [{ k: 'prep', s: 5 }, e.g.includes('steady') ? { k: 'steady', id, s, segs: segsFor(id, s, p) } : { k: 'ex', id, s, blk: 'Follow along' }];
+    for (const x of steps) { x.kc = kcalStep(x, p.weight); }
+    steps[1].n = 1;
+    startSession({ key: dkey(new Date()), steps, title: e.n }, e.n);
+  }
+
+  // ---------- events ----------
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const a = b.dataset.act, now = new Date(), key = dkey(now);
+    switch (a) {
+      case 'tab': go(b.dataset.tab); break;
+      case 'ex': openEx(b.dataset.id); break;
+      case 'close': closeSheet(); break;
+      case 'speed': { for (const c of $$('[data-act="speed"]')) c.setAttribute('aria-pressed', c === b); const sh = $('.scrim'); if (sh && sh._fig) { const f = sh._fig, n = performance.now(), v = +b.dataset.v; const el2 = (n - f.t0) / 1000 * f.speed; f.speed = v; f.t0 = n - el2 / v * 1000; } break; }
+      case 'try': closeSheet(); tryEx(b.dataset.id); break;
+      case 'view': setViewPref(b); break;
+      case 'g-start': case 'g-signin': case 'g-guest': case 'g-google': case 'g-create': case 'g-reset': gateAction(a); break;
+      case 'signin': showGate('auth'); break;
+      case 'signout': signOut(); break;
+      case 'start': { const plan = planFor(now, true); startSession(plan); break; }
+      case 'startday': { const d = fromKey(b.dataset.key); const plan = planFor(d, true); plan.key = key; startSession(plan); break; }
+      case 'resume': if (SES) openPlayer(true); break;
+      case 'discard': SES = null; persistSes(); render(); break;
+      case 'mins': ovFor(key).mins = +b.dataset.v; saveOV(); render(); break;
+      case 'shuffle': { const o = ovFor(key); o.seed = (o.seed || 0) + 1; delete o.swaps; delete o.tried; saveOV(); render(); toast('New mix of exercises'); break; }
+      case 'resetday': delete OV[key]; saveOV(); render(); break;
+      case 'force': ovFor(key).force = true; saveOV(); render(); break;
+      case 'restmob': Object.assign(ovFor(key), { force: true, focus: 'mobility', mins: 10 }); saveOV(); render(); break;
+      case 'swap': swapItem(b.dataset.key); break;
+      case 'swapsteady': swapSteady(); break;
+      case 'day': openDay(b.dataset.key); break;
+      case 'libcat': libCat = b.dataset.v; for (const c of $$('[data-act="libcat"]')) c.setAttribute('aria-pressed', c === b); $('#liblist').innerHTML = libList(); fillThumbs($('#liblist')); break;
+      case 'dchip': dchip(b); break;
+      case 'wipe': confirmBox('Erase all your data?', 'This removes your profile, weight log and workout history from this app.', [['Cancel', null, 'primary'], ['Erase', 'yes', 'ghost']]).then(r => { if (r !== 'yes') return; P = null; LOG = { workouts: [], weights: [] }; OV = {}; SES = null; saveOV(); persistSes(); saveAll(); LS.set('welcomed', false); go('today'); toast('Your data was erased'); }); break;
+      case 'pclose': askClose(); break;
+      case 'psound': { const p = P || null; if (P) P.sound = !P.sound; else EXAMPLE.sound = !EXAMPLE.sound; if (P) saveAll(); if (muted()) { try { speechSynthesis.cancel(); } catch (x) { } } keepAlive(); b.innerHTML = ic(muted() ? 'mute' : 'sound'); b.setAttribute('aria-label', muted() ? 'Turn sound on' : 'Turn sound off'); break; }
+      case 'ppause': togglePause(); break;
+      case 'pnext': skip(1); break;
+      case 'pprev': skip(-1); break;
+      case 'pplus': plus15(); break;
+      case 'feel': feel(b.dataset.v); break;
+      case 'pdone': SES = null; persistSes(); closePlayer(); break;
+    }
+  });
+  document.addEventListener('submit', e => {
+    const f = e.target.closest('[data-form]'); if (!f) return;
+    e.preventDefault();
+    if (f.dataset.form === 'profile') submitProfile();
+    if (f.dataset.form === 'g-email') gateAction('g-email');
+    if (f.dataset.form === 'weight') {
+      const v = Math.round(parseFloat($('#wkg').value) * 10) / 10;
+      if (!(v >= 30 && v <= 300)) { $('#werr').textContent = 'Enter a weight between 30 and 300 kg.'; return; }
+      if (!P) P = JSON.parse(JSON.stringify(EXAMPLE));
+      addWeight(v); saveAll(); render(); toast('Weight saved');
+    }
+  });
+  document.addEventListener('input', e => {
+    if (e.target.id === 'libq') { libQ = e.target.value; $('#liblist').innerHTML = libList(); fillThumbs($('#liblist')); }
+  });
+  document.addEventListener('change', e => {
+    if (e.target.id === 'libfit') { libFit = e.target.checked; $('#liblist').innerHTML = libList(); fillThumbs($('#liblist')); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('.scrim')) closeSheet(); } });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && SES && !SES.fin && $('#player')) { tick(); if (!SES.paused) wakeOn(); }
+  });
+  window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (VIEWS[t] && t !== TAB) go(t); });
+
+  // ---------- boot ----------
+  function boot() {
+    document.getElementById('app').innerHTML = `<main id="main" tabindex="-1"></main><nav class="tabs" aria-label="Sections">${TABS.map(([k, n, i]) => `<button data-act="tab" data-tab="${k}">${ic(i)}<span>${n}</span></button>`).join('')}</nav>`;
+    const h = location.hash.slice(1);
+    if (VIEWS[h]) TAB = h;
+    if (SES && !SES.fin) {
+      if (Date.now() - (SES.seen || SES.started) > 30 * 60000 && !SES.paused) SES.paused = SES.seen || SES.started;
+      if (Date.now() - SES.started > 6 * 3600000) SES = null;
+      persistSes();
+    } else if (SES && SES.fin) { SES = null; persistSes(); }
+    render();
+    if (needGate()) showGate('welcome');
+    setTimeout(cloudInit, 0);
+    if (window.HWC_HOSTED && 'serviceWorker' in navigator && location.protocol === 'https:') { try { navigator.serviceWorker.register('sw.js').catch(() => { }); } catch (e) { } }
+  }
+  if (location.protocol === 'file:') window.HWC = { planFor, EX, allowed, setProfile: p => { P = p; render(); } };
+  boot();
+})();
+
+</script>
+</body>
+</html>
